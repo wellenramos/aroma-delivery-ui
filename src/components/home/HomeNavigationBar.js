@@ -1,43 +1,44 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BottomNavigation, BottomNavigationAction, Box} from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const HomeNavigationBar = () => {
-    const [value, setValue] = React.useState(0);
     const navigate = useNavigate();
+    const location = useLocation();
+    const [value, setValue] = React.useState(0);
 
-    const handleHome = () => {
-        navigate('/')
-    }
+    useEffect(() => {
+        if (location.pathname === '/') setValue(0);
+        else if (location.pathname === '/favoritos') setValue(1);
+        else if (location.pathname === '/carrinho') setValue(2);
+        else if (location.pathname === '/perfil') setValue(3);
+    }, [location.pathname]);
 
-    const handleFavorito = () => {
-        navigate('/favoritos')
-    }
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
 
-    const handleCarrinho = () => {
-        navigate('/carrinho')
-    }
-
-    const handlePerfil = () => {
-        navigate('/perfil')
-    }
+        if (newValue === 0) navigate('/');
+        else if (newValue === 1) navigate('/favoritos');
+        else if (newValue === 2) navigate('/carrinho');
+        else if (newValue === 3) navigate('/perfil');
+    };
 
     return (
         <Box sx={{ width: '100%', position: 'fixed', bottom: 0, left: 0 }}>
             <BottomNavigation
                 value={value}
-                onChange={(event, newValue) => setValue(newValue)}
+                onChange={handleChange}
                 showLabels
                 sx={{ position: 'fixed', bottom: 0, width: '100%', backgroundColor: '#fff' }}
             >
-                <BottomNavigationAction label="Home" icon={<HomeIcon />} onClick={handleHome}/>
-                <BottomNavigationAction label="Favoritos" icon={<FavoriteIcon />} onClick={handleFavorito}/>
-                <BottomNavigationAction label="Carrinho" icon={<ShoppingCartIcon />} onClick={handleCarrinho} />
-                <BottomNavigationAction label="Perfil" icon={<PersonIcon />} onClick={handlePerfil}/>
+                <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+                <BottomNavigationAction label="Favoritos" icon={<FavoriteIcon />} />
+                <BottomNavigationAction label="Carrinho" icon={<ShoppingCartIcon />} />
+                <BottomNavigationAction label="Perfil" icon={<PersonIcon />} />
             </BottomNavigation>
         </Box>
 
