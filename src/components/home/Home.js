@@ -17,7 +17,7 @@ const Home = () => {
             const token = localStorage.getItem('token');
 
             if (!token) {
-                navigate('/');
+                navigate('/login');
                 return;
             }
 

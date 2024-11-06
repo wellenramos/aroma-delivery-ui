@@ -19,7 +19,7 @@ const Login = () => {
             if (data.token) {
                 localStorage.setItem('token', data.token);
                 setError('');
-                navigate('/home');
+                navigate('/');
             }
         } catch (error) {
             setError('Usuário ou senha incorretos.');

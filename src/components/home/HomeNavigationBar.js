@@ -11,7 +11,7 @@ const HomeNavigationBar = () => {
     const navigate = useNavigate();
 
     const handleHome = () => {
-        navigate('/home')
+        navigate('/')
     }
 
     const handleFavorito = () => {
