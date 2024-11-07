@@ -21,7 +21,7 @@ export const Entrar = styled(Button)`
   background-color: #cfcfcf;
   color: white;
   font-weight: bold;
-  height: 45px;
+  height: 45px; 
   margin-top: 20px;
 
   &:hover {

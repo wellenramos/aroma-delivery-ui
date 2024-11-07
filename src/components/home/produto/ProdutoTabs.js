@@ -13,7 +13,7 @@ const ProdutoTabs = ({onObterProdutos}) => {
         <Tabs
             value={value}
             onChange={handleChange}
-            indicatorColor="secondary"
+            indicatorColor="primary"
             textColor="inherit"
             variant="fullWidth"
             sx={{ marginBottom: 2 }}

@@ -7,6 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import {useLocation, useNavigate} from "react-router-dom";
 
 const HomeNavigationBar = () => {
+
     const navigate = useNavigate();
     const location = useLocation();
     const [value, setValue] = React.useState(0);
@@ -14,8 +15,8 @@ const HomeNavigationBar = () => {
     useEffect(() => {
         if (location.pathname === '/') setValue(0);
         else if (location.pathname === '/favoritos') setValue(1);
-        else if (location.pathname === '/carrinho') setValue(2);
-        else if (location.pathname === '/perfil') setValue(3);
+        else if (location.pathname === '/carrinho') setValue(3);
+        else if (location.pathname === '/perfil') setValue(5);
     }, [location.pathname]);
 
     const handleChange = (event, newValue) => {
@@ -23,8 +24,8 @@ const HomeNavigationBar = () => {
 
         if (newValue === 0) navigate('/');
         else if (newValue === 1) navigate('/favoritos');
-        else if (newValue === 2) navigate('/carrinho');
-        else if (newValue === 3) navigate('/perfil');
+        else if (newValue === 3) navigate('/carrinho');
+        else if (newValue === 5) navigate('/perfil');
     };
 
     return (
@@ -35,10 +36,25 @@ const HomeNavigationBar = () => {
                 showLabels
                 sx={{ position: 'fixed', bottom: 0, width: '100%', backgroundColor: '#fff' }}
             >
-                <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-                <BottomNavigationAction label="Favoritos" icon={<FavoriteIcon />} />
-                <BottomNavigationAction label="Carrinho" icon={<ShoppingCartIcon />} />
-                <BottomNavigationAction label="Perfil" icon={<PersonIcon />} />
+                <BottomNavigationAction
+                    label="Home"
+                    icon={<HomeIcon />}
+                />
+                <BottomNavigationAction
+                    label="Favoritos"
+                    icon={<FavoriteIcon />}
+                />
+                />
+                <BottomNavigationAction
+                    label="Carrinho"
+                    icon={<ShoppingCartIcon />}
+                />
+                />
+                <BottomNavigationAction
+                    label="Perfil"
+                    icon={<PersonIcon />}
+                />
+                />
             </BottomNavigation>
         </Box>
 

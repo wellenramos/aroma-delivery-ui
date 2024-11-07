@@ -1,7 +1,17 @@
 import React from 'react';
-import { Container, List, ListItem, ListItemAvatar, ListItemText, Typography, IconButton, Avatar, Box } from '@mui/material';
+import {
+    Container,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Typography,
+    IconButton,
+    Avatar,
+    Box,
+    Divider
+} from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import HomeNavigationBar from "../home/HomeNavigationBar";
 
 const favoriteItems = [
     {
@@ -19,13 +29,14 @@ const favoriteItems = [
     // Adicione mais itens conforme necessário
 ];
 
-const Favorites = () => {
+const Favoritos = () => {
     return (
-        <Container maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 4 }}>
+        <Container maxWidth="sm" sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 4}}>
             <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#BF7373', marginBottom: 2 }}>
                 Favoritos
             </Typography>
-            <Box sx={{ width: '100%' }}>
+            <Box sx={{width: '100%'}}>
+                <Divider />
                 <List>
                     {favoriteItems.map((item) => (
                         <ListItem
@@ -33,26 +44,25 @@ const Favorites = () => {
                             disableGutters
                             secondaryAction={
                                 <IconButton edge="end" aria-label="favorite" color="secondary">
-                                    <FavoriteIcon />
+                                    <FavoriteIcon sx={{color: '#BF7373'}}/>
                                 </IconButton>
                             }
                         >
                             <ListItemAvatar>
-                                <Avatar src={item.imageUrl} alt={item.name} />
+                                <Avatar src={item.imageUrl} alt={item.name}/>
                             </ListItemAvatar>
                             <ListItemText
                                 primary={item.name}
                                 secondary={item.description}
-                                primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
+                                primaryTypographyProps={{style: {fontWeight: 'bold'}}}
                             />
                         </ListItem>
                     ))}
                 </List>
             </Box>
-            <HomeNavigationBar/>
         </Container>
     );
 };
 
-export default Favorites;
+export default Favoritos;
 

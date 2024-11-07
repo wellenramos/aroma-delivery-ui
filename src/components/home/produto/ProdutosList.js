@@ -16,7 +16,7 @@ const ProdutoList = ({produtos}) => {
                                 <Typography variant="subtitle1" fontWeight="bold">
                                     {produto.nome}
                                 </Typography>
-                                <Typography variant="subtitle1" color="primary">
+                                <Typography variant="subtitle1" color="secondary">
                                     R$ {produto.preco.toFixed(2)}
                                 </Typography>
                             </Box>
