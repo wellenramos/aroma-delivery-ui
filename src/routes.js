@@ -4,6 +4,9 @@ import Favoritos from "./components/favorito/Favoritos";
 import Layout from "./components/Layout";
 import Carrinho from "./components/carrinho/Carrinho";
 import Perfil from "./components/perfil/Perfil";
+import Login from "./components/login/Login";
+import DetalheProduto from "./components/home/produto/DetalheProduto";
+import Menu from "./menu/Menu";
 
 export const router = createBrowserRouter([
     {
@@ -13,7 +16,13 @@ export const router = createBrowserRouter([
             { path: '/', element: <Home /> },
             { path: '/favoritos', element: <Favoritos /> },
             { path: '/carrinho', element: <Carrinho /> },
-            { path: '/perfil', element: <Perfil /> }
+            { path: '/perfil', element: <Perfil /> },
+            { path: '/produto/:produtoId', element: <DetalheProduto /> },
+            { path: '/menu', element: <Menu /> }
         ]
+    },
+    {
+        path: "/login",
+        element: <Login />,
     }
 ]);

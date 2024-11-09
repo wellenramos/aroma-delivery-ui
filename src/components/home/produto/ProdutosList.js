@@ -1,12 +1,20 @@
 import React from 'react';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Box } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import {useNavigate} from "react-router-dom";
 
 const ProdutoList = ({produtos}) => {
+
+    const navigate = useNavigate();
+
+    const handleIrParaDetalhe = (produtoId) => {
+        navigate(`/produto/${produtoId}`);
+    }
+
     return (
         <List>
             {produtos.map(produto => (
-                <ListItem key={produto.id} alignItems="flex-start">
+                <ListItem key={produto.id} alignItems="flex-start" onClick={() => handleIrParaDetalhe(produto.id)}>
                     <ListItemAvatar>
                         <Avatar src={produto?.imagem} variant="rounded" />
                     </ListItemAvatar>

@@ -1,11 +1,18 @@
-import {Outlet} from "react-router-dom";
+import { Outlet, useLocation } from 'react-router-dom';
 import HomeNavigationBar from "./home/HomeNavigationBar";
 
-const Layout = () => (
-    <>
-        <Outlet />
-        <HomeNavigationBar />
-    </>
-);
+
+const Layout = () => {
+    const location = useLocation();
+
+    const hideNavigationBar = location.pathname.includes('/produto/');
+
+    return (
+        <>
+            <Outlet />
+            {!hideNavigationBar && <HomeNavigationBar />}
+        </>
+    );
+};
 
 export default Layout;

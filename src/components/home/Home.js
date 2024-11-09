@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Container} from "@mui/material";
+import {Container, IconButton} from "@mui/material";
 import BarraPesquisa from "../shared/BarraPesquisa";
 import Produtos from "./produto/Produtos";
 
