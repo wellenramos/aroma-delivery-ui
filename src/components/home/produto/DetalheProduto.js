@@ -44,7 +44,7 @@ const DetalheProduto = () => {
             <CardContent sx={{ padding: 0 }}>
                 {/* Header */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
-                    <IconButton onClick={() => handleVoltarHome()}>
+                    <IconButton onClick={handleVoltarHome}>
                         <ArrowBackIcon color="primary" />
                     </IconButton>
                     <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Detalhe</Typography>

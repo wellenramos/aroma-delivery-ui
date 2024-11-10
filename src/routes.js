@@ -7,6 +7,7 @@ import Perfil from "./components/perfil/Perfil";
 import Login from "./components/login/Login";
 import DetalheProduto from "./components/home/produto/DetalheProduto";
 import Menu from "./menu/Menu";
+import EditarPerfil from "./components/perfil/EditarPerfil";
 
 export const router = createBrowserRouter([
     {
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
             { path: '/favoritos', element: <Favoritos /> },
             { path: '/carrinho', element: <Carrinho /> },
             { path: '/perfil', element: <Perfil /> },
+            { path: '/perfil/:perfilId', element: <EditarPerfil /> },
             { path: '/produto/:produtoId', element: <DetalheProduto /> },
             { path: '/menu', element: <Menu /> }
         ]

@@ -1,20 +1,11 @@
 import React from 'react';
 import {TextField, IconButton, InputAdornment, Box} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import MenuIcon from "@mui/icons-material/Menu";
-import {useNavigate} from "react-router-dom";
 
 const BarraPesquisa = () => {
 
-    const navigate = useNavigate();
-
-    const handleIrAoMenu = () => {
-        navigate('/menu');
-    }
-
     return (
-        <Box display="flex" alignItems="center" width="100%">
-            <TextField
+        <TextField
                 placeholder="Search"
                 variant="outlined"
                 fullWidth
@@ -29,11 +20,7 @@ const BarraPesquisa = () => {
                     ),
                     style: { borderRadius: 20 }
                 }}
-            />
-            <IconButton style={{ marginLeft: '8px' }}>
-                <MenuIcon onClick={() => handleIrAoMenu()}/>
-            </IconButton>
-        </Box>
+        />
     );
 };
 
