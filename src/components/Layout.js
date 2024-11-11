@@ -1,19 +1,23 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import HomeNavigationBar from "./home/HomeNavigationBar";
-import EditarPerfil from "./perfil/EditarPerfil";
-
 
 const Layout = () => {
-    const location = useLocation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
-    const esconderBarraDeNavegacao  = location.pathname.includes('/produto/') || location.pathname.includes('/perfil/');
+  if (!token) {
+    navigate('/login')
+  }
 
-    return (
-        <>
-            <Outlet />
-            {!esconderBarraDeNavegacao && <HomeNavigationBar />}
-        </>
-    );
+  const esconderBarraDeNavegacao = location.pathname.includes('/produto/') || location.pathname.includes('/perfil/');
+
+  return (
+      <>
+        <Outlet/>
+        {!esconderBarraDeNavegacao && <HomeNavigationBar/>}
+      </>
+  );
 };
-0
+
 export default Layout;

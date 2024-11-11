@@ -11,6 +11,10 @@ import EditarPerfil from "./components/perfil/EditarPerfil";
 
 export const router = createBrowserRouter([
     {
+        path: "/login",
+        element: <Login />,
+    },
+    {
         path: '/',
         element: <Layout />,
         children: [
@@ -22,9 +26,5 @@ export const router = createBrowserRouter([
             { path: '/produto/:produtoId', element: <DetalheProduto /> },
             { path: '/menu', element: <Menu /> }
         ]
-    },
-    {
-        path: "/login",
-        element: <Login />,
     }
 ]);
