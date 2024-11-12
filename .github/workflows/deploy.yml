@@ -14,6 +14,9 @@ jobs:
       EB_BACKEND_ENV: aroma-delivery-env
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
