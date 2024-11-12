@@ -8,6 +8,9 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
 
     env:
       AWS_REGION: us-east-1
@@ -17,13 +20,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+#      - name: Install dependencies
+#        run: npm install
 
 #      - name: Build frontend
 #        run: npm run build
@@ -49,8 +52,10 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aromadelivery-ui
-          environment_name: aromadelivery-ui-env
+          application_name: aroma-delivery-ui
+          environment_name: aroma-delivery-ui-env
           version_label: "app-${{ steps.format-time.outputs.replaced }}"
           region: us-east-1
           deployment_package: aromadelivery-ui.zip
+      - name: Deployed!
+        run: echo App deployed to ELB
