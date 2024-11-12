@@ -8,31 +8,28 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 18.x ]
 
     env:
       AWS_REGION: us-east-1
-      EB_BACKEND_ENV: aroma-delivery-env
+      EB_ENV: aromadelivery-ui-env
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-#      - name: Set up Node.js
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '18'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
 
-#      - name: Install dependencies
-#        run: npm install
+      - name: Install dependencies
+        run: npm install
 
-#      - name: Build frontend
-#        run: npm run build
+      - name: Build frontend
+        run: npm run build
 
-      - name: Generate deploy package
-        run: zip -r aromadelivery-ui.zip * -x "**.git**"
+      - name: Prepare deployment package
+        run: zip -r deploy.zip build
 
       - name: Get timestamp
         uses: gerred/actions/current-time@master
@@ -47,15 +44,13 @@ jobs:
           replace-with: '-'
           flags: 'g'
 
-      - name: Deploy to EB
+      - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: aroma-delivery-ui
-          environment_name: aroma-delivery-ui-env
+          application_name: aromadelivery-ui
+          environment_name: ${{ env.EB_ENV }}
           version_label: "app-${{ steps.format-time.outputs.replaced }}"
-          region: us-east-1
-          deployment_package: aromadelivery-ui.zip
-      - name: Deployed!
-        run: echo App deployed to ELB
+          region: ${{ env.AWS_REGION }}
+          deployment_package: deploy.zip

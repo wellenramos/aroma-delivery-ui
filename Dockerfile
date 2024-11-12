@@ -4,7 +4,7 @@
 #
 #WORKDIR /aroma-delivery-ui
 #COPY . /aroma-delivery-ui
-#
+#ee
 #RUN npm install
 #
 #RUN npm run build
