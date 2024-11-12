@@ -20,7 +20,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies and build frontend
-        working-directory: .
+        working-directory: ./aroma-delivery-ui
         run: |
           npm install
           npm run build
