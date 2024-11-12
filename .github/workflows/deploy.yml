@@ -19,11 +19,13 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies and build frontend
+      - name: Install dependencies
         working-directory: ./aroma-delivery-ui
-        run: |
-          npm install
-          npm run build
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./aroma-delivery-ui
+        run: npm run build
 
       - name: Generate deploy package
         run: zip -r aromadelivery-ui.zip /build
