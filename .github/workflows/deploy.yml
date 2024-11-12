@@ -29,7 +29,20 @@ jobs:
 #        run: npm run build
 
       - name: Generate deploy package
-        run: zip -r aromadelivery-ui.zip .
+        run: zip -r aromadelivery-ui.zip * -x "**.git**"
+
+      - name: Get timestamp
+        uses: gerred/actions/current-time@master
+        id: current-time
+
+      - name: Run string replace
+        uses: frabert/replace-string-action@master
+        id: format-time
+        with:
+          pattern: '[:\.]+'
+          string: "${{ steps.current-time.outputs.time }}"
+          replace-with: '-'
+          flags: 'g'
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
@@ -38,6 +51,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: aromadelivery-ui
           environment_name: aromadelivery-ui-env
-          version_label: aromadelivery-ui-v1
+          version_label: "app-${{ steps.format-time.outputs.replaced }}"
           region: us-east-1
           deployment_package: aromadelivery-ui.zip
