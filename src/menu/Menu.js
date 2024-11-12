@@ -1,5 +1,4 @@
-// MenuDrawer.js
-import React, {useState} from "react";
+import React from "react";
 import {
   Drawer,
   Box,
@@ -8,8 +7,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Divider,
-  IconButton
+  Divider
 } from "@mui/material";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PaymentIcon from "@mui/icons-material/Payment";

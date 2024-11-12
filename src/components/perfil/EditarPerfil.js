@@ -8,9 +8,6 @@ import {
     IconButton,
     Divider, TextField, Button
 } from '@mui/material';
-import EmailIcon from '@mui/icons-material/Email';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import LockIcon from '@mui/icons-material/Lock';
 import EditIcon from '@mui/icons-material/Edit';
 import {useNavigate} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -24,7 +21,6 @@ const Perfil = () => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        // lógica de atualização
         console.log({ nome, email, endereco, senha });
     };
 
