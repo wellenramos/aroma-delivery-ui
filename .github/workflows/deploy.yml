@@ -1,0 +1,40 @@
+name: Deploy to Elastic Beanstalk - Frontend
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      EB_BACKEND_ENV: aroma-delivery-env
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies and build frontend
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Generate deploy package
+        run: zip -r aromadelivery-ui.zip /build
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: aromadelivery-ui
+          environment_name: aromadelivery-ui-env
+          version_label: 12345
+          region: us-east-1
+          deployment_package: aromadelivery-ui.zip
