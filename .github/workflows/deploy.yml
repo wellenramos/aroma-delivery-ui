@@ -20,11 +20,9 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        working-directory: ./aroma-delivery-ui
         run: npm install
 
       - name: Build frontend
-        working-directory: ./aroma-delivery-ui
         run: npm run build
 
       - name: Generate deploy package
