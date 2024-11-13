@@ -6,10 +6,6 @@ import {
     Box,
     Avatar,
     IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
     Divider
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';

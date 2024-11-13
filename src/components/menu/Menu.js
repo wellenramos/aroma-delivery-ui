@@ -1,5 +1,4 @@
-// MenuDrawer.js
-import React, {useState} from "react";
+import React from "react";
 import {
   Drawer,
   Box,
@@ -8,8 +7,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Divider,
-  IconButton
+  Divider
 } from "@mui/material";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -29,6 +27,22 @@ const Menu = ({menuOpen, toggleMenu}) => {
     navigate('/login');
   }
 
+  const handleIrParaMeusPedidos = () => {
+    navigate('/meus-pedidos');
+  }
+
+  const handleIrParaEndereco = () => {
+    navigate('/endereco');
+  }
+
+  const handleIrParaFavoritos = () => {
+    navigate('/favoritos');
+  }
+
+  const handleIrParaPagamento = () => {
+    navigate('/pagamento');
+  }
+
   return (
       <Drawer anchor="left" open={menuOpen} onClose={toggleMenu(false)}>
         <Box sx={{width: 300}} role="presentation" onClick={toggleMenu(false)}
@@ -40,7 +54,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
               Principal</Typography>
           </Box>
           <List>
-            <ListItem button>
+            <ListItem onClick={handleIrParaMeusPedidos} button>
               <ListItemIcon><ShoppingBagIcon
                   sx={{color: '#BF7373'}}/></ListItemIcon>
               <ListItemText primary="Meus Pedidos" primaryTypographyProps={{
@@ -51,7 +65,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
               }}/>
               <ChevronRightIcon sx={{color: '#BF7373'}}/>
             </ListItem>
-            <ListItem button>
+            <ListItem onClick={handleIrParaPagamento} button>
               <ListItemIcon><PaymentIcon
                   sx={{color: '#BF7373'}}/></ListItemIcon>
               <ListItemText primary="Pagamentos" primaryTypographyProps={{
@@ -62,7 +76,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
               }}/>
               <ChevronRightIcon sx={{color: '#BF7373'}}/>
             </ListItem>
-            <ListItem button>
+            <ListItem onClick={handleIrParaFavoritos} button>
               <ListItemIcon><FavoriteIcon
                   sx={{color: '#BF7373'}}/></ListItemIcon>
               <ListItemText primary="Favoritos" primaryTypographyProps={{
@@ -73,7 +87,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
               }}/>
               <ChevronRightIcon sx={{color: '#BF7373'}}/>
             </ListItem>
-            <ListItem button>
+            <ListItem onClick={handleIrParaEndereco} button>
               <ListItemIcon><LocationOnIcon
                   sx={{color: '#BF7373'}}/></ListItemIcon>
               <ListItemText primary="Endereços" primaryTypographyProps={{

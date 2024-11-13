@@ -95,7 +95,7 @@ const Carrinho = () => {
                 <Divider />
 
                 {/* Resumo de Valores */}
-                <Box padding={2}>
+                <Box padding={1}>
                     <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Resumo de Valores</Typography>
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body2" color="textSecondary">Subtotal</Typography>
@@ -118,6 +118,7 @@ const Carrinho = () => {
                 <Box padding={2}>
                     <Button
                         variant="contained"
+                        size="large"
                         fullWidth
                         sx={{ backgroundColor: '#BF7373', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
                     >

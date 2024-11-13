@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Container, IconButton} from "@mui/material";
 import BarraPesquisa from "../shared/BarraPesquisa";
 import Produtos from "./produto/Produtos";
-import Menu from "../../menu/Menu";
+import Menu from "../menu/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 
 const Home = () => {

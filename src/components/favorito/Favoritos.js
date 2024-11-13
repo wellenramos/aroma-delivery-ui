@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    Container,
     List,
     ListItem,
     ListItemAvatar,
@@ -9,7 +8,7 @@ import {
     IconButton,
     Avatar,
     Box,
-    Divider
+    Divider, CardContent, Card
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -31,36 +30,38 @@ const favoriteItems = [
 
 const Favoritos = () => {
     return (
-        <Container maxWidth="sm" sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 4}}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#BF7373', marginBottom: 2 }}>
-                Favoritos
-            </Typography>
-            <Box sx={{width: '100%'}}>
+        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}} >
+            <CardContent sx={{ padding: 0 }}>
+                <Box display="flex" justifyContent="center" alignItems="center" padding={2}>
+                    <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Favoritos</Typography>
+                </Box>
                 <Divider />
-                <List>
-                    {favoriteItems.map((item) => (
-                        <ListItem
-                            key={item.id}
-                            disableGutters
-                            secondaryAction={
-                                <IconButton edge="end" aria-label="favorite" color="secondary">
-                                    <FavoriteIcon sx={{color: '#BF7373'}}/>
-                                </IconButton>
-                            }
-                        >
-                            <ListItemAvatar>
-                                <Avatar src={item.imageUrl} alt={item.name}/>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={item.name}
-                                secondary={item.description}
-                                primaryTypographyProps={{style: {fontWeight: 'bold'}}}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-            </Box>
-        </Container>
+                <Box padding={2}>
+                    <List>
+                        {favoriteItems.map((item) => (
+                            <ListItem
+                                key={item.id}
+                                disableGutters
+                                secondaryAction={
+                                    <IconButton edge="end" aria-label="favorite" color="secondary">
+                                        <FavoriteIcon sx={{color: '#BF7373'}}/>
+                                    </IconButton>
+                                }
+                            >
+                                <ListItemAvatar>
+                                    <Avatar src={item.imageUrl} alt={item.name}/>
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={item.name}
+                                    secondary={item.description}
+                                    primaryTypographyProps={{style: {fontWeight: 'bold'}}}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
+            </CardContent>
+        </Card>
     );
 };
 
