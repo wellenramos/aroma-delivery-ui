@@ -11,7 +11,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      EB_ENV: teste-env
+      S3_BUCKET_NAME: aroma-delivery-ui
 
     steps:
       - name: Checkout code
@@ -28,29 +28,13 @@ jobs:
       - name: Build frontend
         run: npm run build
 
-      - name: Prepare deployment package
-        run: zip -r deploy.zip ./build
-
-      - name: Get timestamp
-        uses: gerred/actions/current-time@master
-        id: current-time
-
-      - name: Run string replace
-        uses: frabert/replace-string-action@master
-        id: format-time
+      - name: Upload to S3
+        uses: aws-actions/s3-sync-action@v0.5.0
         with:
-          pattern: '[:\.]+'
-          string: "${{ steps.current-time.outputs.time }}"
-          replace-with: '-'
-          flags: 'g'
-
-      - name: Deploy to Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v22
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: teste
-          environment_name: ${{ env.EB_ENV }}
-          version_label: "app-${{ steps.format-time.outputs.replaced }}"
-          region: ${{ env.AWS_REGION }}
-          deployment_package: deploy.zip
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          source-dir: ./build
+          destination-bucket: ${{ env.S3_BUCKET_NAME }}
+          destination-prefix: ''
+          acl: public-read
