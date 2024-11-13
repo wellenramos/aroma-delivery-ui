@@ -40,7 +40,7 @@ const DetalheProduto = () => {
     };
 
     return (
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none' }}>
+        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none', backgroundColor:'rgb(253, 242, 242)' }}>
             <CardContent sx={{ padding: 0 }}>
                 {/* Header */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
@@ -54,7 +54,7 @@ const DetalheProduto = () => {
                 </Box>
                 <Divider />
                 {/* Imagem do Produto */}
-                <Box sx={{backgroundColor: 'rgba(212,172,172,0.73)'}}>
+                <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2 }}>
                         <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '300px', height: 'auto' }} />
                     </Box>
