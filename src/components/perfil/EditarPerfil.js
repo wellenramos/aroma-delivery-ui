@@ -21,7 +21,6 @@ const Perfil = () => {
 
     const handleUpdate = (e) => {
         e.preventDefault();
-        // lógica de atualização
         console.log({ nome, email, endereco, senha });
     };
 

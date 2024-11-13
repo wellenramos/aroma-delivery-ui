@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField, IconButton, InputAdornment, Box} from '@mui/material';
+import {TextField, IconButton, InputAdornment} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 const BarraPesquisa = () => {
