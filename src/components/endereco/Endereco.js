@@ -10,10 +10,6 @@ const Endereco = () => {
         navigate(-1); // Volta para a página anterior
     };
 
-    const handleSalvarEndereco = () => {
-        console.log("Endereço salvo!");
-    };
-
     return (
         <Box sx={{ padding: 2, maxWidth: 600, margin: '0 auto' }}>
             {/* Header */}
