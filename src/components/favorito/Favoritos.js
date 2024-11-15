@@ -11,6 +11,7 @@ import {
     Divider, CardContent, Card
 } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import Header from "../Header";
 
 const favoriteItems = [
     {
@@ -32,10 +33,9 @@ const Favoritos = () => {
     return (
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}} >
             <CardContent sx={{ padding: 0 }}>
-                <Box display="flex" justifyContent="center" alignItems="center" padding={2}>
-                    <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Favoritos</Typography>
-                </Box>
-                <Divider />
+                <Header
+                    titulo='Favoritos'
+                />
                 <Box padding={2}>
                     <List>
                         {favoriteItems.map((item) => (

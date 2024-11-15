@@ -11,6 +11,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import {useNavigate} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Header from "../Header";
 
 const Perfil = () => {
 
@@ -33,15 +34,10 @@ const Perfil = () => {
     return(
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
-                {/* Header */}
-                <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
-                    <IconButton onClick={handleVoltarPerfil}>
-                        <ArrowBackIcon color="primary" />
-                    </IconButton>
-                    <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Perfil</Typography>
-                    <Box width="48px" />
-                </Box>
-                <Divider />
+                <Header
+                    titulo='Editar Perfil'
+                    onBack={handleVoltarPerfil}
+                />
                 <Box display="flex" justifyContent="center" alignItems="center" padding={2}>
                     <Avatar src="https://via.placeholder.com/100" alt="Foto do Perfil" sx={{ width: 100, height: 100 }} />
                     <IconButton sx={{ marginLeft: -4, marginTop: 4, backgroundColor: '#BF7373', color: 'white' }}>

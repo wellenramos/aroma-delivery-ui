@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, TextField, Typography} from '@mui/material';
+import {Box, Link, TextField, Typography} from '@mui/material';
 import {Entrar, LoginContainer, LogoBox} from "./style";
 import {autenticar} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
@@ -29,12 +29,14 @@ const Login = () => {
     return (
         <LoginContainer maxWidth="xs">
             <LogoBox>
-                <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#a05252' }}>
-                    AROMA
-                </Typography>
-                <Typography variant="subtitle2" sx={{ color: '#a05252', letterSpacing: 1 }}>
-                    DELIVERY
-                </Typography>
+                {/* Logo */}
+                <Box mb={4}>
+                    <img
+                        src='/imagem/logo.png'
+                        alt="Aroma Delivery"
+                        style={{ width: "250px", height: "auto" }}
+                    />
+                </Box>
             </LogoBox>
             {error && (
                 <Typography color="error" sx={{ marginBottom: 2 }}>
@@ -71,7 +73,7 @@ const Login = () => {
             </form>
             <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
                 Não tem nenhuma conta?{' '}
-                <Link href="/register" sx={{ color: '#a05252', fontWeight: 'bold' }}>
+                <Link href="/usuario" sx={{ color: '#a05252', fontWeight: 'bold' }}>
                     Registrar
                 </Link>
             </Typography>

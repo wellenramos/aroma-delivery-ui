@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     Card,
     CardContent,
@@ -10,12 +10,11 @@ import {
     Checkbox,
     Divider
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import Header from "../../Header";
 
 const DetalheProduto = () => {
     const [quantidade, setQuantidade] = useState(1);
@@ -31,50 +30,58 @@ const DetalheProduto = () => {
 
     const navigate = useNavigate();
 
-    const handleVoltarHome = () => {
-        navigate('/');
-    }
-
     const handleTamanhoSelecionado = (tamanho) => {
         setTamanhoSelecionado(tamanho);
     };
 
+    const handleVoltarHome = () => {
+        navigate("/");
+    };
+
+    const handleFavoritar = () => {
+        console.log("Adicionar aos favoritos");
+    };
+
     return (
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none', backgroundColor:'rgb(253, 242, 242)' }}>
-            <CardContent sx={{ padding: 0 }}>
-                {/* Header */}
-                <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
-                    <IconButton onClick={handleVoltarHome}>
-                        <ArrowBackIcon color="primary" />
-                    </IconButton>
-                    <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Detalhe</Typography>
-                    <IconButton>
-                        <FavoriteIcon color="error" />
-                    </IconButton>
-                </Box>
-                <Divider />
+        <Card sx={{maxWidth: 'sm', margin: '0 auto', boxShadow: 'none', backgroundColor: 'rgb(253, 242, 242)'}}>
+            <CardContent sx={{padding: 0}}>
+                <Header
+                    titulo='Detalhe'
+                    onBack={handleVoltarHome}
+                    onFavorite={handleFavoritar}
+                />
+
                 {/* Imagem do Produto */}
-                <Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2 }}>
-                        <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '300px', height: 'auto' }} />
+                <Box sx={{ p: 2 }}>
+                    <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2}}>
+                        <img src="/imagem/lattleClassico.png" alt="Produto" style={{width: '300px', height: 'auto'}}/>
                     </Box>
 
                     {/* Detalhes do Produto */}
-                    <Box sx={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', padding: 3, borderTopLeftRadius: 20, borderTopRightRadius: 20, margin: '20px' }}>
+                    <Box sx={{
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        padding: 3,
+                        borderTopLeftRadius: 40,
+                        borderTopRightRadius: 40
+                    }}>
                         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#BF7373' }}>Latte Clássico</Typography>
+                            <Typography variant="h6" sx={{fontWeight: 'bold', color: '#BF7373'}}>Latte
+                                Clássico</Typography>
                             <Box display="flex" alignItems="center">
-                                <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#BF7373' }}>R$ {precoProduto.toFixed(2)}</Typography>
+                                <Typography variant="h6" sx={{
+                                    fontWeight: 'bold',
+                                    color: '#BF7373'
+                                }}>R$ {precoProduto.toFixed(2)}</Typography>
                                 <Box display="flex" alignItems="center" ml={1}>
-                                    <StarIcon fontSize="small" sx={{ color: '#FFD700' }} />
-                                    <Typography variant="body2" sx={{ color: '#777' }}>4.9</Typography>
+                                    <StarIcon fontSize="small" sx={{color: '#FFD700'}}/>
+                                    <Typography variant="body2" sx={{color: '#777'}}>4.9</Typography>
                                 </Box>
                             </Box>
                         </Box>
                         <Typography variant="body2" color="textSecondary">Espresso + leite vaporizado</Typography>
 
                         {/* Tamanho */}
-                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        <Box sx={{mt: 2, display: 'flex', justifyContent: 'center', gap: '10px'}}>
                             {['Pequeno', 'Médio', 'Grande'].map((tamanho) => (
                                 <Button
                                     key={tamanho}
@@ -96,10 +103,12 @@ const DetalheProduto = () => {
 
                         {/* Adicional */}
                         <Box mt={2}>
-                            <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Adicional</Typography>
+                            <Typography variant="subtitle1"
+                                        sx={{color: '#BF7373', fontWeight: 'bold'}}>Adicional</Typography>
                             <Box display="flex" alignItems="center">
                                 <Typography variant="body2">Chantilly</Typography>
-                                <Typography variant="body2" sx={{ marginLeft: 'auto', marginRight: 1 }}>+ R$ {precoAdicional.toFixed(2)}</Typography>
+                                <Typography variant="body2" sx={{marginLeft: 'auto', marginRight: 1}}>+
+                                    R$ {precoAdicional.toFixed(2)}</Typography>
                                 <Checkbox
                                     checked={adicionalSelecionado}
                                     onChange={() => setAdicionalSelecionado(!adicionalSelecionado)}
@@ -110,28 +119,30 @@ const DetalheProduto = () => {
 
                         {/* Observação */}
                         <Box mt={2}>
-                            <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Observação</Typography>
+                            <Typography variant="subtitle1"
+                                        sx={{color: '#BF7373', fontWeight: 'bold'}}>Observação</Typography>
                             <TextField
                                 variant="outlined"
                                 placeholder="Escreva aqui"
                                 fullWidth
                                 multiline
                                 rows={2}
-                                sx={{ mt: 1, backgroundColor: ' ' }}
+                                sx={{mt: 1, backgroundColor: ' '}}
                             />
                         </Box>
 
                         {/* Quantidade e Total */}
                         <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
-                            <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Total</Typography>
-                            <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>R$ {total.toFixed(2)}</Typography>
+                            <Typography variant="h6" sx={{color: '#BF7373', fontWeight: 'bold'}}>Total</Typography>
+                            <Typography variant="h6"
+                                        sx={{color: '#BF7373', fontWeight: 'bold'}}>R$ {total.toFixed(2)}</Typography>
                             <Box display="flex" alignItems="center">
                                 <IconButton onClick={handleRemover} size="small">
-                                    <RemoveIcon />
+                                    <RemoveIcon/>
                                 </IconButton>
-                                <Typography variant="body1" sx={{ mx: 1 }}>{quantidade}</Typography>
+                                <Typography variant="body1" sx={{mx: 1}}>{quantidade}</Typography>
                                 <IconButton onClick={handleAdicionar} size="small">
-                                    <AddIcon />
+                                    <AddIcon/>
                                 </IconButton>
                             </Box>
                         </Box>
@@ -142,7 +153,13 @@ const DetalheProduto = () => {
                             size="large"
                             color="primary"
                             fullWidth
-                            sx={{ mt: 2, backgroundColor: '#BF7373', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
+                            sx={{
+                                mt: 2,
+                                backgroundColor: '#BF7373',
+                                color: '#FFF',
+                                fontWeight: 'bold',
+                                borderRadius: '8px'
+                            }}
                         >
                             Adicionar Item
                         </Button>

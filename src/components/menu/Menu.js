@@ -17,6 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {useNavigate} from "react-router-dom";
+import Header from "../Header";
 
 const Menu = ({menuOpen, toggleMenu}) => {
 
@@ -47,12 +48,9 @@ const Menu = ({menuOpen, toggleMenu}) => {
       <Drawer anchor="left" open={menuOpen} onClose={toggleMenu(false)}>
         <Box sx={{width: 300}} role="presentation" onClick={toggleMenu(false)}
              onKeyDown={toggleMenu(false)}>
-          <Box display="flex" justifyContent="center" alignItems="center"
-               padding={2} borderBottom={1} borderColor="divider">
-            <Typography variant="h6"
-                        sx={{color: '#BF7373', fontWeight: 'bold'}}>Menu
-              Principal</Typography>
-          </Box>
+          <Header
+              titulo='Menu Principal'
+          />
           <List>
             <ListItem onClick={handleIrParaMeusPedidos} button>
               <ListItemIcon><ShoppingBagIcon

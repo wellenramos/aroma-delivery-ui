@@ -12,11 +12,17 @@ import MeusPedidos from "./components/meusPedidos/MeusPedidos";
 import Avaliacao from "./components/avaliacao/Avaliacao";
 import Endereco from "./components/endereco/Endereco";
 import Pagamento from "./components/pagamento/Pagamento";
+import Usuario from "./components/usuario/Usuario";
+import AcompanhamentoPedido from "./components/meusPedidos/AcompanhantoPedido";
 
 export const router = createBrowserRouter([
     {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/usuario",
+        element: <Usuario />,
     },
     {
         path: '/',
@@ -32,7 +38,8 @@ export const router = createBrowserRouter([
             { path: '/meus-pedidos', element: <MeusPedidos /> },
             { path: '/avaliacao', element: <Avaliacao /> },
             { path: '/endereco', element: <Endereco /> },
-            { path: '/pagamento', element: <Pagamento /> }
+            { path: '/pagamento', element: <Pagamento /> },
+            { path: '/acompanhamento-pedido', element: <AcompanhamentoPedido /> }
         ]
     }
 ]);

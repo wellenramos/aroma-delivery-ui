@@ -16,6 +16,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import {useNavigate} from "react-router-dom";
+import Header from "../Header";
 
 const Carrinho = () => {
     const quantidade = 1;
@@ -24,14 +26,22 @@ const Carrinho = () => {
     const frete = 5.00;
     const total = subtotal + frete;
 
+    const navigate = useNavigate();
+
+    const handleIrParaEndereco = () => {
+        navigate('/endereco');
+    }
+
+    const handleIrParaPagamento = () => {
+        navigate('/pagamento');
+    }
+
     return (
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
-                {/* Cabeçalho */}
-                <Box display="flex" justifyContent="center" alignItems="center" padding={2}>
-                    <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Carrinho</Typography>
-                </Box>
-                <Divider />
+                <Header
+                    titulo='Carrinho'
+                />
 
                 {/* Itens Adicionados */}
                 <Box padding={2}>
@@ -81,7 +91,7 @@ const Carrinho = () => {
                             primary="Endereço de Entrega"
                             secondary="Quadra 22, Setor Leste, Gama DF"
                         />
-                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} onClick={handleIrParaEndereco}/>
                     </ListItem>
                     <Divider component="li" />
                     <ListItem button>
@@ -89,7 +99,7 @@ const Carrinho = () => {
                             primary="Pagamento"
                             secondary="XXXX XXXX XXXX 0505"
                         />
-                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} onClick={handleIrParaPagamento} />
                     </ListItem>
                 </List>
                 <Divider />
