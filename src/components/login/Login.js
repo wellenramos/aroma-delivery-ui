@@ -27,14 +27,14 @@ const Login = () => {
     };
 
     return (
-        <LoginContainer maxWidth="xs">
+        <LoginContainer maxWidth="sm">
             <LogoBox>
                 {/* Logo */}
                 <Box mb={4}>
                     <img
                         src='/imagem/logo.png'
                         alt="Aroma Delivery"
-                        style={{ width: "250px", height: "auto" }}
+                        style={{ width: "250px" }}
                     />
                 </Box>
             </LogoBox>
@@ -50,6 +50,7 @@ const Login = () => {
                     fullWidth
                     margin="normal"
                     value={login}
+                    required
                     onChange={(e) => setLogin(e.target.value)}
                     InputProps={{
                         style: { borderRadius: 10 }
@@ -60,6 +61,7 @@ const Login = () => {
                     type="password"
                     variant="outlined"
                     fullWidth
+                    required
                     margin="normal"
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
@@ -67,13 +69,27 @@ const Login = () => {
                         style: { borderRadius: 10 }
                     }}
                 />
-                <Entrar variant="contained" fullWidth type="submit">
+                <Entrar variant="contained"
+                        fullWidth
+                        type="submit"
+                        sx={{
+                            backgroundColor: "#BF7373",
+                            color: "#FFF",
+                            fontWeight: "bold",
+                            textTransform: "none",
+                            borderRadius: 8,
+                            height: 50,
+                            marginTop: 3,
+                            "&:hover": {backgroundColor: "#A85959"},
+                        }}
+                        disabled={!login || !senha}
+                >
                     Começar
                 </Entrar>
             </form>
             <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
                 Não tem nenhuma conta?{' '}
-                <Link href="/usuario" sx={{ color: '#a05252', fontWeight: 'bold' }}>
+                <Link href="/registrar" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
                     Registrar
                 </Link>
             </Typography>
