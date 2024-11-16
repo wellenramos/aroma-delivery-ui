@@ -26,7 +26,10 @@ const Home = () => {
                 </IconButton>
             </div>
 
-            <Produtos produtos={produtos}/>
+            <Produtos
+                produtos={produtos}
+                onSetProdutos={handleSetProdutos}
+            />
 
             <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />
         </Container>

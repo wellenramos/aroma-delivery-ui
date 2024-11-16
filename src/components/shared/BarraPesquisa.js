@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {TextField, IconButton, InputAdornment, debounce} from '@mui/material';
+import React, {useRef, useState} from 'react';
+import {IconButton, InputAdornment, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {buscarProdutos} from "../../services/produtoService";
 
@@ -35,10 +35,6 @@ const BarraPesquisa = ({onHandleSetProdutos}) => {
       }
     }, 200);
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return (
       <TextField
