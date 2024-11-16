@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import {
-    Card,
-    CardContent,
-    Typography,
     Box,
     Button,
+    Card,
+    CardContent,
+    Checkbox,
     IconButton,
     TextField,
-    Checkbox,
-    Divider
+    Typography
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import AddIcon from '@mui/icons-material/Add';

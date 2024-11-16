@@ -14,24 +14,36 @@ const ProdutoList = ({produtos}) => {
     return (
         <List>
             {produtos.map(produto => (
-                <ListItem key={produto.id} alignItems="flex-start" onClick={() => handleIrParaDetalhe(produto.id)}>
+                <ListItem key={produto.id}
+                          alignItems="flex-start"
+                          onClick={() => handleIrParaDetalhe(produto.id)}
+                          sx={{
+                              "&:hover": {
+                                  backgroundColor: "rgba(0, 0, 0, 0.04)"
+                              }
+                          }}>
                     <ListItemAvatar>
                         <Avatar src={produto?.imagem} variant="rounded" />
                     </ListItemAvatar>
                     <ListItemText
                         primary={
                             <Box display="flex" justifyContent="space-between">
-                                <Typography variant="subtitle1" fontWeight="bold">
+                                <Typography variant="subtitle1"
+                                            fontWeight="bold"
+                                            style={{ cursor: 'pointer' }}>
                                     {produto.nome}
                                 </Typography>
-                                <Typography variant="subtitle1" color="secondary">
+                                <Typography variant="subtitle1"
+                                            color="secondary"
+                                            style={{ cursor: 'pointer' }}>
                                     R$ {produto.preco.toFixed(2)}
                                 </Typography>
                             </Box>
                         }
                         secondary={
                             <Box display="flex" alignItems="center">
-                                <Typography variant="body2" color="textSecondary">
+                                <Typography variant="body2" color="textSecondary"
+                                            style={{ cursor: 'pointer' }}>
                                     {produto.descricao}
                                 </Typography>
                                 <Box display="flex" alignItems="center" ml={1}>
