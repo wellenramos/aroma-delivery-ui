@@ -4,7 +4,14 @@ export const obterProdutosPorCategoria = async (categoriaId) => {
     try {
         return await api.get(`/produtos/categoria/${categoriaId}`);
     } catch (error) {
-        console.error('Erro ao autenticar:', error);
+        throw error.response ? error.response.data : error;
+    }
+};
+
+export const obterProdutoPorId = async (produtoId) => {
+    try {
+        return await api.get(`/produtos/${produtoId}`);
+    } catch (error) {
         throw error.response ? error.response.data : error;
     }
 };

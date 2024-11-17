@@ -1,172 +1,269 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Checkbox,
-    IconButton,
-    TextField,
-    Typography
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  IconButton,
+  TextField,
+  Typography
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../Header";
+import {obterProdutoPorId} from "../../../services/produtoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
+import {adicionarItem} from "../../../services/carrinhoService";
+
+const TamanhosCopoEnum = {
+  PEQUENO: 'PEQUENO',
+  MEDIO: 'MEDIO',
+  GRANDE: 'GRANDE',
+};
 
 const DetalheProduto = () => {
-    const [quantidade, setQuantidade] = useState(1);
-    const [adicionalSelecionado, setAdicionalSelecionado] = useState(false);
-    const [tamanhoSelecionado, setTamanhoSelecionado] = useState('Pequeno');
+  const [produto, setProduto] = useState(null);
+  const [quantidade, setQuantidade] = useState(1);
+  const [observacao, setObservacao] = useState('');
+  const [tamanhoCopo, setTamanhoCopo] = useState(TamanhosCopoEnum.PEQUENO);
+  const [adicionaisSelecionados, setAdicionaisSelecionados] = useState([]);
 
-    const precoProduto = 15.00;
-    const precoAdicional = adicionalSelecionado ? 5.00 : 0.00;
-    const total = precoProduto + precoAdicional * quantidade;
+  const precoProduto = produto?.preco;
+  const somaAdicionais = adicionaisSelecionados.reduce((soma, adicional) => soma + adicional.preco, 0);
+  const total = (precoProduto + somaAdicionais) * quantidade;
 
-    const handleAdicionar = () => setQuantidade(quantidade + 1);
-    const handleRemover = () => setQuantidade(quantidade > 1 ? quantidade - 1 : 1);
+  const handleAdicionar = () => setQuantidade(quantidade + 1);
+  const handleRemover = () => setQuantidade(quantidade > 1 ? quantidade - 1 : 1);
 
-    const navigate = useNavigate();
+  const showAlert = useAlert();
+  const { produtoId} = useParams();
+  const navigate = useNavigate();
 
-    const handleTamanhoSelecionado = (tamanho) => {
-        setTamanhoSelecionado(tamanho);
+  useEffect(() => {
+    const fetchProduto = async () => {
+      try {
+        const {data} = await obterProdutoPorId(produtoId);
+        setProduto(data);
+      } catch (error) {
+        showAlert("Erro ao buscar o produto", "error");
+      }
     };
 
-    const handleVoltarHome = () => {
-        navigate("/");
+    if (produtoId) {
+      fetchProduto();
+    }
+  }, [produtoId]);
+
+  const handleVoltarHome = () => {
+    navigate("/");
+  };
+
+  const handleFavoritar = () => {
+    console.log("Adicionar aos favoritos");
+  };
+
+  const handleAdicionalChange = (adicional) => {
+    setAdicionaisSelecionados((prev) => {
+      if (prev.some((item) => item.id === adicional.id)) {
+        return prev.filter((item) => item.id !== adicional.id);
+      } else {
+        return [...prev, adicional];
+      }
+    });
+  };
+
+  const removerAcentos = (str) => {
+    return str?.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  };
+
+  const handleAdicionarItem = async () => {
+    const item = {
+      produtoId: produto?.id,
+      quantidade,
+      tamanhoCopo,
+      observacao,
+      adicionais: adicionaisSelecionados,
+    };
+    const { data } = await adicionarItem(item);
+    console.log("Carrinho:", data);
+  };
+
+  const handleTamanhoSelecionado = (tamanho) => {
+    const tamanhoMapeado = {
+      'Pequeno': TamanhosCopoEnum.PEQUENO,
+      'Médio': TamanhosCopoEnum.MEDIO,
+      'Grande': TamanhosCopoEnum.GRANDE,
     };
 
-    const handleFavoritar = () => {
-        console.log("Adicionar aos favoritos");
-    };
+    setTamanhoCopo(tamanhoMapeado[tamanho] || TamanhosCopoEnum.PEQUENO);
+  };
 
-    return (
-        <Card sx={{maxWidth: 'sm', margin: '0 auto', boxShadow: 'none', backgroundColor: 'rgb(253, 242, 242)'}}>
-            <CardContent sx={{padding: 0}}>
-                <Header
-                    titulo='Detalhe'
-                    onBack={handleVoltarHome}
-                    onFavorite={handleFavoritar}
-                />
+  return (
+      <Card sx={{
+        maxWidth: 'sm',
+        margin: '0 auto',
+        boxShadow: 'none',
+        backgroundColor: 'rgb(253, 242, 242)'
+      }}>
+        <CardContent sx={{padding: 0}}>
+          <Header
+              titulo='Detalhe'
+              onBack={handleVoltarHome}
+              onFavorite={handleFavoritar}
+          />
 
-                {/* Imagem do Produto */}
-                <Box sx={{ p: 2 }}>
-                    <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2}}>
-                        <img src="/imagem/lattleClassico.png" alt="Produto" style={{width: '300px', height: 'auto'}}/>
-                    </Box>
+          {/* Imagem do Produto */}
+          <Box sx={{p: 2}}>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 2
+            }}>
+              <img src="/imagem/lattleClassico.png" alt="Produto"
+                   style={{width: '300px', height: 'auto'}}/>
+            </Box>
 
-                    {/* Detalhes do Produto */}
-                    <Box sx={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                        padding: 3,
-                        borderTopLeftRadius: 40,
-                        borderTopRightRadius: 40
-                    }}>
-                        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                            <Typography variant="h6" sx={{fontWeight: 'bold', color: '#BF7373'}}>Latte
-                                Clássico</Typography>
-                            <Box display="flex" alignItems="center">
-                                <Typography variant="h6" sx={{
-                                    fontWeight: 'bold',
-                                    color: '#BF7373'
-                                }}>R$ {precoProduto.toFixed(2)}</Typography>
-                                <Box display="flex" alignItems="center" ml={1}>
-                                    <StarIcon fontSize="small" sx={{color: '#FFD700'}}/>
-                                    <Typography variant="body2" sx={{color: '#777'}}>4.9</Typography>
-                                </Box>
-                            </Box>
-                        </Box>
-                        <Typography variant="body2" color="textSecondary">Espresso + leite vaporizado</Typography>
-
-                        {/* Tamanho */}
-                        <Box sx={{mt: 2, display: 'flex', justifyContent: 'center', gap: '10px'}}>
-                            {['Pequeno', 'Médio', 'Grande'].map((tamanho) => (
-                                <Button
-                                    key={tamanho}
-                                    variant="outlined"
-                                    size="small"
-                                    sx={{
-                                        textTransform: 'none',
-                                        color: tamanhoSelecionado === tamanho ? '#FFF' : '#BF7373',
-                                        backgroundColor: tamanhoSelecionado === tamanho ? '#BF7373' : 'transparent',
-                                        borderColor: '#BF7373'
-                                    }}
-                                    onClick={() => handleTamanhoSelecionado(tamanho)}
-                                >
-                                    {tamanho}
-                                </Button>
-                            ))}
-                        </Box>
-
-
-                        {/* Adicional */}
-                        <Box mt={2}>
-                            <Typography variant="subtitle1"
-                                        sx={{color: '#BF7373', fontWeight: 'bold'}}>Adicional</Typography>
-                            <Box display="flex" alignItems="center">
-                                <Typography variant="body2">Chantilly</Typography>
-                                <Typography variant="body2" sx={{marginLeft: 'auto', marginRight: 1}}>+
-                                    R$ {precoAdicional.toFixed(2)}</Typography>
-                                <Checkbox
-                                    checked={adicionalSelecionado}
-                                    onChange={() => setAdicionalSelecionado(!adicionalSelecionado)}
-                                    color="primary"
-                                />
-                            </Box>
-                        </Box>
-
-                        {/* Observação */}
-                        <Box mt={2}>
-                            <Typography variant="subtitle1"
-                                        sx={{color: '#BF7373', fontWeight: 'bold'}}>Observação</Typography>
-                            <TextField
-                                variant="outlined"
-                                placeholder="Escreva aqui"
-                                fullWidth
-                                multiline
-                                rows={2}
-                                sx={{mt: 1, backgroundColor: ' '}}
-                            />
-                        </Box>
-
-                        {/* Quantidade e Total */}
-                        <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
-                            <Typography variant="h6" sx={{color: '#BF7373', fontWeight: 'bold'}}>Total</Typography>
-                            <Typography variant="h6"
-                                        sx={{color: '#BF7373', fontWeight: 'bold'}}>R$ {total.toFixed(2)}</Typography>
-                            <Box display="flex" alignItems="center">
-                                <IconButton onClick={handleRemover} size="small">
-                                    <RemoveIcon/>
-                                </IconButton>
-                                <Typography variant="body1" sx={{mx: 1}}>{quantidade}</Typography>
-                                <IconButton onClick={handleAdicionar} size="small">
-                                    <AddIcon/>
-                                </IconButton>
-                            </Box>
-                        </Box>
-
-                        {/* Botão de Adicionar ao Carrinho */}
-                        <Button
-                            variant="contained"
-                            size="large"
-                            color="primary"
-                            fullWidth
-                            sx={{
-                                mt: 2,
-                                backgroundColor: '#BF7373',
-                                color: '#FFF',
-                                fontWeight: 'bold',
-                                borderRadius: '8px'
-                            }}
-                        >
-                            Adicionar Item
-                        </Button>
-                    </Box>
+            {/* Detalhes do Produto */}
+            <Box sx={{
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              padding: 3,
+              borderTopLeftRadius: 40,
+              borderTopRightRadius: 40
+            }}>
+              <Box display="flex" justifyContent="space-between"
+                   alignItems="center" mb={1}>
+                <Typography variant="h6" sx={{fontWeight: 'bold', color: '#BF7373' }}>
+                  {produto?.nome}
+                </Typography>
+                <Box display="flex" alignItems="center">
+                  <Typography variant="h6" sx={{fontWeight: 'bold', color: '#BF7373'}}>
+                    R$ {produto?.preco.toFixed(2)}
+                  </Typography>
+                  <Box display="flex" alignItems="center" ml={1}>
+                    <StarIcon fontSize="small" sx={{color: '#FFD700'}}/>
+                    <Typography variant="body2"sx={{color: '#777'}}>4.9</Typography>
+                  </Box>
                 </Box>
-            </CardContent>
-        </Card>
-    );
+              </Box>
+              <Typography variant="body2" color="textSecondary">
+                {produto?.descricao}
+              </Typography>
+
+              {/* Tamanho */}
+              <Box sx={{
+                mt: 2,
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '10px'
+              }}>
+                {['Pequeno', 'Médio', 'Grande'].map((tamanho) => (
+                    <Button
+                        key={tamanho}
+                        variant="outlined"
+                        size="small"
+                        sx={{
+                          textTransform: 'none',
+                          color: tamanhoCopo === TamanhosCopoEnum[removerAcentos(tamanho).toUpperCase()] ? '#FFF' : '#BF7373',
+                          backgroundColor: tamanhoCopo === TamanhosCopoEnum[removerAcentos(tamanho).toUpperCase()] ? '#BF7373' : 'transparent',
+                          borderColor: '#BF7373'
+                        }}
+                        onClick={() => handleTamanhoSelecionado(tamanho)}
+                    >
+                      {tamanho}
+                    </Button>
+                ))}
+              </Box>
+
+              {/* Adicional */}
+              <Box mt={2}>
+                <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold'}}>
+                  Adicional
+                </Typography>
+
+                {produto?.adicionais?.map((itemAdicional) => (
+                    <Box key={itemAdicional.id} display="flex" alignItems="center">
+                      <Typography variant="body2">
+                        {itemAdicional?.adicional.nome}
+                      </Typography>
+                      <Typography variant="body2" sx={{ marginLeft: 'auto', marginRight: 1 }}>
+                        + R$ {itemAdicional?.adicional.preco.toFixed(2)}
+                      </Typography>
+                      <Checkbox
+                          checked={adicionaisSelecionados.some(
+                              (item) => item.id === itemAdicional.adicional.id
+                          )}
+                          onChange={() => handleAdicionalChange(itemAdicional.adicional)}
+                          color="primary"
+                      />
+                    </Box>
+                ))}
+              </Box>
+
+              {/* Observação */}
+              <Box mt={2}>
+                <Typography variant="subtitle1"
+                            sx={{ color: '#BF7373', fontWeight: 'bold' }}>
+                  Observação
+                </Typography>
+                <TextField
+                    value={observacao}
+                    variant="outlined"
+                    placeholder="Escreva aqui"
+                    fullWidth
+                    multiline
+                    rows={2}
+                    sx={{mt: 1, backgroundColor: ' '}}
+                    onChange={(e) => setObservacao(e.target.value)}
+                />
+              </Box>
+
+              {/* Quantidade e Total */}
+              <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
+                  Total
+                </Typography>
+                <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
+                  R$ {total.toFixed(2)}
+                </Typography>
+                <Box display="flex" alignItems="center">
+                  <IconButton onClick={handleRemover} size="small">
+                    <RemoveIcon/>
+                  </IconButton>
+                  <Typography variant="body1" sx={{mx: 1}}>
+                    {quantidade}
+                  </Typography>
+                  <IconButton onClick={handleAdicionar} size="small">
+                    <AddIcon/>
+                  </IconButton>
+                </Box>
+              </Box>
+
+              {/* Botão de Adicionar ao Carrinho */}
+              <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  fullWidth
+                  sx={{
+                    mt: 2,
+                    backgroundColor: '#BF7373',
+                    color: '#FFF',
+                    fontWeight: 'bold',
+                    borderRadius: '8px'
+                  }}
+                  onClick={handleAdicionarItem}
+              >
+                Adicionar Item
+              </Button>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+  );
 };
 
 export default DetalheProduto;
