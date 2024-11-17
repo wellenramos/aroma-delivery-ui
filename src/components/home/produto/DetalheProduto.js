@@ -87,8 +87,15 @@ const DetalheProduto = () => {
       observacao,
       adicionais: adicionaisSelecionados,
     };
-    const { data } = await adicionarItem(item);
-    console.log("Carrinho:", data);
+
+    try {
+      const { data } = await adicionarItem(item);
+      if (data) {
+        navigate(`/carrinho/${data.id}`);
+      }
+    } catch (error) {
+      showAlert("Erro ao buscar o produto", "error");
+    }
   };
 
   const handleTamanhoSelecionado = (tamanho) => {

@@ -7,3 +7,11 @@ export const adicionarItem = async (item) => {
         throw error.response ? error.response.data : error;
     }
 };
+
+export const obterResumoCarrinho = async (carrinhoId) => {
+    try {
+        return await api.get(`/carrinho/${carrinhoId}/resumo`);
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+};

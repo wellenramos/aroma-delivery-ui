@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         children: [
             { path: '/', element: <Home /> },
             { path: '/favoritos', element: <Favoritos /> },
-            { path: '/carrinho', element: <Carrinho /> },
+            { path: '/carrinho/:carrinhoId', element: <Carrinho /> },
             { path: '/perfil', element: <Perfil /> },
             { path: '/perfil/:perfilId', element: <EditarPerfil /> },
             { path: '/produto/:produtoId', element: <DetalheProduto /> },
