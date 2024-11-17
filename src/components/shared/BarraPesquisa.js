@@ -3,14 +3,14 @@ import {IconButton, InputAdornment, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {buscarProdutos} from "../../services/produtoService";
 
-const BarraPesquisa = ({onHandleSetProdutos}) => {
+const BarraPesquisa = ({ onHandleSetProdutos, categoriaSelecionada }) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const debounceTimeoutRef = useRef(null);
 
   const fetchProducts = async (query) => {
     try {
-      const {data} = await buscarProdutos(1, query)
+      const {data} = await buscarProdutos(categoriaSelecionada, query)
       onHandleSetProdutos(data);
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);

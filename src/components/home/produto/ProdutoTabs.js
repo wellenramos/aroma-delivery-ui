@@ -1,12 +1,13 @@
 import React from 'react';
 import { Tabs, Tab } from '@mui/material';
 
-const ProdutoTabs = ({onObterProdutos}) => {
+const ProdutoTabs = ({onObterProdutos, onCategoriaChange}) => {
     const [value, setValue] = React.useState(1);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
         onObterProdutos(newValue);
+        onCategoriaChange(newValue);
     };
 
     return (

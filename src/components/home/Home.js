@@ -8,6 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 const Home = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [produtos, setProdutos] = useState([]);
+    const [categoriaSelecionada, setCategoriaSelecionada] = useState(1);
 
     const toggleMenu = (open) => () => {
         setMenuOpen(open);
@@ -20,7 +21,10 @@ const Home = () => {
     return (
         <Container maxWidth="sm">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <BarraPesquisa onHandleSetProdutos={handleSetProdutos} />
+                <BarraPesquisa
+                    onHandleSetProdutos={handleSetProdutos}
+                    categoriaSelecionada={categoriaSelecionada}
+                />
                 <IconButton onClick={toggleMenu(true)} style={{ marginLeft: '8px' }}>
                     <MenuIcon />
                 </IconButton>
@@ -29,6 +33,7 @@ const Home = () => {
             <Produtos
                 produtos={produtos}
                 onSetProdutos={handleSetProdutos}
+                onCategoriaChange={setCategoriaSelecionada}
             />
 
             <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />

@@ -4,7 +4,7 @@ import ProdutosList from "./ProdutosList";
 import React, {useEffect} from "react";
 import {obterProdutosPorCategoria} from "../../../services/produtoService";
 
-const Produtos = ({produtos, onSetProdutos}) => {
+const Produtos = ({produtos, onSetProdutos, onCategoriaChange }) => {
 
     useEffect(() => {
         handleObterProdutos(1);
@@ -19,6 +19,7 @@ const Produtos = ({produtos, onSetProdutos}) => {
         <Box>
             <ProdutoTabs
                 onObterProdutos={handleObterProdutos}
+                onCategoriaChange={onCategoriaChange}
             />
             <ProdutosList produtos={produtos}/>
         </Box>
