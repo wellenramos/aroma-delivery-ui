@@ -75,7 +75,9 @@ const Carrinho = () => {
                                 <Typography variant="body2" color="textSecondary">{item?.descricaoProduto}</Typography>
                             </Box>
                             <Box display="flex" flexDirection="column" alignItems="flex-end">
-                                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>R$ {precoProduto.toFixed(2)}</Typography>
+                                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                                    R$ {item?.valorTotal.toFixed(2)}
+                                </Typography>
                                 <Box display="flex" alignItems="center">
                                     <IconButton size="small">
                                         <EditIcon fontSize="small" sx={{ color: '#BF7373' }} />

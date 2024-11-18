@@ -85,7 +85,7 @@ const DetalheProduto = () => {
       quantidade,
       tamanhoCopo,
       observacao,
-      adicionais: adicionaisSelecionados,
+      adicionais: adicionaisSelecionados.map(it => it.id),
     };
 
     try {
@@ -191,19 +191,19 @@ const DetalheProduto = () => {
                   Adicional
                 </Typography>
 
-                {produto?.adicionais?.map((itemAdicional) => (
-                    <Box key={itemAdicional.id} display="flex" alignItems="center">
+                {produto?.adicionais?.map((adicional) => (
+                    <Box key={adicional.id} display="flex" alignItems="center">
                       <Typography variant="body2">
-                        {itemAdicional?.adicional.nome}
+                        {adicional?.nome}
                       </Typography>
                       <Typography variant="body2" sx={{ marginLeft: 'auto', marginRight: 1 }}>
-                        + R$ {itemAdicional?.adicional.preco.toFixed(2)}
+                        + R$ {adicional?.preco.toFixed(2)}
                       </Typography>
                       <Checkbox
                           checked={adicionaisSelecionados.some(
-                              (item) => item.id === itemAdicional.adicional.id
+                              (item) => item.id === adicional.id
                           )}
-                          onChange={() => handleAdicionalChange(itemAdicional.adicional)}
+                          onChange={() => handleAdicionalChange(adicional)}
                           color="primary"
                       />
                     </Box>
