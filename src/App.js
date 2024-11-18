@@ -4,6 +4,7 @@ import React, {StrictMode} from "react";
 import {router} from "./routes";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {AlertProvider} from "./components/shared/alert/AlertProvider";
+import {AppContextProvider} from "./context/AppContext";
 
 const theme = createTheme({
     palette: {
@@ -22,7 +23,9 @@ function App() {
             <ThemeProvider theme={theme}>
                 <AlertProvider>
                     <CssBaseline />
-                    <RouterProvider router={router} />
+                    <AppContextProvider>
+                        <RouterProvider router={router} />
+                    </AppContextProvider>
                 </AlertProvider>
             </ThemeProvider>
         </StrictMode>

@@ -20,23 +20,23 @@ const Home = () => {
 
     return (
         <Container maxWidth="sm">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <BarraPesquisa
-                    onHandleSetProdutos={handleSetProdutos}
-                    categoriaSelecionada={categoriaSelecionada}
-                />
-                <IconButton onClick={toggleMenu(true)} style={{ marginLeft: '8px' }}>
-                    <MenuIcon />
-                </IconButton>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <BarraPesquisa
+                  onHandleSetProdutos={handleSetProdutos}
+                  categoriaSelecionada={categoriaSelecionada}
+              />
+              <IconButton onClick={toggleMenu(true)} style={{ marginLeft: '8px' }}>
+                  <MenuIcon />
+              </IconButton>
+          </div>
 
-            <Produtos
-                produtos={produtos}
-                onSetProdutos={handleSetProdutos}
-                onCategoriaChange={setCategoriaSelecionada}
-            />
+          <Produtos
+              produtos={produtos}
+              onSetProdutos={handleSetProdutos}
+              onCategoriaChange={setCategoriaSelecionada}
+          />
 
-            <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />
+          <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />
         </Container>
     );
 };

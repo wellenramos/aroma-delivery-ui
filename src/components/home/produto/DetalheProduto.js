@@ -17,6 +17,7 @@ import Header from "../../Header";
 import {obterProdutoPorId} from "../../../services/produtoService";
 import {useAlert} from "../../shared/alert/AlertProvider";
 import {adicionarItem} from "../../../services/carrinhoService";
+import {useAppContext} from "../../../context/AppContext";
 
 const TamanhosCopoEnum = {
   PEQUENO: 'PEQUENO',
@@ -41,6 +42,7 @@ const DetalheProduto = () => {
   const showAlert = useAlert();
   const { produtoId} = useParams();
   const navigate = useNavigate();
+  const { carrinhoId ,setCarrinhoId } = useAppContext();
 
   useEffect(() => {
     const fetchProduto = async () => {
@@ -82,6 +84,7 @@ const DetalheProduto = () => {
   const handleAdicionarItem = async () => {
     const item = {
       produtoId: produto?.id,
+      carrinhoId,
       quantidade,
       tamanhoCopo,
       observacao,
@@ -91,6 +94,7 @@ const DetalheProduto = () => {
     try {
       const { data } = await adicionarItem(item);
       if (data) {
+        setCarrinhoId(data.id);
         navigate(`/carrinho/${data.id}`);
       }
     } catch (error) {

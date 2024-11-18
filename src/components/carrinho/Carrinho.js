@@ -16,29 +16,25 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Header from "../Header";
 import {useAlert} from "../shared/alert/AlertProvider";
 import {obterResumoCarrinho} from "../../services/carrinhoService";
+import {useAppContext} from "../../context/AppContext";
 
 const Carrinho = () => {
-    const [itens, setItens] = useState([]);
+    const [resumo, setResumo] = useState([]);
     const quantidade = 1;
-    const precoProduto = 15.00;
-    const subtotal = precoProduto * quantidade;
-    const frete = 5.00;
-    const total = subtotal + frete;
 
     const showAlert = useAlert();
-    const { carrinhoId} = useParams();
+    const { carrinhoId } = useAppContext();
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchResumoCarrinho = async () => {
             try {
                 const { data } = await obterResumoCarrinho(carrinhoId);
-                console.log('data', data)
-                setItens(data.itens);
+                setResumo(data);
             } catch (error) {
                 showAlert("Erro ao buscar o produto", "error");
             }
@@ -57,6 +53,10 @@ const Carrinho = () => {
         navigate('/pagamento');
     }
 
+    const handleIrParaHome = () => {
+        navigate('/');
+    }
+
     return (
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
@@ -67,7 +67,7 @@ const Carrinho = () => {
                 {/* Itens Adicionados */}
                 <Box padding={2}>
                     <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Itens Adicionados</Typography>
-                    {itens?.map((item) => (
+                    {resumo?.itens?.map((item) => (
                         <Box display="flex" alignItems="center" mt={2}>
                             <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '60px', borderRadius: '8px' }} />
                             <Box ml={2} flexGrow={1}>
@@ -103,7 +103,9 @@ const Carrinho = () => {
 
                 {/* Adicionar Mais */}
                 <Box padding={2}>
-                    <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold', cursor: 'pointer' }}>
+                    <Typography variant="subtitle1"
+                                onClick={handleIrParaHome}
+                                sx={{ color: '#BF7373', fontWeight: 'bold', cursor: 'pointer' }}>
                         + Adicionar mais
                     </Typography>
                 </Box>
@@ -134,18 +136,24 @@ const Carrinho = () => {
                     <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Resumo de Valores</Typography>
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body2" color="textSecondary">Subtotal</Typography>
-                        <Typography variant="body2" color="textSecondary">R$ {subtotal.toFixed(2)}</Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            R$ {resumo?.subTotal?.toFixed(2)}
+                        </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between">
                         <Typography variant="body2" color="textSecondary">(1 item)</Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body2" color="textSecondary">Entrega</Typography>
-                        <Typography variant="body2" color="textSecondary">R$ {frete.toFixed(2)}</Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            R$ {resumo?.valorFrete?.toFixed(2)}
+                        </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Total</Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#BF7373' }}>R$ {total.toFixed(2)}</Typography>
+                        <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#BF7373' }}>
+                            R$ {resumo?.valorTotal?.toFixed(2)}
+                        </Typography>
                     </Box>
                 </Box>
 
