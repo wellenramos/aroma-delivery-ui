@@ -66,40 +66,48 @@ const Carrinho = () => {
 
                 {/* Itens Adicionados */}
                 <Box padding={2}>
-                    <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Itens Adicionados</Typography>
-                    {resumo?.itens?.map((item) => (
-                        <Box display="flex" alignItems="center" mt={2}>
-                            <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '60px', borderRadius: '8px' }} />
-                            <Box ml={2} flexGrow={1}>
-                                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{item?.nomeProduto}</Typography>
-                                <Typography variant="body2" color="textSecondary">{item?.descricaoProduto}</Typography>
-                            </Box>
-                            <Box display="flex" flexDirection="column" alignItems="flex-end">
-                                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                                    R$ {item?.valorTotal.toFixed(2)}
-                                </Typography>
-                                <Box display="flex" alignItems="center">
-                                    <IconButton size="small">
-                                        <EditIcon fontSize="small" sx={{ color: '#BF7373' }} />
-                                    </IconButton>
-                                    <IconButton size="small">
-                                        <DeleteIcon fontSize="small" sx={{ color: '#BF7373' }} />
-                                    </IconButton>
-                                    <Box display="flex" alignItems="center" border="1px solid #BF7373" borderRadius="4px" paddingX={0.5}>
+                    <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
+                        Itens Adicionados
+                    </Typography>
+                    {resumo?.itens?.length > 0 ? (
+                        resumo.itens.map((item, index) => (
+                            <Box key={index} display="flex" alignItems="center" mt={2}>
+                                <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '60px', borderRadius: '8px' }} />
+                                <Box ml={2} flexGrow={1}>
+                                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{item?.nomeProduto}</Typography>
+                                    <Typography variant="body2" color="textSecondary">{item?.descricaoProduto}</Typography>
+                                </Box>
+                                <Box display="flex" flexDirection="column" alignItems="flex-end">
+                                    <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                                        R$ {item?.valorTotal.toFixed(2)}
+                                    </Typography>
+                                    <Box display="flex" alignItems="center">
                                         <IconButton size="small">
-                                            <RemoveIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                            <EditIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                         </IconButton>
-                                        <Typography variant="body2">{quantidade}</Typography>
                                         <IconButton size="small">
-                                            <AddIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                            <DeleteIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                         </IconButton>
+                                        <Box display="flex" alignItems="center" border="1px solid #BF7373" borderRadius="4px" paddingX={0.5}>
+                                            <IconButton size="small">
+                                                <RemoveIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                            </IconButton>
+                                            <Typography variant="body2">{quantidade}</Typography>
+                                            <IconButton size="small">
+                                                <AddIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                            </IconButton>
+                                        </Box>
                                     </Box>
                                 </Box>
                             </Box>
-                        </Box>
-                    ))}
-                </Box>
-                <Divider />
+                        ))
+                    ) : (
+                        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+                            Nenhum item adicionado. Comece a adicionar itens ao seu carrinho.
+                        </Typography>
+                    )}
+            </Box>
+            <Divider />
 
                 {/* Adicionar Mais */}
                 <Box padding={2}>
@@ -113,20 +121,29 @@ const Carrinho = () => {
 
                 {/* Endereço de Entrega e Pagamento */}
                 <List>
-                    <ListItem button>
+                    <ListItem button onClick={handleIrParaEndereco}>
                         <ListItemText
                             primary="Endereço de Entrega"
-                            secondary="Quadra 22, Setor Leste, Gama DF"
+                            secondary={
+                                resumo?.endereco ? (
+                                    `Quadra ${resumo.endereco.numero}, ${resumo.endereco.bairro}, ${resumo.endereco.cidade}`
+                                ) : (
+                                    <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+                                        Nenhum endereço cadastrado. Clique para adicionar.
+                                    </Typography>
+                                )
+                            }
                         />
-                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} onClick={handleIrParaEndereco}/>
+                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} />
                     </ListItem>
+
                     <Divider component="li" />
-                    <ListItem button>
+                    <ListItem button onClick={handleIrParaPagamento}>
                         <ListItemText
                             primary="Pagamento"
                             secondary="XXXX XXXX XXXX 0505"
                         />
-                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} onClick={handleIrParaPagamento} />
+                        <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} />
                     </ListItem>
                 </List>
                 <Divider />
@@ -137,7 +154,7 @@ const Carrinho = () => {
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body2" color="textSecondary">Subtotal</Typography>
                         <Typography variant="body2" color="textSecondary">
-                            R$ {resumo?.subTotal?.toFixed(2)}
+                            R$ {(resumo?.subTotal ?? 0).toFixed(2)}
                         </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between">
@@ -146,13 +163,13 @@ const Carrinho = () => {
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body2" color="textSecondary">Entrega</Typography>
                         <Typography variant="body2" color="textSecondary">
-                            R$ {resumo?.valorFrete?.toFixed(2)}
+                            R$ {(resumo?.valorFrete ?? 0).toFixed(2)}
                         </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Total</Typography>
                         <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#BF7373' }}>
-                            R$ {resumo?.valorTotal?.toFixed(2)}
+                            R$ {(resumo?.valorTotal ?? 0).toFixed(2)}
                         </Typography>
                     </Box>
                 </Box>

@@ -1,13 +1,12 @@
 import React from "react";
 import {
-  Drawer,
   Box,
-  Typography,
+  Divider,
+  Drawer,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
-  Divider
+  ListItemText
 } from "@mui/material";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -18,14 +17,17 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {useNavigate} from "react-router-dom";
 import Header from "../Header";
+import {useAppContext} from "../../context/AppContext";
 
 const Menu = ({menuOpen, toggleMenu}) => {
 
   const navigate = useNavigate();
+  let { limparCarrinhoId } = useAppContext();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+    limparCarrinhoId()
   }
 
   const handleIrParaMeusPedidos = () => {

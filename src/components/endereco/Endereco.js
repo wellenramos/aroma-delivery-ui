@@ -1,13 +1,93 @@
-import React from 'react';
-import { Box, TextField, Typography, Button, IconButton, Divider } from '@mui/material';
+import React, {useState} from 'react';
+import {
+    Box,
+    Button,
+    Checkbox,
+    Divider,
+    FormControlLabel,
+    IconButton,
+    TextField,
+    Typography
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {consultarEnderecoPorCep, salvar} from "../../services/enderecoService";
+import {useAlert} from "../shared/alert/AlertProvider";
+import {useAppContext} from "../../context/AppContext";
+
+const enderecoInit = {
+    cep: '',
+    numero: '',
+    complemento: '',
+    bairro: '',
+    cidade: '',
+    estado: '',
+    principal: true,
+}
 
 const Endereco = () => {
+    const [endereco, setEndereco] = useState(enderecoInit);
+
+    const showAlert = useAlert();
     const navigate = useNavigate();
+    const { carrinhoId } = useAppContext();
 
     const handleVoltar = () => {
-        navigate(-1); // Volta para a página anterior
+        navigate(-1);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEndereco((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    const handleCheckboxChange = (e) => {
+        const { name, checked } = e.target;
+        setEndereco((prev) => ({
+            ...prev,
+            [name]: checked,
+        }));
+    };
+
+    const handleConsultarEnderecoPorCep = async () => {
+        if (endereco.cep.length < 8) {
+            showAlert("CEP inválido", "error");
+            resetarCampos();
+            return;
+        }
+
+        if (endereco.cep) {
+            try {
+                const { data } = await consultarEnderecoPorCep(endereco.cep);
+                setEndereco((prev) => ({
+                    ...prev,
+                    bairro: data.bairro || '',
+                    cidade: data.cidade || '',
+                    estado: data.estado || '',
+                }));
+            } catch (error) {
+                showAlert("Erro ao consultar o CEP", "error");
+            }
+        }
+    };
+
+    const resetarCampos = () => {
+        setEndereco(enderecoInit);
+    };
+
+    const handleSalvar = async () => {
+        try {
+            const { data } = await salvar(endereco);
+            if (data) {
+                showAlert("Endereço adicionado com sucesso", "success");
+                navigate(`/carrinho/${carrinhoId}`);
+            }
+        } catch (error) {
+            showAlert(error?.response?.data?.message, "error");
+        }
     };
 
     return (
@@ -20,7 +100,7 @@ const Endereco = () => {
                 <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
                     Endereço
                 </Typography>
-                <Box width="40px" /> {/* Placeholder para centralizar o título */}
+                <Box width="40px" />
             </Box>
             <Divider />
 
@@ -30,14 +110,21 @@ const Endereco = () => {
                 <Box display="flex" gap={2} mb={2}>
                     <TextField
                         label="CEP"
+                        name="cep"
                         variant="outlined"
                         fullWidth
+                        value={endereco.cep}
+                        onChange={handleChange}
+                        onBlur={handleConsultarEnderecoPorCep}
                         sx={{ mt: 1 }}
                     />
                     <TextField
                         label="Número"
+                        name="numero"
                         variant="outlined"
                         fullWidth
+                        value={endereco.numero}
+                        onChange={handleChange}
                         sx={{ mt: 1 }}
                     />
                 </Box>
@@ -49,8 +136,11 @@ const Endereco = () => {
                     <Box key={index} mb={2}>
                         <TextField
                             label={field.label}
+                            name={field.name}
                             variant="outlined"
                             fullWidth
+                            value={endereco[field.name]}
+                            onChange={handleChange}
                             sx={{ mt: 1 }}
                         />
                     </Box>
@@ -60,25 +150,34 @@ const Endereco = () => {
                 <Box display="flex" gap={2} mt={2}>
                     <TextField
                         label="Cidade"
+                        name="cidade"
                         variant="outlined"
                         fullWidth
+                        value={endereco.cidade}
+                        onChange={handleChange}
                         sx={{ mt: 1 }}
                     />
                     <TextField
                         label="Estado"
+                        name="estado"
                         variant="outlined"
                         fullWidth
+                        value={endereco.estado}
+                        onChange={handleChange}
                         sx={{ mt: 1 }}
                     />
                 </Box>
 
-                {/* Ponto de Referência */}
-                <Box mt={2}>
-                    <TextField
-                        label="Ponto de Referência"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ mt: 1 }}
+                <Box display="flex" mt={2}>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="principal"
+                                checked={endereco.principal}
+                                onChange={handleCheckboxChange}
+                            />
+                        }
+                        label="Principal"
                     />
                 </Box>
             </Box>
@@ -90,6 +189,7 @@ const Endereco = () => {
                     size="large"
                     fullWidth
                     sx={{ backgroundColor: '#BF7373', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
+                    onClick={handleSalvar}
                 >
                     Salvar
                 </Button>
