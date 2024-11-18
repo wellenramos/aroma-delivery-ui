@@ -8,3 +8,12 @@ export const obterPorLogin = async (login) => {
         throw error.response ? error.response.data : error;
     }
 };
+
+export const cadastrar = async (usuario) => {
+    try {
+        return await api.post('/usuarios/salvar', usuario);
+    } catch (error) {
+        console.error('Erro ao cadastrar usuário:', error);
+        throw error.response ? error.response.data : error;
+    }
+};

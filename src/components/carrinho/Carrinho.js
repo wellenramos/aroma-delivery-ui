@@ -1,32 +1,53 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    Card,
-    CardContent,
-    Typography,
     Box,
     Button,
-    IconButton,
+    Card,
+    CardContent,
     Divider,
+    IconButton,
     List,
     ListItem,
-    ListItemText
+    ListItemText,
+    Typography
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Header from "../Header";
+import {useAlert} from "../shared/alert/AlertProvider";
+import {obterResumoCarrinho} from "../../services/carrinhoService";
 
 const Carrinho = () => {
+    const [itens, setItens] = useState([]);
     const quantidade = 1;
     const precoProduto = 15.00;
     const subtotal = precoProduto * quantidade;
     const frete = 5.00;
     const total = subtotal + frete;
 
+    const showAlert = useAlert();
+    const { carrinhoId} = useParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchResumoCarrinho = async () => {
+            try {
+                const { data } = await obterResumoCarrinho(carrinhoId);
+                console.log('data', data)
+                setItens(data.itens);
+            } catch (error) {
+                showAlert("Erro ao buscar o produto", "error");
+            }
+        };
+
+        if (carrinhoId) {
+            fetchResumoCarrinho();
+        }
+    }, [carrinhoId]);
 
     const handleIrParaEndereco = () => {
         navigate('/endereco');
@@ -46,33 +67,37 @@ const Carrinho = () => {
                 {/* Itens Adicionados */}
                 <Box padding={2}>
                     <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Itens Adicionados</Typography>
-                    <Box display="flex" alignItems="center" mt={2}>
-                        <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '60px', borderRadius: '8px' }} />
-                        <Box ml={2} flexGrow={1}>
-                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Latte Clássico</Typography>
-                            <Typography variant="body2" color="textSecondary">Espresso + leite vaporizado</Typography>
-                        </Box>
-                        <Box display="flex" flexDirection="column" alignItems="flex-end">
-                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>R$ {precoProduto.toFixed(2)}</Typography>
-                            <Box display="flex" alignItems="center">
-                                <IconButton size="small">
-                                    <EditIcon fontSize="small" sx={{ color: '#BF7373' }} />
-                                </IconButton>
-                                <IconButton size="small">
-                                    <DeleteIcon fontSize="small" sx={{ color: '#BF7373' }} />
-                                </IconButton>
-                                <Box display="flex" alignItems="center" border="1px solid #BF7373" borderRadius="4px" paddingX={0.5}>
+                    {itens?.map((item) => (
+                        <Box display="flex" alignItems="center" mt={2}>
+                            <img src="/imagem/lattleClassico.png" alt="Produto" style={{ width: '60px', borderRadius: '8px' }} />
+                            <Box ml={2} flexGrow={1}>
+                                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{item?.nomeProduto}</Typography>
+                                <Typography variant="body2" color="textSecondary">{item?.descricaoProduto}</Typography>
+                            </Box>
+                            <Box display="flex" flexDirection="column" alignItems="flex-end">
+                                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                                    R$ {item?.valorTotal.toFixed(2)}
+                                </Typography>
+                                <Box display="flex" alignItems="center">
                                     <IconButton size="small">
-                                        <RemoveIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                        <EditIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                     </IconButton>
-                                    <Typography variant="body2">{quantidade}</Typography>
                                     <IconButton size="small">
-                                        <AddIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                        <DeleteIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                     </IconButton>
+                                    <Box display="flex" alignItems="center" border="1px solid #BF7373" borderRadius="4px" paddingX={0.5}>
+                                        <IconButton size="small">
+                                            <RemoveIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                        </IconButton>
+                                        <Typography variant="body2">{quantidade}</Typography>
+                                        <IconButton size="small">
+                                            <AddIcon fontSize="small" sx={{ color: '#BF7373' }} />
+                                        </IconButton>
+                                    </Box>
                                 </Box>
                             </Box>
                         </Box>
-                    </Box>
+                    ))}
                 </Box>
                 <Divider />
 

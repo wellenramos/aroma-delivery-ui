@@ -12,7 +12,7 @@ import MeusPedidos from "./components/meusPedidos/MeusPedidos";
 import Avaliacao from "./components/avaliacao/Avaliacao";
 import Endereco from "./components/endereco/Endereco";
 import Pagamento from "./components/pagamento/Pagamento";
-import Usuario from "./components/usuario/Usuario";
+import Registrar from "./components/usuario/Registrar";
 import AcompanhamentoPedido from "./components/meusPedidos/AcompanhantoPedido";
 
 export const router = createBrowserRouter([
@@ -21,8 +21,8 @@ export const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: "/usuario",
-        element: <Usuario />,
+        path: "/registrar",
+        element: <Registrar />,
     },
     {
         path: '/',
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         children: [
             { path: '/', element: <Home /> },
             { path: '/favoritos', element: <Favoritos /> },
-            { path: '/carrinho', element: <Carrinho /> },
+            { path: '/carrinho/:carrinhoId', element: <Carrinho /> },
             { path: '/perfil', element: <Perfil /> },
             { path: '/perfil/:perfilId', element: <EditarPerfil /> },
             { path: '/produto/:produtoId', element: <DetalheProduto /> },

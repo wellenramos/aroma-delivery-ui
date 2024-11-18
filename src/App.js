@@ -3,6 +3,7 @@ import {RouterProvider} from "react-router-dom";
 import React, {StrictMode} from "react";
 import {router} from "./routes";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import {AlertProvider} from "./components/shared/alert/AlertProvider";
 
 const theme = createTheme({
     palette: {
@@ -19,8 +20,10 @@ function App() {
     return (
         <StrictMode>
             <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <RouterProvider router={router} />
+                <AlertProvider>
+                    <CssBaseline />
+                    <RouterProvider router={router} />
+                </AlertProvider>
             </ThemeProvider>
         </StrictMode>
     );
