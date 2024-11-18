@@ -15,6 +15,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {useNavigate} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Header from "../Header";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Perfil = () => {
 
@@ -32,8 +33,12 @@ const Perfil = () => {
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
                 <Header
-                    titulo='Detalhe'
-                    onBack={handleVoltarHome}
+                    titulo="Perfil"
+                    onBack={handleVoltarHome} // Apenas a função de retorno
+                    icon={{
+                        component: <EditIcon />, // Ícone a ser renderizado
+                        onClick: handleEditar, // Ação ao clicar no ícone
+                    }}
                 />
                 <Box display="flex" justifyContent="center" alignItems="center" padding={2}>
                     <Avatar src="https://via.placeholder.com/100" alt="Foto do Perfil" sx={{ width: 100, height: 100 }} />

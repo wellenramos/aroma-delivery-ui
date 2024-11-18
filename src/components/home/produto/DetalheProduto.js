@@ -15,14 +15,15 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {useNavigate} from "react-router-dom";
 import Header from "../../Header";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const DetalheProduto = () => {
     const [quantidade, setQuantidade] = useState(1);
     const [adicionalSelecionado, setAdicionalSelecionado] = useState(false);
-    const [tamanhoSelecionado, setTamanhoSelecionado] = useState('Pequeno');
+    const [tamanhoSelecionado, setTamanhoSelecionado] = useState("Pequeno");
 
-    const precoProduto = 15.00;
-    const precoAdicional = adicionalSelecionado ? 5.00 : 0.00;
+    const precoProduto = 15.0;
+    const precoAdicional = adicionalSelecionado ? 5.0 : 0.0;
     const total = precoProduto + precoAdicional * quantidade;
 
     const handleAdicionar = () => setQuantidade(quantidade + 1);
@@ -43,14 +44,24 @@ const DetalheProduto = () => {
     };
 
     return (
-        <Card sx={{maxWidth: 'sm', margin: '0 auto', boxShadow: 'none', backgroundColor: 'rgb(253, 242, 242)'}}>
-            <CardContent sx={{padding: 0}}>
+        <Card
+            sx={{
+                maxWidth: "sm",
+                margin: "0 auto",
+                boxShadow: "none",
+                backgroundColor: "rgb(253, 242, 242)",
+            }}
+        >
+            <CardContent sx={{ padding: 0 }}>
+                {/* Componente Header */}
                 <Header
-                    titulo='Detalhe'
-                    onBack={handleVoltarHome}
-                    onFavorite={handleFavoritar}
+                    titulo="Detalhe"
+                    onBack={handleVoltarHome} // Apenas a função de retorno
+                    icon={{
+                        component: <FavoriteIcon />, // Ícone a ser renderizado
+                        onClick: handleFavoritar, // Ação ao clicar no ícone
+                    }}
                 />
-
                 {/* Imagem do Produto */}
                 <Box sx={{ p: 2 }}>
                     <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 2}}>

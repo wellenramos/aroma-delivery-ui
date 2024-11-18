@@ -10,27 +10,27 @@ const Header = ({ titulo, onBack, icon }) => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: "16px",
-                backgroundColor: '#BF7373',
+                backgroundColor: "#BF7373",
                 boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
                 position: "relative",
             }}
         >
-            {/* Botão de Voltar */}
+            {/* Botão de Voltar (opcional) */}
             {onBack && (
-            <IconButton
-                onClick={onBack}
-                sx={{
-                    position: "absolute",
-                    left: "16px",
-                    zIndex: 1,
-                    color: '#FFF'
-                }}
-            >
-                {onBack.component}
-            </IconButton>
+                <IconButton
+                    onClick={onBack}
+                    sx={{
+                        position: "absolute",
+                        left: "16px",
+                        zIndex: 1,
+                        color: "#FFF",
+                    }}
+                >
+                    <ArrowBackIcon />
+                </IconButton>
             )}
 
-            {/* Título */}
+            {/* Título centralizado */}
             <Typography
                 variant="h6"
                 sx={{
@@ -43,7 +43,7 @@ const Header = ({ titulo, onBack, icon }) => {
                 {titulo}
             </Typography>
 
-            {/* Ícone (opcional) */}
+            {/* Ícone adicional (opcional) */}
             {icon && (
                 <IconButton
                     onClick={icon.onClick}
@@ -51,7 +51,7 @@ const Header = ({ titulo, onBack, icon }) => {
                         position: "absolute",
                         right: "16px",
                         zIndex: 1,
-                        color: "#FFF"
+                        color: "#FFF",
                     }}
                 >
                     {icon.component}
@@ -62,4 +62,3 @@ const Header = ({ titulo, onBack, icon }) => {
 };
 
 export default Header;
-
