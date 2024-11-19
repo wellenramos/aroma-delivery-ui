@@ -13,7 +13,6 @@ import Avaliacao from "./components/avaliacao/Avaliacao";
 import Endereco from "./components/endereco/Endereco";
 import Pagamento from "./components/pagamento/Pagamento";
 import Registrar from "./components/usuario/Registrar";
-import AcompanhamentoPedido from "./components/meusPedidos/AcompanhantoPedido";
 
 export const router = createBrowserRouter([
     {
@@ -40,7 +39,7 @@ export const router = createBrowserRouter([
             { path: '/avaliacao', element: <Avaliacao /> },
             { path: '/endereco', element: <Endereco /> },
             { path: '/pagamento', element: <Pagamento /> },
-            { path: '/acompanhamento-pedido', element: <AcompanhamentoPedido /> }
+            // { path: '/acompanhar-pedido', element: <AcompanharPedido /> }
         ]
     }
 ]);

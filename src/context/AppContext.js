@@ -7,6 +7,10 @@ export const AppContextProvider = ({ children }) => {
     return localStorage.getItem('carrinhoId') || null;
   });
 
+  const [pedidoId, setPedidoId] = useState(() => {
+    return localStorage.getItem('pedidoId') || null;
+  });
+
   useEffect(() => {
     if (carrinhoId === null) {
       localStorage.removeItem('carrinhoId');
@@ -17,10 +21,17 @@ export const AppContextProvider = ({ children }) => {
 
   const limparCarrinhoId = () => {
     setCarrinhoId(null);
+    localStorage.removeItem('carrinhoId');
   };
 
   return (
-      <AppContext.Provider value={{ carrinhoId, setCarrinhoId, limparCarrinhoId }}>
+      <AppContext.Provider value={{
+        carrinhoId,
+        setCarrinhoId,
+        limparCarrinhoId,
+        pedidoId,
+        setPedidoId
+      }}>
         {children}
       </AppContext.Provider>
   );

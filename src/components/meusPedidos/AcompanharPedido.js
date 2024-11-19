@@ -11,7 +11,7 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import Header from "../Header";
 import {useNavigate} from "react-router-dom";
 
-const AcompanhamentoPedido = () => {
+const AcompanharPedido = () => {
     const pedido = {
         imagem: "/path/to/coffee-image.png", // Substituir pelo caminho real da imagem
         nome: "Coffee Milk",
@@ -131,5 +131,5 @@ const AcompanhamentoPedido = () => {
     );
 };
 
-export default AcompanhamentoPedido;
+export default AcompanharPedido;
 

@@ -4,6 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import {useLocation, useNavigate} from "react-router-dom";
 
 const HomeNavigationBar = () => {
@@ -15,17 +16,19 @@ const HomeNavigationBar = () => {
     useEffect(() => {
         if (location.pathname === '/') setValue(0);
         else if (location.pathname === '/favoritos') setValue(1);
-        else if (location.pathname === '/carrinho') setValue(3);
-        else if (location.pathname === '/perfil') setValue(5);
+        else if (location.pathname === '/carrinho') setValue(2);
+        else if (location.pathname === '/meus-pedidos') setValue(3);
+        else if (location.pathname === '/perfil') setValue(4);
     }, [location.pathname]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
-
+        console.log('newValue', newValue);
         if (newValue === 0) navigate('/');
         else if (newValue === 1) navigate('/favoritos');
-        else if (newValue === 3) navigate('/carrinho');
-        else if (newValue === 5) navigate('/perfil');
+        else if (newValue === 2) navigate('/carrinho');
+        else if (newValue === 3) navigate('/meus-pedidos');
+        else if (newValue === 4) navigate('/perfil');
     };
 
     return (
@@ -44,17 +47,22 @@ const HomeNavigationBar = () => {
                     label="Favoritos"
                     icon={<FavoriteIcon />}
                 />
-                />
+
                 <BottomNavigationAction
                     label="Carrinho"
                     icon={<ShoppingCartIcon />}
                 />
+
+                <BottomNavigationAction
+                    label="Meus pedidos"
+                    icon={<ReceiptIcon />}
                 />
+
                 <BottomNavigationAction
                     label="Perfil"
                     icon={<PersonIcon />}
                 />
-                />
+
             </BottomNavigation>
         </Box>
 

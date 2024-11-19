@@ -21,13 +21,14 @@ import Header from "../Header";
 import {useAlert} from "../shared/alert/AlertProvider";
 import {obterResumoCarrinho} from "../../services/carrinhoService";
 import {useAppContext} from "../../context/AppContext";
+import {realizarPedido} from "../../services/pedidoService";
 
 const Carrinho = () => {
     const [resumo, setResumo] = useState([]);
     const quantidade = 1;
 
     const showAlert = useAlert();
-    const { carrinhoId } = useAppContext();
+    const { carrinhoId, limparCarrinhoId } = useAppContext();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -55,6 +56,24 @@ const Carrinho = () => {
 
     const handleIrParaHome = () => {
         navigate('/');
+    }
+
+    const handleRealizarPedido = async () => {
+        try {
+            const {itens, endereco, cartao} = resumo;
+            const command = {
+                itens: itens.map(item => item.id),
+                enderecoId: endereco.id,
+                cartaoId: cartao.id
+            }
+            const { data } = await realizarPedido(command);
+            if (data) {
+                limparCarrinhoId();
+                navigate('/meus-pedidos')
+            }
+        } catch (error) {
+            showAlert(error?.response?.data?.message, "error");
+        }
     }
 
     return (
@@ -180,6 +199,7 @@ const Carrinho = () => {
                         variant="contained"
                         size="large"
                         fullWidth
+                        onClick={handleRealizarPedido}
                         sx={{ backgroundColor: '#BF7373', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
                     >
                         Comprar
