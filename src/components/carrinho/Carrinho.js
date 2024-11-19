@@ -46,8 +46,8 @@ const Carrinho = () => {
         }
     }, [carrinhoId]);
 
-    const handleIrParaEndereco = () => {
-        navigate('/endereco');
+    const handleIrParaEnderecos = () => {
+        navigate('/enderecos');
     }
 
     const handleIrParaPagamento = () => {
@@ -140,7 +140,7 @@ const Carrinho = () => {
 
                 {/* Endereço de Entrega e Pagamento */}
                 <List>
-                    <ListItem button onClick={handleIrParaEndereco}>
+                    <ListItem button onClick={handleIrParaEnderecos}>
                         <ListItemText
                             primary="Endereço de Entrega"
                             secondary={
