@@ -12,3 +12,12 @@ export const consultarEnderecoPorCep = async (cep) => {
 export const salvar = async (endereco) => {
     return await api.post('/enderecos', endereco);
 };
+
+export const obterEnderecos = async () => {
+    try {
+        return await api.get(`/enderecos`);
+    } catch (error) {
+        console.error('Erro ao consultar endereço:', error);
+        throw error.response ? error.response.data : error;
+    }
+};
