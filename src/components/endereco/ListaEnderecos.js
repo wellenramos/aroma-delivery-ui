@@ -16,7 +16,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../Header";
 import {useNavigate} from "react-router-dom";
 import {useAlert} from "../shared/alert/AlertProvider";
-import {obterEnderecos} from "../../services/enderecoService";
+import {
+    excluir,
+    marcarEnderecoComoPrincipal,
+    obterEnderecos
+} from "../../services/enderecoService";
 import HomeIcon from "@mui/icons-material/Home";
 import * as PropTypes from "prop-types";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -39,7 +43,7 @@ const ListaEnderecos = ({ enderecoSelecionado}) => {
                 showAlert("Erro ao buscar o produto", "error");
             }
         };
-            fetchEnderecos();
+        fetchEnderecos();
     }, []);
 
     const handleVoltarCarrinho = () => {
@@ -61,10 +65,26 @@ const ListaEnderecos = ({ enderecoSelecionado}) => {
         handleMenuClose();
     };
 
-    const handleExcluirEndereco = () => {
-        showAlert("Excluir endereço ainda não implementado!", "info");
+    const handleExcluirEndereco = async (event, endereco) => {
+        event.stopPropagation();
         handleMenuClose();
+        try {
+            const {data} = await excluir(endereco.id);
+            if (data) {
+                showAlert("Endereço excluído com sucesso", "success");
+                setEnderecos(enderecos.filter(it => it.id !== endereco.id));
+            }
+        } catch (error) {
+            showAlert(error?.response?.data?.message, "error");
+        }
     };
+
+    const handleAtualizarEnderecoPrincipal = async (endereco) => {
+        const {data} = await marcarEnderecoComoPrincipal(endereco.id);
+        if (data) {
+            navigate("/carrinho")
+        }
+    }
 
     return (
         <Card sx={{ maxWidth: "sm", margin: "0 auto", boxShadow: "none" }}>
@@ -75,6 +95,7 @@ const ListaEnderecos = ({ enderecoSelecionado}) => {
                 {enderecos.map((endereco) => (
                     <Card
                         key={endereco.id}
+                        onClick={() => handleAtualizarEnderecoPrincipal(endereco)}
                         sx={{
                             margin: 2,
                             border:
@@ -110,30 +131,32 @@ const ListaEnderecos = ({ enderecoSelecionado}) => {
                                 </Box>
                                 {/* Ícone de menu */}
                                 <IconButton
-                                    onClick={(event) => handleMenuOpen(event, endereco.id)}
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        handleMenuOpen(event, endereco.id);
+                                    }}
                                 >
                                     <MoreVertIcon />
                                 </IconButton>
                             </Box>
                         </CardContent>
+                        {/* Menu de ações */}
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                        >
+                            <MenuItem onClick={handleEditarEndereco}>
+                                <EditIcon fontSize="small" sx={{ marginRight: 1 }} />
+                                Editar
+                            </MenuItem>
+                            <MenuItem onClick={(e) => handleExcluirEndereco(e, endereco)}>
+                                <DeleteIcon fontSize="small" sx={{ marginRight: 1 }} />
+                                Excluir
+                            </MenuItem>
+                        </Menu>
                     </Card>
                 ))}
-
-                {/* Menu de ações */}
-                <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleMenuClose}
-                >
-                    <MenuItem onClick={handleEditarEndereco}>
-                        <EditIcon fontSize="small" sx={{ marginRight: 1 }} />
-                        Editar
-                    </MenuItem>
-                    <MenuItem onClick={handleExcluirEndereco}>
-                        <DeleteIcon fontSize="small" sx={{ marginRight: 1 }} />
-                        Excluir
-                    </MenuItem>
-                </Menu>
             </CardContent>
         </Card>
     );

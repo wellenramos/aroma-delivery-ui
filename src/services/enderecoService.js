@@ -21,3 +21,16 @@ export const obterEnderecos = async () => {
         throw error.response ? error.response.data : error;
     }
 };
+
+export const marcarEnderecoComoPrincipal = async (enderecoId) => {
+    try {
+        return await api.put(`/enderecos/${enderecoId}/principal`);
+    } catch (error) {
+        console.error('Erro ao consultar endereço:', error);
+        throw error.response ? error.response.data : error;
+    }
+};
+
+export const excluir = async (enderecoId) => {
+    return await api.delete(`/enderecos/${enderecoId}`);
+};

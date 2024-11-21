@@ -1,27 +1,39 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
-    Typography,
-    Card,
-    Radio,
     Button,
-    Checkbox,
-    FormControlLabel,
-    Modal,
-    TextField,
-    RadioGroup,
-    FormControlLabel as RadioLabel,
+    Card,
     Divider,
     IconButton,
+    Radio,
+    Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {obterCartoes, salvar} from "../../services/cartaoService";
+import {useAlert} from "../shared/alert/AlertProvider";
+import Cartao from "./Cartao";
 
 const Pagamento = () => {
     const navigate = useNavigate();
     const [selectedCard, setSelectedCard] = useState(null);
     const [openModal, setOpenModal] = useState(false);
-    const [tipoCartao, setTipoCartao] = useState('credito');
+    const [cartoes, setCartoes] = useState([]);
+
+    const showAlert = useAlert();
+
+    const fetchObterCartoesPagamento = async () => {
+        try {
+            const { data } = await obterCartoes();
+            setCartoes(data);
+        } catch (error) {
+            showAlert("Erro ao buscar cartões de pagamento do usuário", "error");
+        }
+    };
+
+    useEffect(() => {
+        fetchObterCartoesPagamento();
+    }, []);
 
     const handleSelecionarCartao = (id) => {
         setSelectedCard(id);
@@ -39,9 +51,22 @@ const Pagamento = () => {
         { id: 2, tipo: "Débito", numero: "3566 **** **** 0535", logo: "/logo/visa.png", cor: "#F5F5F5" },
     ];
 
-    const handleSalvarCartao = () => {
-        alert("Cartão salvo com sucesso!");
-        setOpenModal(false);
+    const handleSalvarCartao = async (cartao) => {
+        try {
+            const { data } = await salvar(cartao);
+            if (data) {
+                setOpenModal(false);
+                fetchObterCartoesPagamento();
+            }
+        } catch (error) {
+            const errorData = error?.response?.data;
+            if (errorData) {
+                const messages = Object.values(errorData).join(". ");
+                showAlert(messages, "error");
+            } else {
+                showAlert("Ocorreu um erro inesperado.", "error");
+            }
+        }
     };
 
     const handleVoltar = () => {
@@ -64,27 +89,27 @@ const Pagamento = () => {
 
             {/* Cartões disponíveis */}
             <Box mt={2}>
-                {cards.map((card) => (
+                {cartoes.map((cartao) => (
                     <Card
-                        key={card.id}
+                        key={cartao.id}
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
                             padding: 2,
                             borderRadius: 4,
-                            boxShadow: selectedCard === card.id ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
+                            boxShadow: selectedCard === cartao.id ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
                             mb: 2,
                         }}
-                        onClick={() => handleSelecionarCartao(card.id)}
+                        onClick={() => handleSelecionarCartao(cartao.id)}
                     >
-                        <img src={'https://www.mobills.com.br/blog/wp-content/uploads/2022/06/logo-da-bandeira-mastercard.png'} alt={card.tipo} style={{ width: 50, height: 'auto', marginRight: 16 }} />
+                        <img src={'https://www.mobills.com.br/blog/wp-content/uploads/2022/06/logo-da-bandeira-mastercartao.png'} alt={cartao.tipo} style={{ width: 50, height: 'auto', marginRight: 16 }} />
                         <Box flexGrow={1}>
-                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: selectedCard === card.id ? '#BF7373' : '#000' }}>
-                                {card.tipo} card
+                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: selectedCard === cartao.id ? '#BF7373' : '#000' }}>
+                                {cartao.tipo} cartao
                             </Typography>
-                            <Typography variant="body2">{card.numero}</Typography>
+                            <Typography variant="body2">{cartao.numero}</Typography>
                         </Box>
-                        <Radio checked={selectedCard === card.id} />
+                        <Radio checked={selectedCard === cartao.id} />
                     </Card>
                 ))}
             </Box>
@@ -113,72 +138,12 @@ const Pagamento = () => {
                 </Button>
             </Box>
 
-            {/* Checkbox para salvar informações */}
-            <Box mt={2}>
-                <FormControlLabel
-                    control={<Checkbox color="primary" />}
-                    label="Salvar dados do cartão para pagamentos futuros"
-                    sx={{ color: '#777' }}
-                />
-            </Box>
-
             {/* Modal de Adicionar Cartão */}
-            <Modal open={openModal} onClose={handleCloseModal}>
-                <Box
-                    sx={{
-                        backgroundColor: '#FFF',
-                        padding: 4,
-                        borderRadius: 2,
-                        maxWidth: 500,
-                        margin: '50px auto',
-                        boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
-                    }}
-                >
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2, color: '#BF7373' }}>
-                        Adicionar Cartão
-                    </Typography>
-
-                    {/* Tipo do cartão */}
-                    <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
-                        Tipo do cartão
-                    </Typography>
-                    <RadioGroup
-                        value={tipoCartao}
-                        onChange={(e) => setTipoCartao(e.target.value)}
-                        row
-                    >
-                        <RadioLabel value="credito" control={<Radio color="primary" />} label="Crédito" />
-                        <RadioLabel value="debito" control={<Radio color="primary" />} label="Débito" />
-                    </RadioGroup>
-
-                    {/* Dados do cartão */}
-                    {['Número do cartão', 'Nome do titular', 'Validade (MM/AA)', 'CVV'].map((label, index) => (
-                        <Box key={index} mt={2}>
-                            <TextField
-                                label={label}
-                                variant="outlined"
-                                fullWidth
-                                sx={{
-                                    '& .MuiInputBase-root': { height: 45 },
-                                }}
-                            />
-                        </Box>
-                    ))}
-
-                    {/* Botão Salvar */}
-                    <Box mt={4}>
-                        <Button
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                            sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
-                            onClick={handleSalvarCartao}
-                        >
-                            Salvar Cartão
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
+            <Cartao
+                openModal={openModal}
+                onCloseModal={handleCloseModal}
+                onSalvarCartao={handleSalvarCartao}
+            />
         </Box>
     );
 };
