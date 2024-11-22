@@ -128,7 +128,6 @@ const Carrinho = () => {
             </Box>
             <Divider />
 
-                {/* Adicionar Mais */}
                 <Box padding={2}>
                     <Typography variant="subtitle1"
                                 onClick={handleIrParaHome}
@@ -138,7 +137,6 @@ const Carrinho = () => {
                 </Box>
                 <Divider />
 
-                {/* Endereço de Entrega e Pagamento */}
                 <List>
                     <ListItem button onClick={handleIrParaEnderecos}>
                         <ListItemText
@@ -148,7 +146,7 @@ const Carrinho = () => {
                                     `Quadra ${resumo.endereco.numero}, ${resumo.endereco.bairro}, ${resumo.endereco.cidade}`
                                 ) : (
                                     <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-                                        Nenhum endereço cadastrado. Clique para adicionar.
+                                        Nenhum endereço selecionado
                                     </Typography>
                                 )
                             }
@@ -160,7 +158,15 @@ const Carrinho = () => {
                     <ListItem button onClick={handleIrParaPagamento}>
                         <ListItemText
                             primary="Pagamento"
-                            secondary="XXXX XXXX XXXX 0505"
+                            secondary={
+                                resumo?.cartao ? (
+                                    `${resumo?.cartao?.bandeira} xxxx xxxx xxxx ${resumo?.cartao?.numero.slice(-4)}`
+                                ) : (
+                                    <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+                                        Nenhum cartão selecionado
+                                    </Typography>
+                                )
+                            }
                         />
                         <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} />
                     </ListItem>
@@ -177,7 +183,9 @@ const Carrinho = () => {
                         </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between">
-                        <Typography variant="body2" color="textSecondary">(1 item)</Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            { resumo?.itens?.length <= 1 ? `(${resumo?.itens?.length} Item)` : `(${resumo?.itens?.length} Itens)` }
+                        </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" mt={1}>
                         <Typography variant="body2" color="textSecondary">Entrega</Typography>
