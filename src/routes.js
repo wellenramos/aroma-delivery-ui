@@ -10,10 +10,9 @@ import Menu from "./components/menu/Menu";
 import EditarPerfil from "./components/perfil/EditarPerfil";
 import MeusPedidos from "./components/meusPedidos/MeusPedidos";
 import Avaliacao from "./components/avaliacao/Avaliacao";
-import Endereco from "./components/endereco/Endereco";
 import Pagamento from "./components/pagamento/Pagamento";
 import Registrar from "./components/usuario/Registrar";
-import ListaEnderecos from "./components/endereco/ListaEnderecos";
+import Enderecos from "./components/endereco/Enderecos";
 
 export const router = createBrowserRouter([
     {
@@ -38,8 +37,7 @@ export const router = createBrowserRouter([
             { path: '/menu', element: <Menu /> },
             { path: '/meus-pedidos', element: <MeusPedidos /> },
             { path: '/avaliacao', element: <Avaliacao /> },
-            { path: '/endereco', element: <Endereco /> },
-            { path: '/enderecos', element: <ListaEnderecos /> },
+            { path: '/enderecos', element: <Enderecos /> },
             { path: '/pagamento', element: <Pagamento /> },
             // { path: '/acompanhar-pedido', element: <AcompanharPedido /> }
         ]

@@ -102,41 +102,60 @@ const Pagamento = () => {
             <Divider />
 
             <Box mt={2}>
-                {cartoes.map((cartao) => (
-                    <Card
-                        key={cartao.id}
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            padding: 2,
-                            borderRadius: 4,
-                            boxShadow: cartao.principal ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
-                            mb: 2,
-                        }}
-                        onClick={() => handlCartaoPrincipal(cartao)}
-                    >
-                        <img src={handleObterLogomarcaCartao(cartao)} alt={cartao.tipo} style={{ width: 50, height: 'auto', marginRight: 16 }} />
-                        <Box flexGrow={1}>
-                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: cartao.principal ? '#BF7373' : '#000' }}>
-                                Cartão {cartao.tipo}
-                            </Typography>
-                            <Typography variant="body2">{cartao.numero}</Typography>
-                        </Box>
-                        <Radio checked={cartao.principal} />
-                    </Card>
-                ))}
+                {cartoes.length === 0 ? (
+                    <Box textAlign="center" padding={2}>
+                        <Typography variant="body2" color="textSecondary">
+                            Nenhum cartão cadastrado.
+                        </Typography>
+                    </Box>
+                ) : (
+                    cartoes.map((cartao) => (
+                        <Card
+                            key={cartao.id}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                padding: 2,
+                                borderRadius: 4,
+                                boxShadow: cartao.principal ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
+                                mb: 2,
+                            }}
+                            onClick={() => handlCartaoPrincipal(cartao)}
+                        >
+                            <img
+                                src={handleObterLogomarcaCartao(cartao)}
+                                alt={cartao.tipo}
+                                style={{ width: 50, height: 'auto', marginRight: 16 }}
+                            />
+                            <Box flexGrow={1}>
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{ fontWeight: 'bold', color: cartao.principal ? '#BF7373' : '#000' }}
+                                >
+                                    Cartão {cartao.tipo}
+                                </Typography>
+                                <Typography variant="body2">{cartao.numero}</Typography>
+                            </Box>
+                            <Radio checked={cartao.principal} />
+                        </Card>
+                    ))
+                )}
             </Box>
 
             <Box paddingTop={2}>
-                <Button
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
-                    onClick={handleExcluirCartao}
-                >
-                    Excluir cartão
-                </Button>
+                {
+                    cartoes.length > 0 && (
+                        <Button
+                            variant="contained"
+                            size="large"
+                            fullWidth
+                            sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
+                            onClick={handleExcluirCartao}
+                        >
+                            Excluir
+                        </Button>
+                    )
+                }
             </Box>
             <Box paddingTop={2}>
                 <Button
