@@ -1,15 +1,18 @@
 import React from "react";
 import {
+    Avatar,
     Box,
-    Typography,
-    Divider,
     Button,
-    Avatar, Card, CardContent,
+    Card,
+    CardContent,
+    Divider,
+    IconButton,
+    Typography,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import Header from "../Header";
 import {useNavigate} from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const AcompanharPedido = () => {
     const pedido = {
@@ -41,11 +44,17 @@ const AcompanharPedido = () => {
 
     return (
         <Card sx={{maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
+            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                <IconButton onClick={handleVoltarHome}>
+                    <ArrowBackIcon sx={{ color: '#BF7373' }} />
+                </IconButton>
+                <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
+                    Acompanhar Pedidos
+                </Typography>
+                <Box width="48px" />
+            </Box>
+            <Divider />
             <CardContent sx={{padding: 0}}>
-                <Header
-                    titulo='Acompanhamento Pedido'
-                    onBack={handleVoltarHome}
-                />
 
                 {/* Detalhes do Pedido */}
                 <Box padding={2}>
