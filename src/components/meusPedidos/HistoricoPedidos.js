@@ -11,6 +11,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import {avaliar} from "../../services/pedidoService";
 
 const MeusPedidos = ({ historico }) => {
 
@@ -18,8 +19,17 @@ const MeusPedidos = ({ historico }) => {
 
     const [rating, setRating] = useState(0);
 
-    const handleAvaliar = (event, newValue) => {
+    const handleAvaliar = async (newValue, pedidoId) => {
         setRating(newValue);
+        historico.forEach((h => {
+            h.itens?.map((it) => {
+                if (it.id === pedidoId) {
+                    it.notaAvaliacao = newValue;
+                }
+            })
+        }))
+
+        await avaliar(pedidoId, newValue);
     };
 
     const handleVoltarHome = () => {
@@ -72,11 +82,10 @@ const MeusPedidos = ({ historico }) => {
                                         </Typography>
                                         <Rating
                                             name="pedido-avaliacao"
-                                            onChange={handleAvaliar}
+                                            value={historico?.notaAvaliacao}
+                                            onChange={(e, newValue) => handleAvaliar(newValue, historico.id)}
                                             size="large"
-                                            sx={{
-                                                color: "#BF7373",
-                                            }}
+                                            sx={{ color: "#BF7373" }}
                                         />
                                     </Box>
                                     <Divider />
