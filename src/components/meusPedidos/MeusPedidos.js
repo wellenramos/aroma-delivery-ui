@@ -8,19 +8,24 @@ import {acompanhar} from "../../services/pedidoService";
 const MeusPedidos = () => {
 
     const [pedidos, setPedidos] = useState([]);
+    const [historico, setHistorico] = useState([]);
 
     const showAlert = useAlert();
 
     const fetchPedidos = async () => {
         try {
             const { data } = await acompanhar();
-            setPedidos(data);
+            if (data.pedidosEmAndamento.length >= 1) {
+                setPedidos(data.pedidosEmAndamento);
+            } else {
+                setHistorico(data.historico);
+            }
         } catch (error) {
             showAlert("Erro ao buscar o produto", "error");
         }
     };
 
-    useEffect(() => {
+    useEffect( () => {
         fetchPedidos();
     }, []);
 
@@ -33,7 +38,7 @@ const MeusPedidos = () => {
             <CardContent sx={{ padding: 0 }}>
                 {pedidos.length >= 1
                     ? (<AcompanharPedido pedidos={pedidos} onRecarregarPedidos={handleRecarregarPedidos}/>)
-                    : (<HistoricoPedidos />)
+                    : (<HistoricoPedidos historico={historico}/>)
                 }
             </CardContent>
         </Card>

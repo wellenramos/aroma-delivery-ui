@@ -1,36 +1,26 @@
-import React from 'react';
-import {Avatar, Box, Button, Card, CardContent, Divider, IconButton, Typography} from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
+import React, {useState} from 'react';
+import {
+    Box,
+    Card,
+    CardContent,
+    Divider,
+    IconButton,
+    Rating,
+    Typography
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
-import AcompanharPedido from "./AcompanharPedido";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const pedidos = [
-    {
-        id: 1,
-        nome: 'Cappuccino Clássico',
-        descricao: 'Espresso, leite vaporizado, espuma de leite',
-        preco: 15.00,
-        avaliacao: 4.9,
-        imagem: 'https://link-para-imagem.com/cappuccino.png', // Substitua pelo link da imagem
-    },
-    {
-        id: 2,
-        nome: 'Latte Clássico',
-        descricao: 'Espresso + leite vaporizado',
-        preco: 15.00,
-        avaliacao: 4.9,
-        imagem: 'https://link-para-imagem.com/latte.png', // Substitua pelo link da imagem
-    },
-];
-
-const MeusPedidos = () => {
+const MeusPedidos = ({ historico }) => {
 
     const navigate = useNavigate();
 
-    const handleAvaliar = () => {
-        navigate('/avaliacao');
-    }
+    const [rating, setRating] = useState(0);
+
+    const handleAvaliar = (event, newValue) => {
+        setRating(newValue);
+    };
 
     const handleVoltarHome = () => {
         navigate("/");
@@ -49,70 +39,51 @@ const MeusPedidos = () => {
             </Box>
             <Divider />
             <CardContent sx={{ padding: 0 }}>
-
                 <Box sx={{ padding: 2 }}>
-                {/* Lista de Pedidos */}
-                {pedidos.map((pedido) => (
-                    <Box key={pedido.id} mb={2} sx={{ width: '100%', paddingX: 2 }}>
-                        <Box display="flex" alignItems="center">
-                            {/* Imagem e Avaliação */}
-                            <Box position="relative">
-                                <Avatar
-                                    src={pedido.imagem}
-                                    alt={pedido.nome}
-                                    sx={{ width: 60, height: 60, mr: 2 }}
-                                />
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    position="absolute"
-                                    bottom={-5}
-                                    left={8}
-                                    bgcolor="white"
-                                    borderRadius="8px"
-                                    px={0.5}
-                                >
-                                    <StarIcon fontSize="small" sx={{ color: '#FBB03B', fontSize: 14 }} />
-                                    <Typography variant="caption" sx={{ fontWeight: 'bold', ml: 0.2 }}>
-                                        {pedido.avaliacao}
-                                    </Typography>
-                                </Box>
-                            </Box>
-
-                            {/* Informações do Pedido */}
+                    {historico.map((historicoAgg) => (
+                        <Box>
                             <Box flexGrow={1}>
-                                <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                                    {pedido.nome}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary">
-                                    {pedido.descricao}
+                                <Typography variant="overline">
+                                    {historicoAgg.dataSolicitacao}
                                 </Typography>
                             </Box>
 
-                            {/* Preço */}
-                            <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#BF7373' }}>
-                                R$ {pedido.preco.toFixed(2)}
-                            </Typography>
-                        </Box>
+                            {historicoAgg?.itens.map((historico) => (
+                                <Box key={historico.id} mb={2} sx={{ width: '100%', paddingX: 2 }}>
+                                    <Box display="column" alignItems="center">
+                                        <Box display="flex" alignItems="center">
+                                            <CheckCircleIcon sx={{color: "green"}} fontSize='small' />
+                                            <Typography variant="body1" sx={{ marginLeft: '5px'}}>
+                                                Pedido {historico.status === 'CONCLUIDO' ? 'concluído' : ''} • Nº {historico.id}
+                                            </Typography>
+                                        </Box>
+                                        {historico?.itens?.map((item) => (
+                                            <Box flexGrow={1}>
+                                                <Typography variant="body2">
+                                                    {item.quantidade} {item.nome}
+                                                </Typography>
+                                            </Box>
+                                        ))}
+                                    </Box>
 
-                        {/* Botão Avaliar Pedido */}
-                        <Box display="flex" justifyContent="flex-end" mt={1}>
-                            <Button
-                                variant="contained"
-                                size="small"
-                                sx={{
-                                    backgroundColor: '#BF7373',
-                                    color: '#FFF',
-                                    fontWeight: 'bold',
-                                    borderRadius: 2,
-                                }}
-                                onClick={handleAvaliar}
-                            >
-                                Avaliar Pedido
-                            </Button>
+                                    <Box display="flex" justifyContent="space-between" mt={1} alignItems="center">
+                                        <Typography variant="caption" mr={2}>
+                                            Avalie seu pedido
+                                        </Typography>
+                                        <Rating
+                                            name="pedido-avaliacao"
+                                            onChange={handleAvaliar}
+                                            size="large"
+                                            sx={{
+                                                color: "#BF7373",
+                                            }}
+                                        />
+                                    </Box>
+                                    <Divider />
+                                </Box>
+                            ))}
                         </Box>
-                    </Box>
-                ))}
+                    ))}
                 </Box>
             </CardContent>
         </Card>
