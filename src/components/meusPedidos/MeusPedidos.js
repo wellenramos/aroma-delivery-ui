@@ -1,45 +1,38 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Card, CardContent} from "@mui/material";
-import {useNavigate} from "react-router-dom";
 import AcompanharPedido from "./AcompanharPedido";
 import HistoricoPedidos from "./HistoricoPedidos";
-
-const pedidos = [
-    {
-        id: 1,
-        nome: 'Cappuccino Clássico',
-        descricao: 'Espresso, leite vaporizado, espuma de leite',
-        preco: 15.00,
-        avaliacao: 4.9,
-        imagem: 'https://link-para-imagem.com/cappuccino.png',
-    },
-    {
-        id: 2,
-        nome: 'Latte Clássico',
-        descricao: 'Espresso + leite vaporizado',
-        preco: 15.00,
-        avaliacao: 4.9,
-        imagem: 'https://link-para-imagem.com/latte.png',
-    },
-];
+import {useAlert} from "../shared/alert/AlertProvider";
+import {acompanhar} from "../../services/pedidoService";
 
 const MeusPedidos = () => {
 
-    const navigate = useNavigate();
+    const [pedidos, setPedidos] = useState([]);
 
-    const handleAvaliar = () => {
-        navigate('/avaliacao');
-    }
+    const showAlert = useAlert();
 
-    const handleVoltarHome = () => {
-        navigate('/');
+    const fetchPedidos = async () => {
+        try {
+            const { data } = await acompanhar();
+            setPedidos(data);
+        } catch (error) {
+            showAlert("Erro ao buscar o produto", "error");
+        }
+    };
+
+    useEffect(() => {
+        fetchPedidos();
+    }, []);
+
+    const handleRecarregarPedidos = () => {
+        fetchPedidos();
     }
 
     return(
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
                 {pedidos.length >= 1
-                    ? (<AcompanharPedido />)
+                    ? (<AcompanharPedido pedidos={pedidos} onRecarregarPedidos={handleRecarregarPedidos}/>)
                     : (<HistoricoPedidos />)
                 }
             </CardContent>

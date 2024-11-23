@@ -7,3 +7,7 @@ export const realizarPedido = async (pedido) => {
 export const acompanhar = async () => {
     return await api.get('/pedidos/acompanhar');
 };
+
+export const confirmarRecebimento = async (pedidoId) => {
+    return await api.put(`/pedidos/${pedidoId}/confirmar-recebimento`);
+};
