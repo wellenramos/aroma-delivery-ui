@@ -14,6 +14,7 @@ import Pagamento from "./components/pagamento/Pagamento";
 import Registrar from "./components/usuario/Registrar";
 import Enderecos from "./components/endereco/Enderecos";
 import Admin from "./components/administrador/Admin";
+import DetalhesPedido from "./components/administrador/DetalhePedido";
 
 export const router = createBrowserRouter([
     {
@@ -41,7 +42,8 @@ export const router = createBrowserRouter([
             { path: '/enderecos', element: <Enderecos /> },
             { path: '/pagamento', element: <Pagamento /> },
             // { path: '/acompanhar-pedido', element: <AcompanharPedido /> }
-            { path: '/admin', element: <Admin /> }
+            { path: '/admin', element: <Admin /> },
+            { path:"/admin/pedido/:pedidoId", element:<DetalhesPedido /> }
         ]
     }
 ]);

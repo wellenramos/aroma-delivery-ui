@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import {
-    Avatar,
     Box,
     Card,
-    CardContent, List, ListItem, ListItemAvatar, ListItemText,
+    CardContent,
+    List,
+    ListItem,
+    ListItemText,
     Tab,
     Tabs,
     Typography,
 } from "@mui/material";
 import Header from "../Header";
-import StarIcon from "@mui/icons-material/Star";
+import { useNavigate } from "react-router-dom";
 
 const Admin = () => {
     const [value, setValue] = useState(0); // Controla a aba ativa
@@ -17,6 +19,8 @@ const Admin = () => {
     const [pedidosEntregues, setPedidosEntregues] = useState([]);
     const [pedidosEmAndamento, setPedidosEmAndamento] = useState([]);
     const [pedidosPendentes, setPedidosPendentes] = useState([]);
+
+    const navigate = useNavigate();
 
     const obterPedidos = () => {
         return {
@@ -32,7 +36,7 @@ const Admin = () => {
     // Busca pedidos na API
     const fetchPedidos = () => {
         try {
-            const { data } = obterPedidos(); // Substitua por sua API real
+            const { data } = obterPedidos(); // Simulação de API
             setPedidos(data);
 
             // Filtrar pedidos por status
@@ -53,6 +57,13 @@ const Admin = () => {
         setValue(newValue);
     };
 
+    // Obtém a lista de pedidos para a aba ativa
+    const getPedidosPorAba = () => {
+        if (value === 0) return pedidosPendentes;
+        if (value === 1) return pedidosEmAndamento;
+        if (value === 2) return pedidosEntregues;
+        return [];
+    };
 
     return (
         <Card sx={{ maxWidth: "sm", margin: "0 auto", boxShadow: "none" }}>
@@ -68,39 +79,45 @@ const Admin = () => {
                     </Tabs>
                 </Box>
 
-                {/* Conteúdo das abas */}
+                {/* Conteúdo da aba ativa */}
                 <Box mb={10}>
-                    {pedidos.length === 0 ? (
-                        <Typography variant="subtitle1" color="textSecondary" align="center">
-                            Nenhum resultado encontrado.
+                    {getPedidosPorAba().length === 0 ? (
+                        <Typography
+                            variant="subtitle1"
+                            color="textSecondary"
+                            align="center"
+                            sx={{ marginTop: 4 }}
+                        >
+                            Nenhum pedido nesta categoria.
                         </Typography>
                     ) : (
                         <List>
-                            {pedidos.map((pedido) => (
+                            {getPedidosPorAba().map((pedido) => (
                                 <ListItem
                                     key={pedido.id}
                                     alignItems="flex-start"
-                                    // onClick={() => handleIrParaDetalhe(produto.id)}
+                                    onClick={() => navigate(`/admin/pedido/${pedido.id}`)} // Navega para os detalhes do pedido
                                     sx={{
                                         "&:hover": {
                                             backgroundColor: "rgba(0, 0, 0, 0.04)",
+                                            cursor: "pointer",
                                         },
                                     }}
                                 >
                                     <ListItemText
                                         primary={
                                             <Box display="flex" justifyContent="space-between">
-                                                <Typography variant="subtitle1" fontWeight="bold" style={{ cursor: 'pointer' }}>
+                                                <Typography variant="subtitle1" fontWeight="bold">
                                                     Pedido {pedido.id}
                                                 </Typography>
-                                                <Typography variant="subtitle1" color="secondary" style={{ cursor: 'pointer' }}>
+                                                <Typography variant="subtitle1" color="secondary">
                                                     R$ {pedido.total.toFixed(2)}
                                                 </Typography>
                                             </Box>
                                         }
                                         secondary={
                                             <Box display="flex" alignItems="center">
-                                                <Typography variant="body2" color="textSecondary" style={{ cursor: 'pointer' }}>
+                                                <Typography variant="body2" color="textSecondary">
                                                     {pedido.cliente}
                                                 </Typography>
                                             </Box>

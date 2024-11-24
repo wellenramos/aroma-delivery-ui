@@ -37,7 +37,7 @@ const AcompanharPedido = ({pedidos, onRecarregarPedidos}) => {
             <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none' }}>
                 <CardContent sx={{ padding: 0 }}>
                     <Header
-                        titulo="Histórico de Pedidos"
+                        titulo="Acompanhar Pedido"
                         onBack={handleVoltarHome}
                     />
                     <Divider/>
