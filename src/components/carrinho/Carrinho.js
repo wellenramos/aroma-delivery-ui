@@ -202,7 +202,7 @@ const Carrinho = () => {
                 </Box>
 
                 {/* Botão de Comprar */}
-                <Box padding={2}>
+                <Box paddingTop={2}>
                     <Button
                         variant="contained"
                         size="large"

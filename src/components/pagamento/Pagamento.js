@@ -1,60 +1,68 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Button,
     Card,
-    Divider,
+    CardContent,
     IconButton,
-    Radio,
     Typography,
-} from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {useNavigate} from 'react-router-dom';
+    Radio
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Header from "../Header";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from "../shared/alert/AlertProvider";
 import {
     excluir,
     marcarCartaoPrincipal,
     obterCartoes,
     salvar
 } from "../../services/cartaoService";
-import {useAlert} from "../shared/alert/AlertProvider";
 import Cartao from "./Cartao";
 
 const Pagamento = () => {
     const navigate = useNavigate();
-    const [openModal, setOpenModal] = useState(false);
     const [cartoes, setCartoes] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+    const [cartaoEdicao, setCartaoEdicao] = useState(null);
 
     const showAlert = useAlert();
 
-    const fetchObterCartoesPagamento = async () => {
+    const fetchCartoes = async () => {
         try {
             const { data } = await obterCartoes();
             setCartoes(data);
         } catch (error) {
-            showAlert("Erro ao buscar cartões de pagamento do usuário", "error");
+            showAlert("Erro ao buscar cartões de pagamento", "error");
         }
     };
 
     useEffect(() => {
-        fetchObterCartoesPagamento();
+        fetchCartoes();
     }, []);
 
-    const handleExcluirCartao = async () => {
-        const cartao = cartoes.filter(it => it.principal)[0];
-        await excluir(cartao.id)
-        const listaAtualizada =  cartoes.filter(it => it.id !== cartao.id)
-        setCartoes(listaAtualizada);
+    const handleVoltar = () => {
+        navigate(-1);
     };
 
-    const handleOpenModal = () => setOpenModal(true);
-    const handleCloseModal = () => setOpenModal(false);
+    const handleExcluirCartao = async (event, cartao) => {
+        event.stopPropagation();
+        try {
+            await excluir(cartao.id);
+            showAlert("Cartão excluído com sucesso", "success");
+            setCartoes(cartoes.filter(it => it.id !== cartao.id));
+        } catch (error) {
+            showAlert(error?.response?.data?.message, "error");
+        }
+    };
 
     const handleSalvarCartao = async (cartao) => {
         try {
             const { data } = await salvar(cartao);
             if (data) {
                 setOpenModal(false);
-                fetchObterCartoesPagamento();
+                setCartaoEdicao(null);
+                fetchCartoes();
             }
         } catch (error) {
             const errorData = error?.response?.data;
@@ -67,41 +75,34 @@ const Pagamento = () => {
         }
     };
 
-    const handleVoltar = () => {
-        navigate(-1);
-    };
-
     const handleObterLogomarcaCartao = (cartao) => {
-        if (cartao.bandeira === 'MasterCeard') {
+        if (cartao.bandeira === 'MasterCard') {
             return '/imagem/mastercard.png';
         } else if (cartao.bandeira === 'Visa') {
             return '/imagem/visa.png';
         } else {
             return '/imagem/cartao.jpg';
         }
-    }
+    };
 
-    const handlCartaoPrincipal = async (cartao) => {
-        const {data} = await marcarCartaoPrincipal(cartao.id);
+    const handleCartaoPrincipal = async (cartao) => {
+        if (cartao.principal) return;
+
+        const { data } = await marcarCartaoPrincipal(cartao.id);
         if (data) {
-            navigate("/carrinho")
+            showAlert("Cartão principal atualizado com sucesso", "success");
+            fetchCartoes();
         }
-    }
+    };
+
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
 
     return (
-        <Box sx={{ padding: 2, maxWidth: 600, margin: '0 auto' }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <IconButton onClick={handleVoltar}>
-                    <ArrowBackIcon color="primary" />
-                </IconButton>
-                <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
-                    Pagamento
-                </Typography>
-                <Box width="40px" />
-            </Box>
-            <Divider />
+        <Card sx={{ maxWidth: "sm", margin: "0 auto", boxShadow: "none" }}>
+            <CardContent sx={{ padding: 0 }}>
+                <Header titulo="Meus Cartões" onBack={handleVoltar} />
 
-            <Box mt={2}>
                 {cartoes.length === 0 ? (
                     <Box textAlign="center" padding={2}>
                         <Typography variant="body2" color="textSecondary">
@@ -112,71 +113,70 @@ const Pagamento = () => {
                     cartoes.map((cartao) => (
                         <Card
                             key={cartao.id}
+                            onClick={() => handleCartaoPrincipal(cartao)}
                             sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                padding: 2,
-                                borderRadius: 4,
-                                boxShadow: cartao.principal ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
-                                mb: 2,
+                                margin: 2,
+                                border: cartao.principal
+                                    ? "2px solid #BF7373"
+                                    : "1px solid #E0E0E0",
+                                borderRadius: "8px",
+                                cursor: "pointer",
+                                backgroundColor: cartao.principal ? "#FFF5F5" : "#FFFFFF",
+                                boxShadow: cartao.principal
+                                    ? "0 4px 8px rgba(0, 0, 0, 0.1)"
+                                    : "none",
+                                "&:hover": {
+                                    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
+                                },
                             }}
-                            onClick={() => handlCartaoPrincipal(cartao)}
                         >
-                            <img
-                                src={handleObterLogomarcaCartao(cartao)}
-                                alt={cartao.tipo}
-                                style={{ width: 50, height: 'auto', marginRight: 16 }}
-                            />
-                            <Box flexGrow={1}>
-                                <Typography
-                                    variant="subtitle1"
-                                    sx={{ fontWeight: 'bold', color: cartao.principal ? '#BF7373' : '#000' }}
-                                >
-                                    Cartão {cartao.tipo}
-                                </Typography>
-                                <Typography variant="body2">{cartao.numero}</Typography>
-                            </Box>
-                            <Radio checked={cartao.principal} />
+                            <CardContent>
+                                <Box display="flex" alignItems="center" justifyContent="space-between">
+                                    <Box display="flex" alignItems="center" gap={1}>
+                                        <img
+                                            src={handleObterLogomarcaCartao(cartao)}
+                                            alt={cartao.tipo}
+                                            style={{ width: 50, height: "auto" }}
+                                        />
+                                        <Box>
+                                            <Typography variant="subtitle1">{cartao.tipo}</Typography>
+                                            <Typography variant="body2">{cartao.numero}</Typography>
+                                        </Box>
+                                    </Box>
+                                    {/* Ícone de lixeira para exclusão */}
+                                    <IconButton
+                                        onClick={(event) => handleExcluirCartao(event, cartao)}
+                                    >
+                                        <DeleteIcon sx={{ color: "#BF7373" }} />
+                                    </IconButton>
+                                </Box>
+                            </CardContent>
                         </Card>
                     ))
                 )}
-            </Box>
+                <Box paddingTop={2}>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
+                        onClick={handleOpenModal}
+                    >
+                        Adicionar
+                    </Button>
+                </Box>
 
-            <Box paddingTop={2}>
-                {
-                    cartoes.length > 0 && (
-                        <Button
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                            sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
-                            onClick={handleExcluirCartao}
-                        >
-                            Excluir
-                        </Button>
-                    )
+                {openModal &&
+                    <Cartao
+                        openModal={openModal}
+                        cartaoEdicao={cartaoEdicao}
+                        onCloseModal={handleCloseModal}
+                        onSalvarCartao={handleSalvarCartao}
+                    />
                 }
-            </Box>
-            <Box paddingTop={2}>
-                <Button
-                    variant="contained"
-                    size="large"
-                    fullWidth
-                    sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
-                    onClick={handleOpenModal}
-                >
-                    Adicionar cartão
-                </Button>
-            </Box>
-
-            <Cartao
-                openModal={openModal}
-                onCloseModal={handleCloseModal}
-                onSalvarCartao={handleSalvarCartao}
-            />
-        </Box>
+            </CardContent>
+        </Card>
     );
 };
 
 export default Pagamento;
-

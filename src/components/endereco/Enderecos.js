@@ -92,7 +92,11 @@ const Enderecos = () => {
         }
     };
 
-    const handleOpenModal = () => setOpenModal(true);
+    const handleOpenModal = () => {
+        setEnderecoEdicao(null);
+        setOpenModal(true);
+    }
+
     const handleCloseModal = () => setOpenModal(false);
 
     const handleAtualizarEnderecoPrincipal = async (endereco) => {
@@ -122,18 +126,17 @@ const Enderecos = () => {
                             onClick={() => handleAtualizarEnderecoPrincipal(endereco)}
                             sx={{
                                 margin: 2,
-                                border:
-                                    endereco.id === enderecoEdicao
-                                        ? "2px solid #BF7373"
-                                        : "1px solid #E0E0E0",
+                                border: endereco.principal
+                                    ? "2px solid #BF7373"
+                                    : "1px solid #E0E0E0",
                                 borderRadius: "8px",
                                 cursor: "pointer",
-                                backgroundColor:
-                                    endereco.id === enderecoEdicao ? "#FFF5F5" : "#FFFFFF",
-                                boxShadow:
-                                    endereco.id === enderecoEdicao
-                                        ? "0 4px 8px rgba(0, 0, 0, 0.1)"
-                                        : "none",
+                                backgroundColor: endereco.principal
+                                    ? "#FFF5F5"
+                                    : "#FFFFFF",
+                                boxShadow: endereco.principal
+                                    ? "0 4px 8px rgba(0, 0, 0, 0.1)"
+                                    : "none",
                                 "&:hover": {
                                     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)",
                                 },

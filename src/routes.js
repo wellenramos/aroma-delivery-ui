@@ -8,11 +8,12 @@ import Login from "./components/login/Login";
 import DetalheProduto from "./components/home/produto/DetalheProduto";
 import Menu from "./components/menu/Menu";
 import EditarPerfil from "./components/perfil/EditarPerfil";
-import MeusPedidos from "./components/meusPedidos/MeusPedidos";
+import MeusPedidos from "./components/pedidos/MeusPedidos";
 import Avaliacao from "./components/avaliacao/Avaliacao";
 import Pagamento from "./components/pagamento/Pagamento";
 import Registrar from "./components/usuario/Registrar";
 import Enderecos from "./components/endereco/Enderecos";
+import Admin from "./components/administrador/Admin";
 
 export const router = createBrowserRouter([
     {
@@ -40,6 +41,7 @@ export const router = createBrowserRouter([
             { path: '/enderecos', element: <Enderecos /> },
             { path: '/pagamento', element: <Pagamento /> },
             // { path: '/acompanhar-pedido', element: <AcompanharPedido /> }
+            { path: '/admin', element: <Admin /> }
         ]
     }
 ]);
