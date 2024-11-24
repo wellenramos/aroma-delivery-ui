@@ -6,29 +6,37 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PersonIcon from '@mui/icons-material/Person';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import {useLocation, useNavigate} from "react-router-dom";
+import {useAppContext} from "../../context/AppContext";
 
 const HomeNavigationBar = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
     const [value, setValue] = React.useState(0);
+    const {setMenuOpen} = useAppContext();
 
     useEffect(() => {
-        if (location.pathname === '/') setValue(0);
-        else if (location.pathname === '/favoritos') setValue(1);
-        else if (location.pathname === '/carrinho') setValue(2);
-        else if (location.pathname === '/meus-pedidos') setValue(3);
-        else if (location.pathname === '/perfil') setValue(4);
+        if (location.pathname === '/') {
+            setValue(0);
+        } else if (location.pathname === '/carrinho'){
+            setValue(1);
+        } else if (location.pathname === '/meus-pedidos') {
+            setValue(2);
+        }
     }, [location.pathname]);
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
-        console.log('newValue', newValue);
-        if (newValue === 0) navigate('/');
-        else if (newValue === 1) navigate('/favoritos');
-        else if (newValue === 2) navigate('/carrinho');
-        else if (newValue === 3) navigate('/meus-pedidos');
-        else if (newValue === 4) navigate('/perfil');
+        if (newValue === 3) {
+            setMenuOpen((prev) => {
+                if (!prev) navigate('/');
+                return true;
+            });
+        } else {
+            setValue(newValue);
+            if (newValue === 0) navigate('/');
+            else if (newValue === 1) navigate('/carrinho');
+            else if (newValue === 2) navigate('/meus-pedidos');
+        }
     };
 
     return (
@@ -43,10 +51,6 @@ const HomeNavigationBar = () => {
                     label="Home"
                     icon={<HomeIcon />}
                 />
-                <BottomNavigationAction
-                    label="Favoritos"
-                    icon={<FavoriteIcon />}
-                />
 
                 <BottomNavigationAction
                     label="Carrinho"
@@ -54,7 +58,7 @@ const HomeNavigationBar = () => {
                 />
 
                 <BottomNavigationAction
-                    label="Meus pedidos"
+                    label="Pedidos"
                     icon={<ReceiptIcon />}
                 />
 

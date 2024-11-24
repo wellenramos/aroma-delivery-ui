@@ -10,7 +10,7 @@ const Layout = () => {
     navigate('/login')
   }
 
-  const esconderBarraDeNavegacao = location.pathname.includes('/produto/') || location.pathname.includes('/perfil/');
+  const esconderBarraDeNavegacao = location.pathname.includes('/produto/');
 
   return (
       <>
