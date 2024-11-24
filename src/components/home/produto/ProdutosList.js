@@ -12,7 +12,7 @@ const ProdutoList = ({produtos}) => {
     }
 
     return (
-        <Box>
+        <Box mb={10}>
             {produtos.length === 0 ? (
                 <Typography variant="subtitle1" color="textSecondary" align="center">
                     Nenhum resultado encontrado.

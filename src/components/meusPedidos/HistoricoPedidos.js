@@ -12,12 +12,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {avaliar} from "../../services/pedidoService";
+import {useAlert} from "../shared/alert/AlertProvider";
 
 const MeusPedidos = ({ historico }) => {
 
-    const navigate = useNavigate();
-
     const [rating, setRating] = useState(0);
+
+    const navigate = useNavigate();
+    const showAlert = useAlert();
 
     const handleAvaliar = async (newValue, pedidoId) => {
         setRating(newValue);
@@ -30,6 +32,7 @@ const MeusPedidos = ({ historico }) => {
         }))
 
         await avaliar(pedidoId, newValue);
+        showAlert("Obrigado pela avaliação!", "success");
     };
 
     const handleVoltarHome = () => {
