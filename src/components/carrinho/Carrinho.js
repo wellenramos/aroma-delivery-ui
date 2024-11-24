@@ -173,7 +173,6 @@ const Carrinho = () => {
                 </List>
                 <Divider />
 
-                {/* Resumo de Valores */}
                 <Box padding={1}>
                     <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Resumo de Valores</Typography>
                     <Box display="flex" justifyContent="space-between" mt={1}>
@@ -184,7 +183,10 @@ const Carrinho = () => {
                     </Box>
                     <Box display="flex" justifyContent="space-between">
                         <Typography variant="body2" color="textSecondary">
-                            { resumo?.itens?.length <= 1 ? `(${resumo?.itens?.length} Item)` : `(${resumo?.itens?.length} Itens)` }
+                            {resumo?.itens
+                                ? resumo?.itens?.length <= 1 ? `(${resumo?.itens?.length} Item)` : `(${resumo?.itens?.length} Itens)`
+                                : '0 Item'
+                            }
                         </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" mt={1}>

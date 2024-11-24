@@ -35,7 +35,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
   }
 
   const handleIrParaEndereco = () => {
-    navigate('/endereco');
+    navigate('/enderecos');
   }
 
   const handleIrParaFavoritos = () => {

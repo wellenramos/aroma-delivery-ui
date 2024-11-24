@@ -50,8 +50,8 @@ const ProdutoList = ({produtos}) => {
                                             {produto.descricao}
                                         </Typography>
                                         <Box display="flex" alignItems="center" ml={1}>
-                                            <StarIcon fontSize="small" color="warning" />
-                                            <Typography variant="body2">{produto?.avaliacao}</Typography>
+                                            {produto?.mediaAvaliacao && <StarIcon fontSize="small" color="warning"/>}
+                                            <Typography variant="body2">{produto?.mediaAvaliacao?.toFixed(2)}</Typography>
                                         </Box>
                                     </Box>
                                 }

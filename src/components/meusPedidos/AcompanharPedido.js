@@ -79,7 +79,7 @@ const AcompanharPedido = ({ pedidos, onRecarregarPedidos }) => {
                                     borderRadius: "8px",
                                 }}
                                 onClick={() => handleConfirmarRecebimento(pedido.id)}
-                                disabled={!pedido.etapas.every((s) => s.completo)}
+                                // disabled={!pedido.etapas.every((s) => s.completo)}
                             >
                                 Confirmar Entrega
                             </Button>
