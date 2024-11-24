@@ -31,7 +31,6 @@ const Login = () => {
   return (
       <LoginContainer maxWidth="sm">
         <LogoBox>
-          {/* Logo */}
           <Box mb={4}>
             <img
                 src='/imagem/logo.png'

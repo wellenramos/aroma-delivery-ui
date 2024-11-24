@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   Box,
   Divider,
@@ -12,17 +12,30 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import PaymentIcon from "@mui/icons-material/Payment";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PersonIcon from "@mui/icons-material/Person";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {useNavigate} from "react-router-dom";
 import Header from "../Header";
 import {useAppContext} from "../../context/AppContext";
+import {jwtDecode} from "jwt-decode";
+import {obterPorLogin} from "../../services/usuarioService";
 
 const Menu = ({menuOpen, toggleMenu}) => {
 
+  const [usuario, setUsuario] = useState();
   const navigate = useNavigate();
   let { limparCarrinhoId } = useAppContext();
+
+  useEffect(() => {
+    const obterUsuario = async () => {
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      const login = decodedToken.sub;
+      const {data} = await obterPorLogin(login);
+      setUsuario(data);
+    };
+    obterUsuario();
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -51,7 +64,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
         <Box sx={{width: 300}} role="presentation" onClick={toggleMenu(false)}
              onKeyDown={toggleMenu(false)}>
           <Header
-              titulo='Menu Principal'
+              titulo={usuario?.nome}
           />
           <List>
             <ListItem onClick={handleIrParaMeusPedidos} button>
@@ -91,16 +104,6 @@ const Menu = ({menuOpen, toggleMenu}) => {
               <ListItemIcon><LocationOnIcon
                   sx={{color: '#BF7373'}}/></ListItemIcon>
               <ListItemText primary="Endereços" primaryTypographyProps={{
-                sx: {
-                  fontWeight: 'bold',
-                  color: '#BF7373'
-                }
-              }}/>
-              <ChevronRightIcon sx={{color: '#BF7373'}}/>
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon><PersonIcon sx={{color: '#BF7373'}}/></ListItemIcon>
-              <ListItemText primary="Perfil" primaryTypographyProps={{
                 sx: {
                   fontWeight: 'bold',
                   color: '#BF7373'

@@ -16,7 +16,6 @@ const PedidoSucesso = () => {
                 padding: 2,
             }}
         >
-            {/* Ícone de Sucesso */}
             <IconButton
                 sx={{
                     backgroundColor: "#BF7373",
@@ -30,12 +29,10 @@ const PedidoSucesso = () => {
                 <CheckCircleIcon sx={{ fontSize: 50 }} />
             </IconButton>
 
-            {/* Título */}
             <Typography variant="h5" sx={{ color: "#BF7373", fontWeight: "bold" }}>
                 Sucesso!
             </Typography>
 
-            {/* Mensagem */}
             <Typography
                 variant="body1"
                 sx={{
@@ -44,7 +41,7 @@ const PedidoSucesso = () => {
                     fontSize: "16px",
                 }}
             >
-                Seu pagamento foi realizado com sucesso! Aroma Delivery agradece o seu pedido!
+                Seu pedido foi realizado com sucesso! Aroma Delivery agradece sua preferência!
             </Typography>
         </Box>
     );

@@ -22,9 +22,12 @@ import {useAlert} from "../shared/alert/AlertProvider";
 import {obterResumoCarrinho} from "../../services/carrinhoService";
 import {useAppContext} from "../../context/AppContext";
 import {realizarPedido} from "../../services/pedidoService";
+import PedidoSucesso from "../pedidos/PedidoSucesso";
 
 const Carrinho = () => {
     const [resumo, setResumo] = useState([]);
+    const [showSuccess, setShowSuccess] = useState(false);
+
     const quantidade = 1;
 
     const showAlert = useAlert();
@@ -70,14 +73,23 @@ const Carrinho = () => {
                 enderecoId: endereco.id,
                 cartaoId: cartao.id
             }
+
             const { data } = await realizarPedido(command);
+
             if (data) {
                 limparCarrinhoId();
-                navigate('/meus-pedidos')
+                setShowSuccess(true);
+                setTimeout(() => {
+                    navigate('/meus-pedidos');
+                }, 2000);
             }
         } catch (error) {
             showAlert(error?.response?.data?.message, "error");
         }
+    }
+
+    if (showSuccess) {
+        return <PedidoSucesso />;
     }
 
     return (
