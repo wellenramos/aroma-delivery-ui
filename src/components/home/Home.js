@@ -1,18 +1,14 @@
 import React, {useState} from 'react';
-import {Container, IconButton} from "@mui/material";
+import {Container} from "@mui/material";
 import BarraPesquisa from "../shared/BarraPesquisa";
 import Produtos from "./produto/Produtos";
 import Menu from "../menu/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
+import {useAppContext} from "../../context/AppContext";
 
 const Home = () => {
-    const [menuOpen, setMenuOpen] = useState(false);
     const [produtos, setProdutos] = useState([]);
     const [categoriaSelecionada, setCategoriaSelecionada] = useState(1);
-
-    const toggleMenu = (open) => () => {
-        setMenuOpen(open);
-    };
+    const {menuOpen, toggleMenu} = useAppContext();
 
     const handleSetProdutos = (produtos) => {
       setProdutos(produtos);
@@ -25,9 +21,6 @@ const Home = () => {
                   onHandleSetProdutos={handleSetProdutos}
                   categoriaSelecionada={categoriaSelecionada}
               />
-              <IconButton onClick={toggleMenu(true)} style={{ marginLeft: '8px' }}>
-                  <MenuIcon />
-              </IconButton>
           </div>
 
           <Produtos

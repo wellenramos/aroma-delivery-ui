@@ -3,11 +3,9 @@ import Home from "./components/home/Home";
 import Favoritos from "./components/favorito/Favoritos";
 import Layout from "./components/Layout";
 import Carrinho from "./components/carrinho/Carrinho";
-import Perfil from "./components/perfil/Perfil";
 import Login from "./components/login/Login";
 import DetalheProduto from "./components/home/produto/DetalheProduto";
 import Menu from "./components/menu/Menu";
-import EditarPerfil from "./components/perfil/EditarPerfil";
 import MeusPedidos from "./components/pedidos/MeusPedidos";
 import Avaliacao from "./components/avaliacao/Avaliacao";
 import Pagamento from "./components/pagamento/Pagamento";
@@ -32,15 +30,12 @@ export const router = createBrowserRouter([
             { path: '/favoritos', element: <Favoritos /> },
             { path: '/carrinho', element: <Carrinho /> },
             { path: '/carrinho/:carrinhoId', element: <Carrinho /> },
-            { path: '/perfil', element: <Perfil /> },
-            { path: '/perfil/:perfilId', element: <EditarPerfil /> },
             { path: '/produto/:produtoId', element: <DetalheProduto /> },
             { path: '/menu', element: <Menu /> },
             { path: '/meus-pedidos', element: <MeusPedidos /> },
             { path: '/avaliacao', element: <Avaliacao /> },
             { path: '/enderecos', element: <Enderecos /> },
             { path: '/pagamento', element: <Pagamento /> },
-            // { path: '/acompanhar-pedido', element: <AcompanharPedido /> }
             { path: '/admin', element: <Admin /> }
         ]
     }
