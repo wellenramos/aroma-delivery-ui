@@ -58,6 +58,10 @@ const Carrinho = () => {
         navigate('/');
     }
 
+    const handleVoltarHome = () => {
+        navigate('/');
+    }
+
     const handleRealizarPedido = async () => {
         try {
             const {itens, endereco, cartao} = resumo;
@@ -80,7 +84,8 @@ const Carrinho = () => {
         <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
                 <Header
-                    titulo='Carrinho'
+                    titulo="Carrinho"
+                    onBack={handleVoltarHome}
                 />
 
                 {/* Itens Adicionados */}
