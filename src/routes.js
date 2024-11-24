@@ -37,7 +37,6 @@ export const router = createBrowserRouter([
             { path: '/avaliacao', element: <Avaliacao /> },
             { path: '/enderecos', element: <Enderecos /> },
             { path: '/pagamento', element: <Pagamento /> },
-            { path: '/admin', element: <Admin /> }
             { path: '/admin', element: <Admin /> },
             { path:"/admin/pedido/:pedidoId", element:<DetalhesPedido /> }
         ]
