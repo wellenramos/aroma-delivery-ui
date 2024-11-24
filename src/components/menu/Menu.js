@@ -35,7 +35,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
   }
 
   const handleIrParaEndereco = () => {
-    navigate('/endereco');
+    navigate('/enderecos');
   }
 
   const handleIrParaFavoritos = () => {
@@ -57,7 +57,7 @@ const Menu = ({menuOpen, toggleMenu}) => {
             <ListItem onClick={handleIrParaMeusPedidos} button>
               <ListItemIcon><ShoppingBagIcon
                   sx={{color: '#BF7373'}}/></ListItemIcon>
-              <ListItemText primary="Meus Pedidos" primaryTypographyProps={{
+              <ListItemText primary="Pedidos" primaryTypographyProps={{
                 sx: {
                   fontWeight: 'bold',
                   color: '#BF7373'
