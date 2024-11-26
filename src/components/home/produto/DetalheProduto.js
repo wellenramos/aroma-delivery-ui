@@ -18,6 +18,7 @@ import {obterProdutoPorId} from "../../../services/produtoService";
 import {useAlert} from "../../shared/alert/AlertProvider";
 import {adicionarItem} from "../../../services/carrinhoService";
 import {useAppContext} from "../../../context/AppContext";
+import {favoritar, obterFavorito} from "../../../services/favoritoService";
 
 const TamanhosCopoEnum = {
   PEQUENO: 'PEQUENO',
@@ -31,6 +32,7 @@ const DetalheProduto = () => {
   const [observacao, setObservacao] = useState('');
   const [tamanhoCopo, setTamanhoCopo] = useState(TamanhosCopoEnum.PEQUENO);
   const [adicionaisSelecionados, setAdicionaisSelecionados] = useState([]);
+  const [favoritoSelecionado, setFavoritoSelecionado] = useState(false)
 
   const precoProduto = produto?.preco;
   const somaAdicionais = adicionaisSelecionados.reduce((soma, adicional) => soma + adicional.preco, 0);
@@ -49,6 +51,9 @@ const DetalheProduto = () => {
       try {
         const {data} = await obterProdutoPorId(produtoId);
         setProduto(data);
+
+        const result = await obterFavorito(produtoId);
+        setFavoritoSelecionado(result.data !== "" && result.data !== null);
       } catch (error) {
         showAlert("Erro ao buscar o produto", "error");
       }
@@ -63,8 +68,16 @@ const DetalheProduto = () => {
     navigate("/");
   };
 
-  const handleFavoritar = () => {
-    console.log("Adicionar aos favoritos");
+  const handleFavoritar = async (produtoId) => {
+    try {
+      const novoEstadoFavorito = !favoritoSelecionado;
+      setFavoritoSelecionado(novoEstadoFavorito);
+      await favoritar(produtoId, novoEstadoFavorito);
+      showAlert(novoEstadoFavorito ? "Produto favoritado com sucesso!" : "Produto removido dos favoritos.", "success");
+    } catch (error) {
+      setFavoritoSelecionado(!favoritoSelecionado);
+      showAlert("Erro ao atualizar favorito. Tente novamente.", "error");
+    }
   };
 
   const handleAdicionalChange = (adicional) => {
@@ -123,7 +136,8 @@ const DetalheProduto = () => {
           <Header
               titulo='Detalhe'
               onBack={handleVoltarHome}
-              onFavorite={handleFavoritar}
+              onFavorite={() => handleFavoritar(produto.id)}
+              favorito={favoritoSelecionado}
           />
 
           {/* Imagem do Produto */}
@@ -138,7 +152,6 @@ const DetalheProduto = () => {
                    style={{width: '300px', height: 'auto'}}/>
             </Box>
 
-            {/* Detalhes do Produto */}
             <Box sx={{
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
               padding: 3,

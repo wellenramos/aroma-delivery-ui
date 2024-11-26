@@ -1,68 +1,74 @@
-import React from 'react';
-import {
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Typography,
-    IconButton,
-    Avatar,
-    Box,
-    Divider, CardContent, Card
-} from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import React, {useEffect, useState} from 'react';
+import {Box, Card, CardContent, Divider, Typography} from '@mui/material';
 import Header from "../Header";
-
-const favoriteItems = [
-    {
-        id: 1,
-        name: "Cappuccino Clássico",
-        description: "Espresso, leite vaporizado, espuma de leite",
-        imageUrl: "https://link-para-imagem.com/imagem1.png",
-    },
-    {
-        id: 2,
-        name: "Cappuccino Clássico",
-        description: "Espresso, leite vaporizado, espuma de leite",
-        imageUrl: "https://link-para-imagem.com/imagem2.png",
-    },
-    // Adicione mais itens conforme necessário
-];
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "../shared/alert/AlertProvider";
+import {obterFavoritos} from "../../services/favoritoService";
 
 const Favoritos = () => {
+
+    const [favoritos, setFavoritos] = useState([]);
+
+    const navigate = useNavigate();
+    const showAlert = useAlert();
+
+    const fetchFavoritos = async () => {
+        try {
+            const { data } = await obterFavoritos();
+                setFavoritos(data);
+        } catch (error) {
+            showAlert("Erro ao buscar favoritos", "error");
+        }
+    };
+
+    useEffect( () => {
+        fetchFavoritos();
+    }, []);
+
+    const handleVoltarHome = () => {
+        navigate("/");
+    };
+
     return (
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}} >
+        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none' }}>
             <CardContent sx={{ padding: 0 }}>
                 <Header
-                    titulo='Favoritos'
+                    titulo="Meus favoritos"
+                    onBack={handleVoltarHome}
                 />
-                <Box padding={2}>
-                    <List>
-                        {favoriteItems.map((item) => (
-                            <ListItem
-                                key={item.id}
-                                disableGutters
-                                secondaryAction={
-                                    <IconButton edge="end" aria-label="favorite" color="secondary">
-                                        <FavoriteIcon sx={{color: '#BF7373'}}/>
-                                    </IconButton>
-                                }
-                            >
-                                <ListItemAvatar>
-                                    <Avatar src={item.imageUrl} alt={item.name}/>
-                                </ListItemAvatar>
-                                <ListItemText
-                                    primary={item.name}
-                                    secondary={item.description}
-                                    primaryTypographyProps={{style: {fontWeight: 'bold'}}}
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
+                <Divider/>
+                <CardContent sx={{padding: 0}}>
+                    <Box sx={{padding: 2}}>
+                        {favoritos.length === 0 ? (
+                            <Typography variant="body1" sx={{textAlign: 'center', color: '#BF7373', marginTop: 2}}>
+                                Nenhum resultado encontrado.
+                            </Typography>
+                        ) : (
+                            favoritos.map((favorito) => (
+                                <Box key={favorito.id} mb={2} sx={{width: '100%', paddingX: 2}}>
+                                    <Box display="column" alignItems="center">
+                                        <Box display="flex" alignItems="center">
+                                            <FavoriteIcon sx={{color: "red"}} fontSize="small"/>
+                                            <Typography variant="body1" sx={{marginLeft: '5px'}}>
+                                                {favorito.nome}
+                                            </Typography>
+                                        </Box>
+                                        <Box flexGrow={1}>
+                                            <Typography variant="body2">
+                                                {favorito.descricao}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Divider/>
+                                </Box>
+                            ))
+                    )}
                 </Box>
             </CardContent>
-        </Card>
-    );
+        </CardContent>
+    </Card>
+);
 };
 
 export default Favoritos;

@@ -1,8 +1,10 @@
 import React from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
-const Header = ({ titulo, onBack, icon }) => {
+const Header = ({ titulo, onBack, onFavorite, favorito }) => {
     return (
         <Box
             sx={{
@@ -15,7 +17,6 @@ const Header = ({ titulo, onBack, icon }) => {
                 position: "relative",
             }}
         >
-            {/* Botão de Voltar (opcional) */}
             {onBack && (
                 <IconButton
                     onClick={onBack}
@@ -30,7 +31,6 @@ const Header = ({ titulo, onBack, icon }) => {
                 </IconButton>
             )}
 
-            {/* Título centralizado */}
             <Typography
                 variant="h6"
                 sx={{
@@ -43,18 +43,17 @@ const Header = ({ titulo, onBack, icon }) => {
                 {titulo}
             </Typography>
 
-            {/* Ícone adicional (opcional) */}
-            {icon && (
+            {onFavorite && (
                 <IconButton
-                    onClick={icon.onClick}
+                    onClick={onFavorite}
                     sx={{
                         position: "absolute",
                         right: "16px",
                         zIndex: 1,
-                        color: "#FFF",
+                        color: "#FFF"
                     }}
                 >
-                    {icon.component}
+                  {favorito ? <FavoriteIcon /> : <FavoriteBorderIcon/>}
                 </IconButton>
             )}
         </Box>
