@@ -19,7 +19,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {useNavigate} from "react-router-dom";
 import Header from "../Header";
 import {useAlert} from "../shared/alert/AlertProvider";
-import {obterResumoCarrinho} from "../../services/carrinhoService";
+import {
+    atualizarQuantidadeItens,
+    obterResumoCarrinho,
+    removerItemDoCarrinho
+} from "../../services/carrinhoService";
 import {useAppContext} from "../../context/AppContext";
 import {realizarPedido} from "../../services/pedidoService";
 import PedidoSucesso from "../pedidos/PedidoSucesso";
@@ -61,8 +65,14 @@ const Carrinho = () => {
         navigate('/');
     }
 
-    const handleVoltarHome = () => {
-        navigate('/');
+    const handleVoltar = () => {
+        if (resumo.itens.length >= 1) {
+            const last = resumo.itens.at(-1);
+            navigate(`/produto/${last.produtoId}`);
+        } else {
+            handleIrParaHome();
+        }
+
     }
 
     const handleRealizarPedido = async () => {
@@ -88,6 +98,52 @@ const Carrinho = () => {
         }
     }
 
+    const handleRemoverItemCarrinho = async (item) => {
+        try {
+            await removerItemDoCarrinho(carrinhoId, item.id);
+            setResumo((prevResumo) => ({
+                ...prevResumo,
+                itens: prevResumo?.itens.filter(it => it.id !== item.id),
+            }));
+        } catch (error) {
+            showAlert("Erro ao buscar o produto", "error");
+        }
+    }
+
+    const handleDiminuirQuantidadeItem = async (item) => {
+        try {
+            if (item.quantidade > 1) {
+                const novaQuantidade = item.quantidade - 1;
+                const {data} = await atualizarQuantidadeItens(carrinhoId, item.id, novaQuantidade);
+                setResumo((prevResumo) => ({
+                    ...prevResumo,
+                    subTotal: data.subTotal,
+                    valorTotal: data.valorTotal,
+                    itens: prevResumo.itens.map((it) => it.id === item.id ? data.item : it),
+                }));
+            } else {
+                showAlert("A quantidade mínima é 1", "warning");
+            }
+        } catch (error) {
+            showAlert("Erro ao atualizar a quantidade do item", "error");
+        }
+    }
+
+    const handleAumentarQuantidadeItem = async (item) => {
+        try {
+            const novaQuantidade = item.quantidade + 1;
+            const {data} = await atualizarQuantidadeItens(carrinhoId, item.id, novaQuantidade);
+            setResumo((prevResumo) => ({
+                ...prevResumo,
+                subTotal: data.subTotal,
+                valorTotal: data.valorTotal,
+                itens: prevResumo.itens.map((it) => it.id === item.id ? data.item : it),
+            }));
+        } catch (error) {
+            showAlert("Erro ao atualizar a quantidade do item", "error");
+        }
+    }
+
     if (showSuccess) {
         return <PedidoSucesso />;
     }
@@ -97,10 +153,9 @@ const Carrinho = () => {
             <CardContent sx={{ padding: 0 }}>
                 <Header
                     titulo="Carrinho"
-                    onBack={handleVoltarHome}
+                    onBack={handleVoltar}
                 />
 
-                {/* Itens Adicionados */}
                 <Box padding={2}>
                     <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
                         Itens Adicionados
@@ -118,18 +173,15 @@ const Carrinho = () => {
                                         R$ {item?.valorTotal.toFixed(2)}
                                     </Typography>
                                     <Box display="flex" alignItems="center">
-                                        <IconButton size="small">
-                                            <EditIcon fontSize="small" sx={{ color: '#BF7373' }} />
-                                        </IconButton>
-                                        <IconButton size="small">
+                                        <IconButton size="small" onClick={() => handleRemoverItemCarrinho(item)}>
                                             <DeleteIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                         </IconButton>
                                         <Box display="flex" alignItems="center" border="1px solid #BF7373" borderRadius="4px" paddingX={0.5}>
-                                            <IconButton size="small">
+                                            <IconButton size="small" onClick={() => handleDiminuirQuantidadeItem(item)}>
                                                 <RemoveIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                             </IconButton>
-                                            <Typography variant="body2">{quantidade}</Typography>
-                                            <IconButton size="small">
+                                            <Typography variant="body2">{item.quantidade}</Typography>
+                                            <IconButton size="small" onClick={() => handleAumentarQuantidadeItem(item)}>
                                                 <AddIcon fontSize="small" sx={{ color: '#BF7373' }} />
                                             </IconButton>
                                         </Box>
