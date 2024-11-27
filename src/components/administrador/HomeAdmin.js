@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Card,
-    CardContent, Container,
+    CardContent,
+    Container,
     List,
     ListItem,
     ListItemText,
@@ -12,7 +12,7 @@ import {
     Typography,
 } from "@mui/material";
 import Header from "../Header";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {listarPedidosPorStatus} from "../../services/pedidoService";
 import Menu from "../administrador/menu/Menu";
 import {useAppContext} from "../../context/AppContext";
@@ -21,7 +21,7 @@ const HomeAdmin = () => {
     const [value, setValue] = useState(0); // Controla a aba ativa
     const [pedidos, setPedidos] = useState([]);
     const navigate = useNavigate();
-    const {menuOpen, toggleMenu} = useAppContext();
+    const { menuOpen, toggleMenu } = useAppContext();
 
     const statusPorAba = ["PENDENTE", "PROCESSANDO", "ENTREGUE"];
 
@@ -92,11 +92,16 @@ const HomeAdmin = () => {
                                                 </Box>
                                             }
                                             secondary={
-                                                <Box display="flex" alignItems="center">
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        {pedido.usuarioSolicitante}
-                                                    </Typography>
-                                                </Box>
+                                                <>
+                                                    <Box display="flex" justifyContent="space-between">
+                                                        <Typography variant="body2" color="textSecondary">
+                                                            Solicitante: {pedido.usuarioSolicitante}
+                                                        </Typography>
+                                                        <Typography variant="body2" color="textSecondary">
+                                                            Data: {pedido.dataPedido}
+                                                        </Typography>
+                                                    </Box>
+                                                </>
                                             }
                                         />
                                     </ListItem>

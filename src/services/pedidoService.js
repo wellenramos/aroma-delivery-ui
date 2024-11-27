@@ -18,7 +18,7 @@ export const avaliar = async (pedidoId, nota) => {
 
 
 export const listarPedidosPorStatus = async (status) => {
-    return await api.get("/admin/pedidos", {
+    return await api.get("/pedidos/admin/pedidos", {
         params: { status },
     });
 };
