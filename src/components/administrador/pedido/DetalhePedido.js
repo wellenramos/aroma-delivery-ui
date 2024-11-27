@@ -106,7 +106,7 @@ const DetalhesPedido = () => {
   }
 
   return (
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Card sx={{ boxShadow: 3, margin: "16px auto" }}>
           <CardContent>
             <Box display="flex" alignItems="center" mb={2}>
