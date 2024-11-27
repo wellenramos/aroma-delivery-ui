@@ -14,6 +14,8 @@ import Enderecos from "./components/cliente/endereco/Enderecos";
 import HomeAdmin from "./components/administrador/HomeAdmin";
 import DetalhesPedido from "./components/administrador/pedido/DetalhePedido";
 import Menu from "./components/cliente/menu/Menu";
+import Produtos from "./components/administrador/produto/Produtos";
+import Cadastro from "./components/administrador/produto/Cadastro";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +33,9 @@ export const router = createBrowserRouter([
             { path: '/admin', element: <HomeAdmin /> },
             { path: '/admin/menu', element: <MenuAdmin /> },
             { path: '/admin/pedido/:pedidoId', element: <DetalhesPedido /> },
+            { path: '/admin/produtos', element: <Produtos /> },
+            { path: '/admin/cadastro', element: <Cadastro /> },
+
         ]
     },
     {
