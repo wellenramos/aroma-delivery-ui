@@ -5,15 +5,13 @@ import {
     Card,
     CardContent,
     Divider,
-    IconButton,
     Typography,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import {confirmarRecebimento} from "../../services/pedidoService";
+import {confirmarRecebimento} from "../../../services/pedidoService";
 import LinhaDoTempo from "./LinhaDoTempo";
 import {useNavigate} from "react-router-dom";
-import {useAlert} from "../shared/alert/AlertProvider";
-import Header from "../Header";
+import {useAlert} from "../../shared/alert/AlertProvider";
+import Header from "../../Header";
 
 const AcompanharPedido = ({pedidos, onRecarregarPedidos}) => {
 

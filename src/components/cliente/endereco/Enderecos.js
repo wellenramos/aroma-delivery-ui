@@ -11,15 +11,15 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Header from "../Header";
+import Header from "../../Header";
 import {useNavigate} from "react-router-dom";
-import {useAlert} from "../shared/alert/AlertProvider";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import {
     excluir,
     marcarEnderecoComoPrincipal,
     obterEnderecos,
     salvar
-} from "../../services/enderecoService";
+} from "../../../services/enderecoService";
 import HomeIcon from "@mui/icons-material/Home";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Endereco from "./Endereco";

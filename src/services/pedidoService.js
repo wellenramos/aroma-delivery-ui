@@ -15,3 +15,10 @@ export const confirmarRecebimento = async (pedidoId) => {
 export const avaliar = async (pedidoId, nota) => {
     return await api.put(`/pedidos/${pedidoId}/avaliar?nota=${nota}`);
 };
+
+
+export const listarPedidosPorStatus = async (status) => {
+    return await api.get("/admin/pedidos", {
+        params: { status },
+    });
+};

@@ -12,20 +12,19 @@ import {
     Typography
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {useNavigate} from "react-router-dom";
-import Header from "../Header";
-import {useAlert} from "../shared/alert/AlertProvider";
+import Header from "../../Header";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import {
     atualizarQuantidadeItens,
     obterResumoCarrinho,
     removerItemDoCarrinho
-} from "../../services/carrinhoService";
-import {useAppContext} from "../../context/AppContext";
-import {realizarPedido} from "../../services/pedidoService";
+} from "../../../services/carrinhoService";
+import {useAppContext} from "../../../context/AppContext";
+import {realizarPedido} from "../../../services/pedidoService";
 import PedidoSucesso from "../pedidos/PedidoSucesso";
 
 const Carrinho = () => {

@@ -13,12 +13,12 @@ import StarIcon from '@mui/icons-material/Star';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {useNavigate, useParams} from "react-router-dom";
-import Header from "../../Header";
-import {obterProdutoPorId} from "../../../services/produtoService";
-import {useAlert} from "../../shared/alert/AlertProvider";
-import {adicionarItem} from "../../../services/carrinhoService";
-import {useAppContext} from "../../../context/AppContext";
-import {favoritar, obterFavorito} from "../../../services/favoritoService";
+import Header from "../../../Header";
+import {obterProdutoPorId} from "../../../../services/produtoService";
+import {useAlert} from "../../../shared/alert/AlertProvider";
+import {adicionarItem} from "../../../../services/carrinhoService";
+import {useAppContext} from "../../../../context/AppContext";
+import {favoritar, obterFavorito} from "../../../../services/favoritoService";
 
 const TamanhosCopoEnum = {
   PEQUENO: 'PEQUENO',

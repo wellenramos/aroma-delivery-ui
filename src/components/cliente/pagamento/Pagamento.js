@@ -9,15 +9,15 @@ import {
     Radio
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Header from "../Header";
+import Header from "../../Header";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../shared/alert/AlertProvider";
+import { useAlert } from "../../shared/alert/AlertProvider";
 import {
     excluir,
     marcarCartaoPrincipal,
     obterCartoes,
     salvar
-} from "../../services/cartaoService";
+} from "../../../services/cartaoService";
 import Cartao from "./Cartao";
 
 const Pagamento = () => {

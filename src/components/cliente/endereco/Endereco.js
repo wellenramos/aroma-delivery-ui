@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {useNavigate} from 'react-router-dom';
-import {consultarEnderecoPorCep} from "../../services/enderecoService";
-import {useAlert} from "../shared/alert/AlertProvider";
+import {consultarEnderecoPorCep} from "../../../services/enderecoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
 
 const enderecoInit = {
     cep: '',

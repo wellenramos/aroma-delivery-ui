@@ -4,16 +4,14 @@ import {
     Card,
     CardContent,
     Divider,
-    IconButton,
     Rating,
     Typography
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {useNavigate} from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import {avaliar} from "../../services/pedidoService";
-import {useAlert} from "../shared/alert/AlertProvider";
-import Header from "../Header";
+import {avaliar} from "../../../services/pedidoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
+import Header from "../../Header";
 
 const MeusPedidos = ({historico}) => {
 

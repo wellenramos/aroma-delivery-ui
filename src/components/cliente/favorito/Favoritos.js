@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Card, CardContent, Divider, Typography} from '@mui/material';
-import Header from "../Header";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import {useNavigate} from "react-router-dom";
-import {useAlert} from "../shared/alert/AlertProvider";
-import {obterFavoritos} from "../../services/favoritoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
+import {obterFavoritos} from "../../../services/favoritoService";
+import Header from "../../Header";
 
 const Favoritos = () => {
 

@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Card, CardContent} from "@mui/material";
 import AcompanharPedido from "./AcompanharPedido";
 import HistoricoPedidos from "./HistoricoPedidos";
-import {useAlert} from "../shared/alert/AlertProvider";
-import {acompanhar} from "../../services/pedidoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
+import {acompanhar} from "../../../services/pedidoService";
 
 const MeusPedidos = () => {
 

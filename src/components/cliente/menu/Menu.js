@@ -15,10 +15,10 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {useNavigate} from "react-router-dom";
-import Header from "../Header";
-import {useAppContext} from "../../context/AppContext";
 import {jwtDecode} from "jwt-decode";
-import {obterPorLogin} from "../../services/usuarioService";
+import {useAppContext} from "../../../context/AppContext";
+import {obterPorLogin} from "../../../services/usuarioService";
+import Header from "../../Header";
 
 const Menu = ({menuOpen, toggleMenu}) => {
 
@@ -39,8 +39,9 @@ const Menu = ({menuOpen, toggleMenu}) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem('role');
     limparCarrinhoId()
+    navigate('/login');
   }
 
   const handleIrParaMeusPedidos = () => {

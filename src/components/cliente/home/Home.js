@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Container} from "@mui/material";
-import BarraPesquisa from "../shared/BarraPesquisa";
+import BarraPesquisa from "../../shared/BarraPesquisa";
 import Produtos from "./produto/Produtos";
 import Menu from "../menu/Menu";
-import {useAppContext} from "../../context/AppContext";
+import {useAppContext} from "../../../context/AppContext";
 
 const Home = () => {
     const [produtos, setProdutos] = useState([]);

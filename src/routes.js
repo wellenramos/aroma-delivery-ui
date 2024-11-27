@@ -1,18 +1,19 @@
 import {createBrowserRouter} from "react-router-dom";
-import Home from "./components/home/Home";
-import Favoritos from "./components/favorito/Favoritos";
+import Home from "./components/cliente/home/Home";
+import Favoritos from "./components/cliente/favorito/Favoritos";
 import Layout from "./components/Layout";
-import Carrinho from "./components/carrinho/Carrinho";
+import Carrinho from "./components/cliente/carrinho/Carrinho";
 import Login from "./components/login/Login";
-import DetalheProduto from "./components/home/produto/DetalheProduto";
-import Menu from "./components/menu/Menu";
-import MeusPedidos from "./components/pedidos/MeusPedidos";
-import Avaliacao from "./components/avaliacao/Avaliacao";
-import Pagamento from "./components/pagamento/Pagamento";
+import DetalheProduto from "./components/cliente/home/produto/DetalheProduto";
+import MenuAdmin from "./components/administrador/menu/Menu";
+import MeusPedidos from "./components/cliente/pedidos/MeusPedidos";
+import Avaliacao from "./components/cliente/avaliacao/Avaliacao";
+import Pagamento from "./components/cliente/pagamento/Pagamento";
 import Registrar from "./components/usuario/Registrar";
-import Enderecos from "./components/endereco/Enderecos";
-import Admin from "./components/administrador/Admin";
-import DetalhesPedido from "./components/administrador/DetalhePedido";
+import Enderecos from "./components/cliente/endereco/Enderecos";
+import HomeAdmin from "./components/administrador/HomeAdmin";
+import DetalhesPedido from "./components/administrador/pedido/DetalhePedido";
+import Menu from "./components/cliente/menu/Menu";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +23,15 @@ export const router = createBrowserRouter([
     {
         path: "/registrar",
         element: <Registrar />,
+    },
+    {
+        path: '/admin',
+        element: <Layout />,
+        children: [
+            { path: '/admin', element: <HomeAdmin /> },
+            { path: '/admin/menu', element: <MenuAdmin /> },
+            { path: '/admin/pedido/:pedidoId', element: <DetalhesPedido /> },
+        ]
     },
     {
         path: '/',
@@ -36,9 +46,7 @@ export const router = createBrowserRouter([
             { path: '/meus-pedidos', element: <MeusPedidos /> },
             { path: '/avaliacao', element: <Avaliacao /> },
             { path: '/enderecos', element: <Enderecos /> },
-            { path: '/pagamento', element: <Pagamento /> },
-            { path: '/admin', element: <Admin /> },
-            { path:"/admin/pedido/:pedidoId", element:<DetalhesPedido /> }
+            { path: '/pagamento', element: <Pagamento /> }
         ]
     }
 ]);

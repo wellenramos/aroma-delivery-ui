@@ -4,6 +4,10 @@ import {Entrar, LoginContainer, LogoBox} from "./style";
 import {autenticar} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
 import {useAlert} from "../shared/alert/AlertProvider";
+import {jwtDecode} from "jwt-decode";
+
+export const ROLE_ADMIN = 'ROLE_ADMIN';
+export const ROLE_CLIENTE = 'ROLE_CLIENTE';
 
 const Login = () => {
   const [login, setLogin] = useState('');
@@ -19,9 +23,20 @@ const Login = () => {
       const {data} = await autenticar(login, senha);
 
       if (data.token) {
+        const decodedToken = jwtDecode(data.token);
+        const role = decodedToken.roles[0];
+
+        if (role === ROLE_ADMIN) {
+          navigate("/admin");
+        } else if (role === ROLE_CLIENTE) {
+          navigate("/");
+        } else {
+          showAlert("Permissão inválida.", "error");
+        }
+
         localStorage.setItem('token', data.token);
+        localStorage.setItem('role', role);
         setError('');
-        navigate('/');
       }
     } catch (error) {
       showAlert("Usuário ou senha incorretos", "error");

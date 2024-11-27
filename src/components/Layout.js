@@ -1,5 +1,5 @@
 import {Outlet, useLocation, useNavigate} from 'react-router-dom';
-import HomeNavigationBar from "./home/HomeNavigationBar";
+import HomeNavigationBar from "./shared/HomeNavigationBar";
 
 const Layout = () => {
   const location = useLocation();
