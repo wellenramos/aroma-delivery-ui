@@ -34,7 +34,7 @@ const Registrar = () => {
     }
 
     cadastrar(formulario);
-    showAlert("Cadastro realizado com sucesso", "success");
+    showAlert("Produto realizado com sucesso", "success");
   };
 
   const handleVerificarUsuarioCadastrado = async () => {

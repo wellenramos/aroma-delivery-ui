@@ -45,3 +45,15 @@ export const buscarProdutosPorNome = async (search) => {
         throw error.response ? error.response.data : error;
     }
 };
+
+export const salvarProduto = async (produto) => {
+    return await api.post('/produtos', produto);
+};
+
+export const obterAdicionais = async () => {
+    return await api.get('/produtos/adicionais');
+};
+
+export const excluirProduto = async (idProduto) => {
+    return await api.delete(`/produtos/${idProduto}`);
+};

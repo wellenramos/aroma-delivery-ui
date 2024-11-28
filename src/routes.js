@@ -15,7 +15,7 @@ import HomeAdmin from "./components/administrador/HomeAdmin";
 import DetalhesPedido from "./components/administrador/pedido/DetalhePedido";
 import Menu from "./components/cliente/menu/Menu";
 import Produtos from "./components/administrador/produto/Produtos";
-import Cadastro from "./components/administrador/produto/Cadastro";
+import Produto from "./components/administrador/produto/Produto";
 
 export const router = createBrowserRouter([
     {
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
             { path: '/admin/menu', element: <MenuAdmin /> },
             { path: '/admin/pedido/:pedidoId', element: <DetalhesPedido /> },
             { path: '/admin/produtos', element: <Produtos /> },
-            { path: '/admin/cadastro', element: <Cadastro /> },
+            { path: '/admin/cadastrar', element: <Produto /> },
 
         ]
     },
