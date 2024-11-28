@@ -29,7 +29,7 @@ const Login = () => {
         if (role === ROLE_ADMIN) {
           navigate("/admin");
         } else if (role === ROLE_CLIENTE) {
-          navigate("/");
+          navigate("/home");
         } else {
           showAlert("Permissão inválida.", "error");
         }
@@ -44,7 +44,7 @@ const Login = () => {
   };
 
   return (
-      <LoginContainer maxWidth="sm">
+      <LoginContainer maxWidth="md">
         <LogoBox>
           <Box mb={4}>
             <img

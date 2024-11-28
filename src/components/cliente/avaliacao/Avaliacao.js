@@ -17,11 +17,11 @@ const Avaliacao = () => {
     const navigate = useNavigate();
 
     const handleVoltarMeusPedidos = () => {
-        navigate('/meus-pedidos');
+        navigate('/home/meus-pedidos');
     }
 
     return(
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
+        <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" padding={2}>
                     <IconButton onClick={handleVoltarMeusPedidos}>

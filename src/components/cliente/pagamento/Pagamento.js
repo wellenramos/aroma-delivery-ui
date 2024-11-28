@@ -99,7 +99,7 @@ const Pagamento = () => {
     const handleCloseModal = () => setOpenModal(false);
 
     return (
-        <Card sx={{ maxWidth: "sm", margin: "0 auto", boxShadow: "none" }}>
+        <Card sx={{ maxWidth: "md", margin: "0 auto", boxShadow: "none" }}>
             <CardContent sx={{ padding: 0 }}>
                 <Header titulo="Meus Cartões" onBack={handleVoltar} />
 
@@ -143,7 +143,6 @@ const Pagamento = () => {
                                             <Typography variant="body2">{cartao.numero}</Typography>
                                         </Box>
                                     </Box>
-                                    {/* Ícone de lixeira para exclusão */}
                                     <IconButton
                                         onClick={(event) => handleExcluirCartao(event, cartao)}
                                     >

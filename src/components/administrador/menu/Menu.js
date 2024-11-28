@@ -35,11 +35,11 @@ const Menu = ({menuOpen, toggleMenu}) => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
-    navigate('/login');
+    navigate('/login', { replace: true });
   }
 
   const handleIrParaProdutos = () => {
-    navigate('/produtos');
+    navigate('/admin/produtos');
   }
 
 

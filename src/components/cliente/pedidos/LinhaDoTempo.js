@@ -1,7 +1,7 @@
+import React from "react";
 import {Box, Typography} from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import React from "react";
 
 const LinhaDoTempo = ({etapas}) => {
   return (

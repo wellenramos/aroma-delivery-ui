@@ -35,11 +35,11 @@ const MeusPedidos = ({historico}) => {
     };
 
     const handleVoltarHome = () => {
-        navigate("/");
+        navigate("/home");
     };
 
     return (
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none' }}>
+        <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none' }}>
             <CardContent sx={{ padding: 0 }}>
                 <Header
                     titulo="Histórico de Pedidos"

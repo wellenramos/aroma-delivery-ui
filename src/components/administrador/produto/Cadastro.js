@@ -18,7 +18,7 @@ const Cadastro = () => {
     const navigate = useNavigate();
 
     const handleVoltarHome = () => {
-        navigate('/');
+        navigate('/admin');
     };
 
     const adicionaisOpcoes = [

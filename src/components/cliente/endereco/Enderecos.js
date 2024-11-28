@@ -48,7 +48,7 @@ const Enderecos = () => {
     }, []);
 
     const handleVoltarCarrinho = () => {
-        navigate('/carrinho');
+        navigate('/home/carrinho');
     }
 
     const handleMenuClose = () => {
@@ -104,12 +104,12 @@ const Enderecos = () => {
 
         const {data} = await marcarEnderecoComoPrincipal(endereco.id);
         if (data) {
-            navigate("/carrinho")
+            navigate("/home/carrinho")
         }
     }
 
     return (
-        <Card sx={{ maxWidth: "sm", margin: "0 auto", boxShadow: "none" }}>
+        <Card sx={{ maxWidth: "md", margin: "0 auto", boxShadow: "none" }}>
             <CardContent sx={{ padding: 0 }}>
                 <Header titulo="Meus Endereços" onBack={handleVoltarCarrinho} />
 

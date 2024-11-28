@@ -101,7 +101,6 @@ const Endereco = ({openModal, onCloseModal, onSalvarEndereco, enderecoEdicao}) =
                     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)"
                 }}
             >
-                {/* Header */}
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <IconButton onClick={handleVoltar}>
                         <ArrowBackIcon color="primary" />
@@ -114,7 +113,6 @@ const Endereco = ({openModal, onCloseModal, onSalvarEndereco, enderecoEdicao}) =
                 <Divider />
 
                 <Box mt={2}>
-                    {/* CEP e Número na mesma linha */}
                     <Box display="flex" gap={2} mb={2}>
                         <TextField
                             label="CEP"
@@ -154,7 +152,6 @@ const Endereco = ({openModal, onCloseModal, onSalvarEndereco, enderecoEdicao}) =
                         </Box>
                     ))}
 
-                    {/* Cidade e Estado na mesma linha */}
                     <Box display="flex" gap={2} mt={2}>
                         <TextField
                             label="Cidade"

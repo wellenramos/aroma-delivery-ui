@@ -8,7 +8,7 @@ const ProdutoList = ({produtos}) => {
     const navigate = useNavigate();
 
     const handleIrParaDetalhe = (produtoId) => {
-        navigate(`/produto/${produtoId}`);
+        navigate(`/home/produto/${produtoId}`);
     }
 
     return (

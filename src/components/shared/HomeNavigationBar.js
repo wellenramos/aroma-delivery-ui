@@ -19,10 +19,10 @@ const HomeNavigationBar = () => {
 
     useEffect(() => {
         if (role !== ROLE_ADMIN) {
-            if (location.pathname === '/') setValue(0);
+            if (location.pathname === '/home') setValue(0);
             else if (location.pathname === '/carrinho') setValue(1);
             else if (location.pathname === '/meus-pedidos') setValue(2);
-            else if (location.pathname === '/') setValue(3);
+            else if (location.pathname === '/home') setValue(3);
         } else {
             if (location.pathname === '/admin') setValue(0);
             else if (location.pathname === '/admin/produtos') setValue(1);
@@ -45,13 +45,13 @@ const HomeNavigationBar = () => {
         } else {
             if (newValue === 3) {
                 setMenuOpen((prev) => {
-                    if (!prev) navigate('/');
+                    if (!prev) navigate('/home');
                     return true;
                 });
             } else {
-                if (newValue === 0) navigate('/');
-                else if (newValue === 1) navigate('/carrinho');
-                else if (newValue === 2) navigate('/meus-pedidos');
+                if (newValue === 0) navigate('/home');
+                else if (newValue === 1) navigate('/home/carrinho');
+                else if (newValue === 2) navigate('/home/meus-pedidos');
             }
         }
     };
