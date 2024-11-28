@@ -19,7 +19,7 @@ const AcompanharPedido = ({pedidos, onRecarregarPedidos}) => {
     const showAlert = useAlert();
 
     const handleVoltarHome = () => {
-        navigate("/");
+        navigate("/home");
     };
 
     const handleConfirmarRecebimento = async (pedidoId) => {
@@ -32,7 +32,7 @@ const AcompanharPedido = ({pedidos, onRecarregarPedidos}) => {
 
     return (
         <Box>
-            <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none' }}>
+            <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none' }}>
                 <CardContent sx={{ padding: 0 }}>
                     <Header
                         titulo="Acompanhar Pedido"

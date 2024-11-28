@@ -34,7 +34,7 @@ const MeusPedidos = () => {
     }
 
     return(
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
+        <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none'}}>
             <CardContent sx={{ padding: 0 }}>
                 {pedidos.length >= 1
                     ? (<AcompanharPedido pedidos={pedidos} onRecarregarPedidos={handleRecarregarPedidos}/>)

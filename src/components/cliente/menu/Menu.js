@@ -45,19 +45,19 @@ const Menu = ({menuOpen, toggleMenu}) => {
   }
 
   const handleIrParaMeusPedidos = () => {
-    navigate('/meus-pedidos');
+    navigate('/home/meus-pedidos');
   }
 
   const handleIrParaEndereco = () => {
-    navigate('/enderecos');
+    navigate('/home/enderecos');
   }
 
   const handleIrParaFavoritos = () => {
-    navigate('/favoritos');
+    navigate('/home/favoritos');
   }
 
   const handleIrParaPagamento = () => {
-    navigate('/pagamento');
+    navigate('/home/pagamento');
   }
 
   return (

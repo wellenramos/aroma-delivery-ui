@@ -15,7 +15,7 @@ const Home = () => {
     }
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <BarraPesquisa
                   onHandleSetProdutos={handleSetProdutos}

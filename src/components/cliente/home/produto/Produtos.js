@@ -1,7 +1,7 @@
+import React, {useEffect} from "react";
 import {Box} from "@mui/material";
 import ProdutoTabs from "./ProdutoTabs";
 import ProdutosList from "./ProdutosList";
-import React, {useEffect} from "react";
 import {obterProdutosPorCategoria} from "../../../../services/produtoService";
 
 const Produtos = ({produtos, onSetProdutos, onCategoriaChange }) => {

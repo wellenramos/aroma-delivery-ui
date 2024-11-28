@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -15,23 +15,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../../Header";
-import {useAlert} from "../../shared/alert/AlertProvider";
+import { useAlert } from "../../shared/alert/AlertProvider";
 import {
     atualizarQuantidadeItens,
     obterResumoCarrinho,
     removerItemDoCarrinho
 } from "../../../services/carrinhoService";
-import {useAppContext} from "../../../context/AppContext";
-import {realizarPedido} from "../../../services/pedidoService";
+import { useAppContext } from "../../../context/AppContext";
+import { realizarPedido } from "../../../services/pedidoService";
 import PedidoSucesso from "../pedidos/PedidoSucesso";
 
 const Carrinho = () => {
     const [resumo, setResumo] = useState([]);
     const [showSuccess, setShowSuccess] = useState(false);
-
-    const quantidade = 1;
 
     const showAlert = useAlert();
     const { carrinhoId, limparCarrinhoId } = useAppContext();
@@ -53,35 +51,39 @@ const Carrinho = () => {
     }, [carrinhoId]);
 
     const handleIrParaEnderecos = () => {
-        navigate('/enderecos');
+        navigate('/home/enderecos');
     }
 
     const handleIrParaPagamento = () => {
-        navigate('/pagamento');
+        navigate('/home/pagamento');
     }
 
     const handleIrParaHome = () => {
-        navigate('/');
+        navigate('/home');
     }
 
     const handleVoltar = () => {
         if (resumo.itens.length >= 1) {
             const last = resumo.itens.at(-1);
-            navigate(`/produto/${last.produtoId}`);
+            navigate(`/home/produto/${last.produtoId}`);
         } else {
             handleIrParaHome();
         }
-
     }
 
     const handleRealizarPedido = async () => {
         try {
-            const {itens, endereco, cartao} = resumo;
+            if (!resumo.endereco || !resumo.cartao) {
+                showAlert("Endereço e método de pagamento são obrigatórios!", "error");
+                return;
+            }
+
+            const { itens, endereco, cartao } = resumo;
             const command = {
                 itens: itens.map(item => item.id),
                 enderecoId: endereco.id,
                 cartaoId: cartao.id
-            }
+            };
 
             const { data } = await realizarPedido(command);
 
@@ -89,7 +91,7 @@ const Carrinho = () => {
                 limparCarrinhoId();
                 setShowSuccess(true);
                 setTimeout(() => {
-                    navigate('/meus-pedidos');
+                    navigate('/home/meus-pedidos');
                 }, 2000);
             }
         } catch (error) {
@@ -105,7 +107,7 @@ const Carrinho = () => {
                 itens: prevResumo?.itens.filter(it => it.id !== item.id),
             }));
         } catch (error) {
-            showAlert("Erro ao buscar o produto", "error");
+            showAlert("Erro ao remover o item do carrinho", "error");
         }
     }
 
@@ -113,7 +115,7 @@ const Carrinho = () => {
         try {
             if (item.quantidade > 1) {
                 const novaQuantidade = item.quantidade - 1;
-                const {data} = await atualizarQuantidadeItens(carrinhoId, item.id, novaQuantidade);
+                const { data } = await atualizarQuantidadeItens(carrinhoId, item.id, novaQuantidade);
                 setResumo((prevResumo) => ({
                     ...prevResumo,
                     subTotal: data.subTotal,
@@ -131,7 +133,7 @@ const Carrinho = () => {
     const handleAumentarQuantidadeItem = async (item) => {
         try {
             const novaQuantidade = item.quantidade + 1;
-            const {data} = await atualizarQuantidadeItens(carrinhoId, item.id, novaQuantidade);
+            const { data } = await atualizarQuantidadeItens(carrinhoId, item.id, novaQuantidade);
             setResumo((prevResumo) => ({
                 ...prevResumo,
                 subTotal: data.subTotal,
@@ -143,12 +145,34 @@ const Carrinho = () => {
         }
     }
 
+    const handleLimparCarrinho = async () => {
+        try {
+            const itensIds = resumo?.itens?.map(item => item.id);
+            if (itensIds?.length > 0) {
+                await Promise.all(
+                    itensIds.map(itemId => removerItemDoCarrinho(carrinhoId, itemId))
+                );
+            }
+
+            setResumo((prevResumo) => ({
+                ...prevResumo,
+                itens: [],
+                subTotal: 0,
+                valorTotal: 0,
+            }));
+
+            showAlert("Carrinho limpo com sucesso!", "success");
+        } catch (error) {
+            showAlert("Erro ao limpar o carrinho", "error");
+        }
+    }
+
     if (showSuccess) {
         return <PedidoSucesso />;
     }
 
     return (
-        <Card sx={{ maxWidth: 'sm', margin: '0 auto', boxShadow: 'none'}}>
+        <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none' }}>
             <CardContent sx={{ padding: 0 }}>
                 <Header
                     titulo="Carrinho"
@@ -193,13 +217,15 @@ const Carrinho = () => {
                             Nenhum item adicionado. Comece a adicionar itens ao seu carrinho.
                         </Typography>
                     )}
-            </Box>
-            <Divider />
+                </Box>
+                <Divider />
 
                 <Box padding={2}>
-                    <Typography variant="subtitle1"
-                                onClick={handleIrParaHome}
-                                sx={{ color: '#BF7373', fontWeight: 'bold', cursor: 'pointer' }}>
+                    <Typography
+                        variant="subtitle1"
+                        onClick={handleIrParaHome}
+                        sx={{ color: '#BF7373', fontWeight: 'bold', cursor: 'pointer' }}
+                    >
                         + Adicionar mais
                     </Typography>
                 </Box>
@@ -213,9 +239,7 @@ const Carrinho = () => {
                                 resumo?.endereco ? (
                                     `Quadra ${resumo.endereco.numero}, ${resumo.endereco.bairro}, ${resumo.endereco.cidade}`
                                 ) : (
-                                    <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-                                        Nenhum endereço selecionado
-                                    </Typography>
+                                    "Nenhum endereço selecionado"
                                 )
                             }
                         />
@@ -230,9 +254,7 @@ const Carrinho = () => {
                                 resumo?.cartao ? (
                                     `${resumo?.cartao?.bandeira} xxxx xxxx xxxx ${resumo?.cartao?.numero.slice(-4)}`
                                 ) : (
-                                    <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
-                                        Nenhum cartão selecionado
-                                    </Typography>
+                                    "Nenhum cartão selecionado"
                                 )
                             }
                         />
@@ -241,44 +263,47 @@ const Carrinho = () => {
                 </List>
                 <Divider />
 
-                <Box padding={1}>
-                    <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold' }}>Resumo de Valores</Typography>
-                    <Box display="flex" justifyContent="space-between" mt={1}>
-                        <Typography variant="body2" color="textSecondary">Subtotal</Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            R$ {(resumo?.subTotal ?? 0).toFixed(2)}
-                        </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between">
-                        <Typography variant="body2" color="textSecondary">
-                            {resumo?.itens
-                                ? resumo?.itens?.length <= 1 ? `(${resumo?.itens?.length} Item)` : `(${resumo?.itens?.length} Itens)`
-                                : '0 Item'
-                            }
-                        </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between" mt={1}>
-                        <Typography variant="body2" color="textSecondary">Entrega</Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            R$ {(resumo?.valorFrete ?? 0).toFixed(2)}
-                        </Typography>
-                    </Box>
-                    <Box display="flex" justifyContent="space-between" mt={1}>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Total</Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#BF7373' }}>
-                            R$ {(resumo?.valorTotal ?? 0).toFixed(2)}
-                        </Typography>
-                    </Box>
+                <Box padding={2}>
+                    <Typography variant="body2" display="flex" justifyContent="space-between">
+                        <span>Subtotal</span>
+                        <span>R$ {resumo?.subTotal?.toFixed(2) || "0.00"}</span>
+                    </Typography>
+                    <Typography variant="body2" display="flex" justifyContent="space-between">
+                        <span>Taxa de entrega</span>
+                        <span>R$ {resumo?.taxaEntrega?.toFixed(2) || "0.00"}</span>
+                    </Typography>
+                    <Divider sx={{ marginY: 1 }} />
+                    <Typography
+                        variant="body1"
+                        display="flex"
+                        justifyContent="space-between"
+                        fontWeight="bold"
+                    >
+                        <span>Total</span>
+                        <span>R$ {resumo?.valorTotal?.toFixed(2) || "0.00"}</span>
+                    </Typography>
                 </Box>
-
-                {/* Botão de Comprar */}
-                <Box paddingTop={2}>
+                <Box padding={1} mb={5}>
                     <Button
-                        variant="contained"
-                        size="large"
                         fullWidth
+                        variant="outlined"
+                        sx={{
+                            color: '#BF7373',
+                            borderColor: '#BF7373',
+                            '&:hover': { backgroundColor: '#FFE5E5', borderColor: '#A65050' },
+                            mb: 1
+                        }}
+                        onClick={handleLimparCarrinho}
+                        disabled={resumo?.itens?.length === 0}
+                    >
+                        Limpar Carrinho
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{ backgroundColor: '#BF7373', '&:hover': { backgroundColor: '#A65050' } }}
                         onClick={handleRealizarPedido}
-                        sx={{ backgroundColor: '#BF7373', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
+                        disabled={resumo?.itens?.length === 0}
                     >
                         Comprar
                     </Button>

@@ -65,7 +65,7 @@ const DetalheProduto = () => {
   }, [produtoId]);
 
   const handleVoltarHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const handleFavoritar = async (produtoId) => {
@@ -108,7 +108,7 @@ const DetalheProduto = () => {
       const { data } = await adicionarItem(item);
       if (data) {
         setCarrinhoId(data.id);
-        navigate(`/carrinho/${data.id}`);
+        navigate(`/home/carrinho/${data.id}`);
       }
     } catch (error) {
       showAlert("Erro ao buscar o produto", "error");
@@ -127,7 +127,7 @@ const DetalheProduto = () => {
 
   return (
       <Card sx={{
-        maxWidth: 'sm',
+        maxWidth: 'md',
         margin: '0 auto',
         boxShadow: 'none',
         backgroundColor: 'rgb(253, 242, 242)'
@@ -140,7 +140,6 @@ const DetalheProduto = () => {
               favorito={favoritoSelecionado}
           />
 
-          {/* Imagem do Produto */}
           <Box sx={{p: 2}}>
             <Box sx={{
               display: 'flex',
@@ -177,7 +176,6 @@ const DetalheProduto = () => {
                 {produto?.descricao}
               </Typography>
 
-              {/* Tamanho */}
               <Box sx={{
                 mt: 2,
                 display: 'flex',
@@ -202,7 +200,6 @@ const DetalheProduto = () => {
                 ))}
               </Box>
 
-              {/* Adicional */}
               <Box mt={2}>
                 <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold'}}>
                   Adicional
@@ -227,7 +224,6 @@ const DetalheProduto = () => {
                 ))}
               </Box>
 
-              {/* Observação */}
               <Box mt={2}>
                 <Typography variant="subtitle1"
                             sx={{ color: '#BF7373', fontWeight: 'bold' }}>
@@ -266,7 +262,6 @@ const DetalheProduto = () => {
                 </Box>
               </Box>
 
-              {/* Botão de Adicionar ao Carrinho */}
               <Button
                   variant="contained"
                   size="large"
