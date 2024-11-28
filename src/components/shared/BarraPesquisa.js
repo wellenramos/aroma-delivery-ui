@@ -1,21 +1,38 @@
 import React, {useRef, useState} from 'react';
 import {IconButton, InputAdornment, TextField} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import {buscarProdutos} from "../../services/produtoService";
+import {
+  buscarProdutos,
+  buscarProdutosPorNome
+} from "../../services/produtoService";
 
-const BarraPesquisa = ({ onHandleSetProdutos, categoriaSelecionada }) => {
+const BarraPesquisa = ({ onHandleSetProdutos, categoriaSelecionada, admin }) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const debounceTimeoutRef = useRef(null);
 
   const fetchProducts = async (query) => {
     try {
-      const {data} = await buscarProdutos(categoriaSelecionada, query)
-      onHandleSetProdutos(data);
+      let data;
+
+      if (admin) {
+        const response = await buscarProdutosPorNome(query);
+        data = response.data;
+      } else {
+        const response = await buscarProdutos(categoriaSelecionada, query);
+        data = response.data;
+      }
+
+      if (data) {
+        onHandleSetProdutos(data);
+      } else {
+        console.warn('Nenhum dado encontrado.');
+      }
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
     }
   };
+
 
   const handleSearchChange = (event) => {
     const query = event.target.value;
@@ -38,6 +55,7 @@ const BarraPesquisa = ({ onHandleSetProdutos, categoriaSelecionada }) => {
 
   return (
       <TextField
+          sx={{padding: 2}}
           value={searchQuery}
           placeholder="Search"
           onChange={handleSearchChange }

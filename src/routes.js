@@ -15,8 +15,9 @@ import HomeAdmin from "./components/administrador/HomeAdmin";
 import DetalhesPedido from "./components/administrador/pedido/DetalhePedido";
 import Menu from "./components/cliente/menu/Menu";
 import Produtos from "./components/administrador/produto/Produtos";
-import Cadastro from "./components/administrador/produto/Cadastro";
+import Produto from "./components/administrador/produto/Produto";
 import IntroPages from "./components/login/IntroPages";
+
 
 export const router = createBrowserRouter([
     {
@@ -35,7 +36,7 @@ export const router = createBrowserRouter([
             { path: 'menu', element: <MenuAdmin /> },
             { path: 'pedido/:pedidoId', element: <DetalhesPedido /> },
             { path: 'produtos', element: <Produtos /> },
-            { path: 'cadastro', element: <Cadastro /> },
+            { path: 'cadastrar', element: <Produto /> },
         ]
     },
     {
