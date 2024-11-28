@@ -25,6 +25,16 @@ export const AppContextProvider = ({ children }) => {
     localStorage.removeItem('carrinhoId');
   };
 
+  const limparPedido = () => {
+    localStorage.removeItem('pedidoId');
+  };
+
+
+  const limparToken = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+  };
+
   const toggleMenu = (open) => () => {
     setMenuOpen(open);
   };
@@ -34,6 +44,8 @@ export const AppContextProvider = ({ children }) => {
         carrinhoId,
         setCarrinhoId,
         limparCarrinhoId,
+        limparPedido,
+        limparToken,
         pedidoId,
         setPedidoId,
         menuOpen,
