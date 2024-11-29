@@ -5,18 +5,15 @@ import {
   Card,
   CardContent,
   Checkbox,
-  IconButton,
   TextField,
   Typography
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../Header";
 import { obterProdutoPorId } from "../../../../services/produtoService";
 import { useAlert } from "../../../shared/alert/AlertProvider";
-import {adicionarItem, obterItemCarrinho} from "../../../../services/carrinhoService";
+import { adicionarItem, obterItemCarrinho } from "../../../../services/carrinhoService";
 import { useAppContext } from "../../../../context/AppContext";
 import { favoritar, obterFavorito } from "../../../../services/favoritoService";
 
@@ -66,7 +63,7 @@ const DetalheProduto = () => {
     if (produtoId) {
       fetchProduto();
     }
-  }, [produtoId, showAlert]);
+  }, [produtoId, showAlert]); // Adicionado produtoId e showAlert no array de dependências
 
   useEffect(() => {
     const fetchItemCarrinho = async () => {
@@ -86,7 +83,7 @@ const DetalheProduto = () => {
     if (carrinhoId && produtoId) {
       fetchItemCarrinho();
     }
-  }, [carrinhoId]);
+  }, [carrinhoId, produtoId, showAlert]); // Adicionado produtoId e showAlert no array de dependências
 
   const handleVoltarHome = () => {
     navigate("/home");
@@ -237,73 +234,43 @@ const DetalheProduto = () => {
                       <Typography variant="body2">
                         {adicional?.nome}
                       </Typography>
-                      <Typography variant="body2" sx={{ marginLeft: 'auto', marginRight: 1 }}>
-                        + R$ {adicional?.preco.toFixed(2)}
+                      <Typography variant="body2" sx={{ marginLeft: 'auto' }}>
+                        R$ {adicional?.preco.toFixed(2)}
                       </Typography>
                       <Checkbox
-                          checked={adicionaisSelecionados.some(
-                              (item) => item.id === adicional.id
-                          )}
+                          checked={adicionaisSelecionados.some((item) => item.id === adicional.id)}
                           onChange={() => handleAdicionalChange(adicional)}
-                          color="primary"
+                          inputProps={{ 'aria-label': 'checkbox' }}
                       />
                     </Box>
                 ))}
               </Box>
 
               <Box mt={2}>
-                <Typography variant="subtitle1"
-                            sx={{ color: '#BF7373', fontWeight: 'bold' }}>
-                  Observação
+                <Typography variant="subtitle1" sx={{ color: '#BF7373', fontWeight: 'bold'}}>
+                  Observações
                 </Typography>
                 <TextField
-                    value={observacao}
-                    variant="outlined"
-                    placeholder="Escreva aqui"
+                    label="Observação"
                     fullWidth
                     multiline
                     rows={2}
-                    sx={{mt: 1, backgroundColor: ' '}}
+                    value={observacao}
                     onChange={(e) => setObservacao(e.target.value)}
+                    variant="outlined"
                 />
               </Box>
 
-              <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
-                  Total
-                </Typography>
-                <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
-                  R$ {total.toFixed(2)}
-                </Typography>
-                <Box display="flex" alignItems="center">
-                  <IconButton onClick={handleRemover} size="small">
-                    <RemoveIcon/>
-                  </IconButton>
-                  <Typography variant="body1" sx={{mx: 1}}>
-                    {quantidade}
-                  </Typography>
-                  <IconButton onClick={handleAdicionar} size="small">
-                    <AddIcon/>
-                  </IconButton>
-                </Box>
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleAdicionarItem}
+                >
+                  Adicionar ao Carrinho
+                </Button>
               </Box>
-
-              <Button
-                  variant="contained"
-                  size="large"
-                  color="primary"
-                  fullWidth
-                  sx={{
-                    mt: 2,
-                    backgroundColor: '#BF7373',
-                    color: '#FFF',
-                    fontWeight: 'bold',
-                    borderRadius: '8px'
-                  }}
-                  onClick={handleAdicionarItem}
-              >
-                Adicionar Item
-              </Button>
             </Box>
           </Box>
         </CardContent>
