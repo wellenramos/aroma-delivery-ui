@@ -187,7 +187,7 @@ const DetalheProduto = () => {
                   {produto?.mediaAvaliacao && (
                       <Box display="flex" alignItems="center" ml={1}>
                         <StarIcon fontSize="small" sx={{color: '#FFD700'}}/>
-                        <Typography variant="body2"sx={{color: '#777'}}>{produto?.mediaAvaliacao}</Typography>
+                        <Typography variant="body2"sx={{color: '#777'}}>{produto?.mediaAvaliacao?.toFixed(2)}</Typography>
                       </Box>
                   )}
                 </Box>

@@ -252,7 +252,7 @@ const Carrinho = () => {
                             primary="Pagamento"
                             secondary={
                                 resumo?.cartao ? (
-                                    `${resumo?.cartao?.tipo} - ${resumo?.cartao?.final}`
+                                    `${resumo?.cartao?.bandeira} xxxx xxxx xxxx ${resumo?.cartao?.numero.slice(-4)}`
                                 ) : (
                                     "Nenhum método selecionado"
                                 )
@@ -278,7 +278,7 @@ const Carrinho = () => {
                     </Box>
                 </Box>
 
-                <Box padding={2}>
+                <Box padding={2} mb={4}>
                     <Button
                         fullWidth
                         variant="contained"

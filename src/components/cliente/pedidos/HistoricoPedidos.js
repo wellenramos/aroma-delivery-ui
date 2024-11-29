@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Card,
@@ -13,22 +13,33 @@ import { avaliar } from "../../../services/pedidoService";
 import { useAlert } from "../../shared/alert/AlertProvider";
 import Header from "../../Header";
 
-const HistoricoPedidos = ({ historico }) => {
+const HistoricoPedidos = ({ historico: initialHistorico = [] }) => {
+    const [historico, setHistorico] = useState(initialHistorico);
     const navigate = useNavigate();
     const showAlert = useAlert();
 
-    const handleAvaliar = async (newValue, pedidoId) => {
-        // Atualiza a nota de avaliação diretamente no item do pedido
-        historico.forEach((historicoAgg) => {
-            historicoAgg.itens?.forEach((item) => {
-                if (item.id === pedidoId) {
-                    item.notaAvaliacao = newValue;
-                }
-            });
-        });
+    useEffect(() => {
+        if (initialHistorico) {
+            setHistorico(initialHistorico);
+        }
+    }, [initialHistorico]);
 
-        await avaliar(pedidoId, newValue);
-        showAlert("Obrigado pela avaliação!", "success");
+    const handleAvaliar = async (newValue, pedidoId) => {
+        try {
+            const novoHistorico = historico.map((historicoAgg) => ({
+                ...historicoAgg,
+                itens: historicoAgg.itens.map((item) =>
+                    item.id === pedidoId ? { ...item, notaAvaliacao: newValue } : item
+                ),
+            }));
+
+            setHistorico(novoHistorico);
+
+            await avaliar(pedidoId, newValue);
+            showAlert("Obrigado pela avaliação!", "success");
+        } catch (error) {
+            showAlert("Erro ao salvar avaliação. Tente novamente.", "error");
+        }
     };
 
     const handleVoltarHome = () => {
@@ -80,8 +91,8 @@ const HistoricoPedidos = ({ historico }) => {
                                                     Avalie seu pedido
                                                 </Typography>
                                                 <Rating
-                                                    name="pedido-avaliacao"
-                                                    value={item.notaAvaliacao}
+                                                    name={`pedido-avaliacao-${item.id}`}
+                                                    value={item.notaAvaliacao || 0}
                                                     onChange={(e, newValue) => handleAvaliar(newValue, item.id)}
                                                     size="large"
                                                     sx={{ color: "#BF7373" }}
