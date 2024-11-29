@@ -16,7 +16,10 @@ import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../../Header";
 import {obterProdutoPorId} from "../../../../services/produtoService";
 import {useAlert} from "../../../shared/alert/AlertProvider";
-import {adicionarItem} from "../../../../services/carrinhoService";
+import {
+  adicionarItem,
+  obterItemCarrinho
+} from "../../../../services/carrinhoService";
 import {useAppContext} from "../../../../context/AppContext";
 import {favoritar, obterFavorito} from "../../../../services/favoritoService";
 
@@ -44,7 +47,7 @@ const DetalheProduto = () => {
   const showAlert = useAlert();
   const { produtoId} = useParams();
   const navigate = useNavigate();
-  const { carrinhoId ,setCarrinhoId } = useAppContext();
+  const { carrinhoId, setCarrinhoId } = useAppContext();
 
   useEffect(() => {
     const fetchProduto = async () => {
@@ -63,6 +66,26 @@ const DetalheProduto = () => {
       fetchProduto();
     }
   }, [produtoId]);
+
+  useEffect(() => {
+    const fetchItemCarrinho = async () => {
+      try {
+        const {data} =  await obterItemCarrinho(carrinhoId, produtoId);
+        if (data) {
+          setQuantidade(data.quantidade || 1);
+          setObservacao(data.observacao || '');
+          setTamanhoCopo(data.tamanhoCopo || TamanhosCopoEnum.PEQUENO);
+          setAdicionaisSelecionados(data.adicionais || []);
+        }
+      } catch (error) {
+        showAlert("Erro ao buscar o produto", "error");
+      }
+    };
+
+    if (carrinhoId && produtoId) {
+      fetchItemCarrinho();
+    }
+  }, [carrinhoId]);
 
   const handleVoltarHome = () => {
     navigate("/home");
