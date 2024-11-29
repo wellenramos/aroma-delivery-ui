@@ -57,14 +57,16 @@ const HomeAdmin = () => {
                         <Tabs
                             value={value}
                             onChange={handleChange}
-                            centered
                             textColor="primary"
                             indicatorColor="primary"
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            allowScrollButtonsMobile
                         >
-                            <Tab label="Pedidos Pendentes" />
-                            <Tab label="Pedidos em Andamento" />
-                            <Tab label="Pedidos Enviados" />
-                            <Tab label="Pedidos Entregues" />
+                            <Tab label="Pedidos Pendentes" sx={{ minWidth: 100 }} />
+                            <Tab label="Pedidos em Andamento" sx={{ minWidth: 100 }} />
+                            <Tab label="Pedidos Enviados" sx={{ minWidth: 100 }} />
+                            <Tab label="Pedidos Entregues" sx={{ minWidth: 100 }} />
                         </Tabs>
                     </Box>
 
