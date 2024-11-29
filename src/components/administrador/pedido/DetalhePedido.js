@@ -139,7 +139,13 @@ const DetalhesPedido = () => {
             </List>
             <Divider sx={{ my: 2 }} />
             <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h6">Total:</Typography>
+              <Typography variant="h6">Frete</Typography>
+              <Typography variant="h6" fontWeight="bold" color="primary">
+                R$ 5.00
+              </Typography>
+            </Box>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography variant="h6">Total</Typography>
               <Typography variant="h6" fontWeight="bold" color="primary">
                 R$ {pedido.total.toFixed(2)}
               </Typography>
