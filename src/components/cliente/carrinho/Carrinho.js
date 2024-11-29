@@ -63,7 +63,7 @@ const Carrinho = () => {
     }
 
     const handleVoltar = () => {
-        if (resumo.itens.length >= 1) {
+        if (resumo.itens?.length >= 1) {
             const last = resumo.itens.at(-1);
             navigate(`/home/produto/${last.produtoId}`);
         } else {
@@ -270,7 +270,7 @@ const Carrinho = () => {
                     </Typography>
                     <Typography variant="body2" display="flex" justifyContent="space-between">
                         <span>Taxa de entrega</span>
-                        <span>R$ {resumo?.taxaEntrega?.toFixed(2) || "0.00"}</span>
+                        <span>R$ {resumo?.valorFrete?.toFixed(2) || "0.00"}</span>
                     </Typography>
                     <Divider sx={{ marginY: 1 }} />
                     <Typography
