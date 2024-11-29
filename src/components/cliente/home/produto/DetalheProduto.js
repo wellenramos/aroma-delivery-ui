@@ -16,7 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../Header";
 import { obterProdutoPorId } from "../../../../services/produtoService";
 import { useAlert } from "../../../shared/alert/AlertProvider";
-import { adicionarItem } from "../../../../services/carrinhoService";
+import {adicionarItem, obterItemCarrinho} from "../../../../services/carrinhoService";
 import { useAppContext } from "../../../../context/AppContext";
 import { favoritar, obterFavorito } from "../../../../services/favoritoService";
 
