@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   Box,
   Button,
@@ -7,19 +7,18 @@ import {
   CircularProgress,
   Container,
   Divider,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import { atualizarStatusPedido, obterDetalhesPedido } from "../../../services/pedidoService";
 import { useAlert } from "../../shared/alert/AlertProvider";
+import PedidoItens from "./PedidoItens";
+
 
 const DetalhesPedido = () => {
   const [pedido, setPedido] = useState(null);
@@ -28,20 +27,20 @@ const DetalhesPedido = () => {
   const { pedidoId } = useParams();
   const showAlert = useAlert();
 
-  const fetchPedidoDetails = async () => {
+  const fetchPedidoDetails = useCallback(async () => {
     try {
       const response = await obterDetalhesPedido(pedidoId);
       setPedido(response.data);
     } catch (error) {
-      showAlert("Erro ao buscar os detalhes do pedido.", 'error');
+      showAlert("Erro ao buscar os detalhes do pedido.", "error");
     } finally {
       setLoading(false);
     }
-  };
+  }, [pedidoId, showAlert]);
 
   useEffect(() => {
     fetchPedidoDetails();
-  }, [pedidoId]);
+  }, [fetchPedidoDetails]);
 
   const handleAtualizar = async (status) => {
     try {
@@ -50,7 +49,7 @@ const DetalhesPedido = () => {
         setPedido((prevState) => ({ ...prevState, status }));
       }
     } catch (error) {
-      showAlert("Erro ao atualizar o status do pedido.", 'error');
+      showAlert("Erro ao atualizar o status do pedido.", "error");
     }
   };
 
@@ -58,29 +57,29 @@ const DetalhesPedido = () => {
 
   const getStatusIcon = (status) => {
     const statusIcons = {
-      "PENDENTE": <HourglassEmptyIcon color="warning" />,
-      "EM_ANDAMENTO": <AccessTimeIcon color="info" />,
-      "ENVIADO": <LocalShippingIcon color="primary" />,
-      "ENTREGUE": <CheckCircleIcon color="success" />,
+      PENDENTE: <HourglassEmptyIcon color="warning" />,
+      EM_ANDAMENTO: <AccessTimeIcon color="info" />,
+      ENVIADO: <LocalShippingIcon color="primary" />,
+      ENTREGUE: <CheckCircleIcon color="success" />,
     };
     return statusIcons[status] || null;
   };
 
   const getTituloButton = (status) => {
     const statusTitulos = {
-      "PENDENTE": "Iniciar Pedido",
-      "EM_ANDAMENTO": "Finalizar Pedido",
-      "ENVIADO": "Entregar Pedido",
-      "ENTREGUE": "Concluir",
+      PENDENTE: "Iniciar Pedido",
+      EM_ANDAMENTO: "Finalizar Pedido",
+      ENVIADO: "Entregar Pedido",
+      ENTREGUE: "Concluir",
     };
     return statusTitulos[status] || null;
   };
 
   const handleAtualizarPedido = () => {
     const statusSequence = {
-      "PENDENTE": "EM_ANDAMENTO",
-      "EM_ANDAMENTO": "ENVIADO",
-      "ENVIADO": "ENTREGUE",
+      PENDENTE: "EM_ANDAMENTO",
+      EM_ANDAMENTO: "ENVIADO",
+      ENVIADO: "ENTREGUE",
     };
 
     const nextStatus = statusSequence[pedido.status];
@@ -105,6 +104,13 @@ const DetalhesPedido = () => {
     );
   }
 
+  const statusColors = {
+    PENDENTE: "warning",
+    EM_ANDAMENTO: "info",
+    ENVIADO: "primary",
+    ENTREGUE: "success",
+  };
+
   return (
       <Container maxWidth="md">
         <Card sx={{ boxShadow: 3, margin: "16px auto" }}>
@@ -124,19 +130,7 @@ const DetalhesPedido = () => {
               Endereço: <strong>{pedido.endereco}</strong>
             </Typography>
             <Divider sx={{ my: 2 }} />
-            <Typography variant="h6" fontWeight="bold" mb={1}>
-              Itens do Pedido
-            </Typography>
-            <List>
-              {pedido.itens.map((item, index) => (
-                  <ListItem key={index}>
-                    <ListItemText
-                        primary={`${item.produto} (x${item.quantidade})`}
-                        secondary={`Preço unitário: R$ ${item.preco.toFixed(2)} | Total: R$ ${(item.quantidade * item.preco).toFixed(2)}`}
-                    />
-                  </ListItem>
-              ))}
-            </List>
+            <PedidoItens itens={pedido.itens} />
             <Divider sx={{ my: 2 }} />
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Typography variant="h6">Frete</Typography>
@@ -153,12 +147,16 @@ const DetalhesPedido = () => {
             <Divider sx={{ my: 2 }} />
             <Box display="flex" alignItems="center">
               {getStatusIcon(pedido.status)}
-              <Typography variant="body1" ml={1}>
+              <Typography
+                  variant="body1"
+                  ml={1}
+                  color={statusColors[pedido.status] || "textPrimary"}
+              >
                 Status Atual: <strong>{pedido.status}</strong>
               </Typography>
             </Box>
 
-            {(pedido.status !== 'ENTREGUE' && pedido.status !== 'CONCLUIDO') && (
+            {["PENDENTE", "EM_ANDAMENTO", "ENVIADO"].includes(pedido.status) && (
                 <Box mt={3}>
                   <Button
                       variant="contained"

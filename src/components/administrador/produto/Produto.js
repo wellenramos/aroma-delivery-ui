@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
     Autocomplete,
     Box,
@@ -12,23 +12,22 @@ import {
     Select,
     TextField,
     Typography,
-} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
-import Header from '../../Header';
-import {obterAdicionais, salvarProduto} from '../../../services/produtoService';
-import {useAlert} from "../../shared/alert/AlertProvider";
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import Header from "../../Header";
+import { obterAdicionais, salvarProduto } from "../../../services/produtoService";
+import { useAlert } from "../../shared/alert/AlertProvider";
 
 const Produto = () => {
     const [produto, setProduto] = useState({
-        nome: '',
-        descricao: '',
-        preco: '',
-        categoriaId: '',
+        nome: "",
+        descricao: "",
+        preco: "",
+        categoriaId: "",
         adicionais: [],
     });
 
     const [adicionaisOpcoes, setAdicionaisOpcoes] = useState([]);
-    
     const showAlert = useAlert();
     const navigate = useNavigate();
 
@@ -43,9 +42,9 @@ const Produto = () => {
         };
 
         fetchAdicionais();
-    }, []);
+    }, [showAlert]);
 
-    const handleVoltarHome = () => navigate('/admin');
+    const handleVoltarHome = () => navigate("/admin");
 
     const handleChange = (field, value) => {
         setProduto((prev) => ({
@@ -66,7 +65,7 @@ const Produto = () => {
             const { data } = await salvarProduto(command);
 
             if (data) {
-                navigate('/admin/produtos');
+                navigate("/admin/produtos");
             }
         } catch (error) {
             showAlert("Erro ao salvar o produto", "error");
@@ -74,13 +73,13 @@ const Produto = () => {
     };
 
     return (
-        <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none', mt: 3 }}>
+        <Card sx={{ maxWidth: "md", margin: "0 auto", boxShadow: "none", mt: 3 }}>
             <CardContent sx={{ padding: 0 }}>
                 <Header titulo="Cadastrar Produto" onBack={handleVoltarHome} />
                 <Divider />
 
                 <Box padding={3}>
-                    <Typography variant="h6" sx={{ mb: 3, fontWeight: 'bold' }}>
+                    <Typography variant="h6" sx={{ mb: 3, fontWeight: "bold" }}>
                         Informações do Produto
                     </Typography>
 
@@ -90,7 +89,7 @@ const Produto = () => {
                         variant="outlined"
                         placeholder="Digite o nome do produto"
                         value={produto.nome}
-                        onChange={(e) => handleChange('nome', e.target.value)}
+                        onChange={(e) => handleChange("nome", e.target.value)}
                         sx={{ mb: 2 }}
                     />
 
@@ -102,7 +101,7 @@ const Produto = () => {
                         variant="outlined"
                         placeholder="Descreva o produto brevemente"
                         value={produto.descricao}
-                        onChange={(e) => handleChange('descricao', e.target.value)}
+                        onChange={(e) => handleChange("descricao", e.target.value)}
                         sx={{ mb: 2 }}
                     />
 
@@ -114,7 +113,7 @@ const Produto = () => {
                         placeholder="Informe o preço"
                         inputProps={{ min: 0 }}
                         value={produto.preco}
-                        onChange={(e) => handleChange('preco', e.target.value)}
+                        onChange={(e) => handleChange("preco", e.target.value)}
                         sx={{ mb: 2 }}
                     />
 
@@ -122,7 +121,7 @@ const Produto = () => {
                         <InputLabel>Categoria</InputLabel>
                         <Select
                             value={produto.categoriaId}
-                            onChange={(e) => handleChange('categoriaId', e.target.value)}
+                            onChange={(e) => handleChange("categoriaId", e.target.value)}
                             label="Categoria"
                         >
                             <MenuItem value="1">Tradicionais</MenuItem>
@@ -136,7 +135,7 @@ const Produto = () => {
                         options={adicionaisOpcoes}
                         getOptionLabel={(option) => option.nome}
                         value={produto.adicionais}
-                        onChange={(event, newValue) => handleChange('adicionais', newValue)}
+                        onChange={(event, newValue) => handleChange("adicionais", newValue)}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
@@ -153,13 +152,13 @@ const Produto = () => {
                             variant="contained"
                             onClick={handleSalvarProduto}
                             sx={{
-                                backgroundColor: '#BF7373',
-                                color: '#FFF',
-                                fontWeight: 'bold',
-                                textTransform: 'none',
-                                borderRadius: '8px',
-                                '&:hover': {
-                                    backgroundColor: '#A14A4A',
+                                backgroundColor: "#BF7373",
+                                color: "#FFF",
+                                fontWeight: "bold",
+                                textTransform: "none",
+                                borderRadius: "8px",
+                                "&:hover": {
+                                    backgroundColor: "#A14A4A",
                                 },
                             }}
                         >

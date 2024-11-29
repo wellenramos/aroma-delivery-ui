@@ -1,30 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Card, CardContent, Divider, Typography} from '@mui/material';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import {useNavigate} from "react-router-dom";
-import {useAlert} from "../../shared/alert/AlertProvider";
-import {obterFavoritos} from "../../../services/favoritoService";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from "../../shared/alert/AlertProvider";
+import { obterFavoritos } from "../../../services/favoritoService";
 import Header from "../../Header";
 
 const Favoritos = () => {
-
     const [favoritos, setFavoritos] = useState([]);
 
     const navigate = useNavigate();
     const showAlert = useAlert();
 
-    const fetchFavoritos = async () => {
+    const fetchFavoritos = useCallback(async () => {
         try {
             const { data } = await obterFavoritos();
-                setFavoritos(data);
+            setFavoritos(data);
         } catch (error) {
             showAlert("Erro ao buscar favoritos", "error");
         }
-    };
+    }, [showAlert]);
 
-    useEffect( () => {
+    useEffect(() => {
         fetchFavoritos();
-    }, []);
+    }, [fetchFavoritos]);
 
     const handleVoltarHome = () => {
         navigate("/home");
@@ -33,24 +32,24 @@ const Favoritos = () => {
     return (
         <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none' }}>
             <CardContent sx={{ padding: 0 }}>
-                <Header
-                    titulo="Meus favoritos"
-                    onBack={handleVoltarHome}
-                />
-                <Divider/>
-                <CardContent sx={{padding: 0}}>
-                    <Box sx={{padding: 2}}>
+                <Header titulo="Meus favoritos" onBack={handleVoltarHome} />
+                <Divider />
+                <CardContent sx={{ padding: 0 }}>
+                    <Box sx={{ padding: 2 }}>
                         {favoritos.length === 0 ? (
-                            <Typography variant="body1" sx={{textAlign: 'center', color: '#BF7373', marginTop: 2}}>
+                            <Typography
+                                variant="body1"
+                                sx={{ textAlign: 'center', color: '#BF7373', marginTop: 2 }}
+                            >
                                 Nenhum resultado encontrado.
                             </Typography>
                         ) : (
                             favoritos.map((favorito) => (
-                                <Box key={favorito.id} mb={2} sx={{width: '100%', paddingX: 2}}>
+                                <Box key={favorito.id} mb={2} sx={{ width: '100%', paddingX: 2 }}>
                                     <Box display="column" alignItems="center">
                                         <Box display="flex" alignItems="center">
-                                            <FavoriteIcon sx={{color: "red"}} fontSize="small"/>
-                                            <Typography variant="body1" sx={{marginLeft: '5px'}}>
+                                            <FavoriteIcon sx={{ color: "red" }} fontSize="small" />
+                                            <Typography variant="body1" sx={{ marginLeft: '5px' }}>
                                                 {favorito.nome}
                                             </Typography>
                                         </Box>
@@ -60,16 +59,15 @@ const Favoritos = () => {
                                             </Typography>
                                         </Box>
                                     </Box>
-                                    <Divider/>
+                                    <Divider />
                                 </Box>
                             ))
-                    )}
-                </Box>
+                        )}
+                    </Box>
+                </CardContent>
             </CardContent>
-        </CardContent>
-    </Card>
-);
+        </Card>
+    );
 };
 
 export default Favoritos;
-

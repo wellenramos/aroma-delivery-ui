@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     Box,
     Card,
@@ -7,28 +7,25 @@ import {
     Rating,
     Typography
 } from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import {avaliar} from "../../../services/pedidoService";
-import {useAlert} from "../../shared/alert/AlertProvider";
+import { avaliar } from "../../../services/pedidoService";
+import { useAlert } from "../../shared/alert/AlertProvider";
 import Header from "../../Header";
 
-const MeusPedidos = ({historico}) => {
-
-    const [rating, setRating] = useState(0);
-
+const HistoricoPedidos = ({ historico }) => {
     const navigate = useNavigate();
     const showAlert = useAlert();
 
     const handleAvaliar = async (newValue, pedidoId) => {
-        setRating(newValue);
-        historico.forEach((h => {
-            h.itens?.map((it) => {
-                if (it.id === pedidoId) {
-                    it.notaAvaliacao = newValue;
+        // Atualiza a nota de avaliação diretamente no item do pedido
+        historico.forEach((historicoAgg) => {
+            historicoAgg.itens?.forEach((item) => {
+                if (item.id === pedidoId) {
+                    item.notaAvaliacao = newValue;
                 }
-            })
-        }))
+            });
+        });
 
         await avaliar(pedidoId, newValue);
         showAlert("Obrigado pela avaliação!", "success");
@@ -45,11 +42,11 @@ const MeusPedidos = ({historico}) => {
                     titulo="Histórico de Pedidos"
                     onBack={handleVoltarHome}
                 />
-                <Divider/>
-                <CardContent sx={{padding: 0}}>
-                    <Box sx={{padding: 2}}>
+                <Divider />
+                <CardContent sx={{ padding: 0 }}>
+                    <Box sx={{ padding: 2 }}>
                         {historico.length === 0 ? (
-                            <Typography variant="body1" sx={{textAlign: 'center', color: '#BF7373', marginTop: 2}}>
+                            <Typography variant="body1" sx={{ textAlign: 'center', color: '#BF7373', marginTop: 2 }}>
                                 Nenhum resultado encontrado.
                             </Typography>
                         ) : (
@@ -61,39 +58,36 @@ const MeusPedidos = ({historico}) => {
                                         </Typography>
                                     </Box>
 
-                                    {historicoAgg?.itens.map((historico) => (
-                                        <Box key={historico.id} mb={2} sx={{width: '100%', paddingX: 2}}>
+                                    {historicoAgg.itens?.map((item) => (
+                                        <Box key={item.id} mb={2} sx={{ width: '100%', paddingX: 2 }}>
                                             <Box display="column" alignItems="center">
                                                 <Box display="flex" alignItems="center">
-                                                    <CheckCircleIcon sx={{color: "green"}} fontSize="small"/>
-                                                    <Typography variant="body1" sx={{marginLeft: '5px'}}>
-                                                        Pedido {historico.status === 'CONCLUIDO' ? 'concluído' : ''} •
-                                                        Nº {historico.id}
+                                                    <CheckCircleIcon sx={{ color: "green" }} fontSize="small" />
+                                                    <Typography variant="body1" sx={{ marginLeft: '5px' }}>
+                                                        Pedido {item.status === 'CONCLUIDO' ? 'concluído' : ''} •
+                                                        Nº {item.id}
                                                     </Typography>
                                                 </Box>
-                                                {historico?.itens?.map((item) => (
-                                                    <Box flexGrow={1} key={item.id}>
-                                                        <Typography variant="body2">
-                                                            {item.quantidade} {item.nome}
-                                                        </Typography>
-                                                    </Box>
-                                                ))}
+                                                <Box flexGrow={1}>
+                                                    <Typography variant="body2">
+                                                        {item.quantidade} {item.nome}
+                                                    </Typography>
+                                                </Box>
                                             </Box>
 
-                                            <Box display="flex" justifyContent="space-between" mt={1}
-                                                 alignItems="center">
+                                            <Box display="flex" justifyContent="space-between" mt={1} alignItems="center">
                                                 <Typography variant="caption" mr={2}>
                                                     Avalie seu pedido
                                                 </Typography>
                                                 <Rating
                                                     name="pedido-avaliacao"
-                                                    value={historico?.notaAvaliacao}
-                                                    onChange={(e, newValue) => handleAvaliar(newValue, historico.id)}
+                                                    value={item.notaAvaliacao}
+                                                    onChange={(e, newValue) => handleAvaliar(newValue, item.id)}
                                                     size="large"
-                                                    sx={{color: "#BF7373"}}
+                                                    sx={{ color: "#BF7373" }}
                                                 />
                                             </Box>
-                                            <Divider/>
+                                            <Divider />
                                         </Box>
                                     ))}
                                 </Box>
@@ -106,4 +100,4 @@ const MeusPedidos = ({historico}) => {
     );
 };
 
-export default MeusPedidos;
+export default HistoricoPedidos;

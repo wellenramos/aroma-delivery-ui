@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
     Box,
     Button,
@@ -7,25 +7,24 @@ import {
     IconButton,
     Menu,
     MenuItem,
-    Typography
+    Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../Header";
-import {useNavigate} from "react-router-dom";
-import {useAlert} from "../../shared/alert/AlertProvider";
+import { useNavigate } from "react-router-dom";
+import { useAlert } from "../../shared/alert/AlertProvider";
 import {
     excluir,
     marcarEnderecoComoPrincipal,
     obterEnderecos,
-    salvar
+    salvar,
 } from "../../../services/enderecoService";
 import HomeIcon from "@mui/icons-material/Home";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Endereco from "./Endereco";
 
 const Enderecos = () => {
-
     const [enderecos, setEnderecos] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -34,29 +33,29 @@ const Enderecos = () => {
     const navigate = useNavigate();
     const showAlert = useAlert();
 
-    const fetchEnderecos = async () => {
+    const fetchEnderecos = useCallback(async () => {
         try {
             const { data } = await obterEnderecos();
             setEnderecos(data);
         } catch (error) {
             showAlert("Erro ao buscar o produto", "error");
         }
-    };
+    }, [showAlert]);
 
     useEffect(() => {
         fetchEnderecos();
-    }, []);
+    }, [fetchEnderecos]);
 
     const handleVoltarCarrinho = () => {
-        navigate('/home/carrinho');
-    }
+        navigate("/home/carrinho");
+    };
 
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
 
     const handleEditarEndereco = (endereco) => {
-        setOpenModal(true)
+        setOpenModal(true);
         setEnderecoEdicao(endereco);
         handleMenuClose();
     };
@@ -67,7 +66,7 @@ const Enderecos = () => {
         try {
             await excluir(endereco.id);
             showAlert("Endereço excluído com sucesso", "success");
-            setEnderecos(enderecos.filter(it => it.id !== endereco.id));
+            setEnderecos(enderecos.filter((it) => it.id !== endereco.id));
         } catch (error) {
             showAlert(error?.response?.data?.message, "error");
         }
@@ -95,18 +94,18 @@ const Enderecos = () => {
     const handleOpenModal = () => {
         setEnderecoEdicao(null);
         setOpenModal(true);
-    }
+    };
 
     const handleCloseModal = () => setOpenModal(false);
 
     const handleAtualizarEnderecoPrincipal = async (endereco) => {
         if (endereco.principal) return;
 
-        const {data} = await marcarEnderecoComoPrincipal(endereco.id);
+        const { data } = await marcarEnderecoComoPrincipal(endereco.id);
         if (data) {
-            navigate("/home/carrinho")
+            navigate("/home/carrinho");
         }
-    }
+    };
 
     return (
         <Card sx={{ maxWidth: "md", margin: "0 auto", boxShadow: "none" }}>
@@ -147,7 +146,9 @@ const Enderecos = () => {
                                     <Box display="flex" alignItems="center" gap={1}>
                                         <HomeIcon sx={{ color: "#BF7373" }} />
                                         <Box>
-                                            <Typography variant="subtitle1">{endereco.complemento}</Typography>
+                                            <Typography variant="subtitle1">
+                                                {endereco.complemento}
+                                            </Typography>
                                             <Typography variant="body2">
                                                 {endereco.bairro}, Q. {endereco.numero}
                                             </Typography>
@@ -156,7 +157,6 @@ const Enderecos = () => {
                                             </Typography>
                                         </Box>
                                     </Box>
-                                    {/* Ícone de menu */}
                                     <IconButton
                                         onClick={(event) => {
                                             event.stopPropagation();
@@ -167,7 +167,6 @@ const Enderecos = () => {
                                     </IconButton>
                                 </Box>
                             </CardContent>
-                            {/* Menu de ações */}
                             <Menu
                                 anchorEl={anchorEl}
                                 open={Boolean(anchorEl)}
@@ -190,21 +189,26 @@ const Enderecos = () => {
                         variant="contained"
                         size="large"
                         fullWidth
-                        sx={{ backgroundColor: 'primary', color: '#FFF', fontWeight: 'bold', borderRadius: '8px' }}
+                        sx={{
+                            backgroundColor: "primary",
+                            color: "#FFF",
+                            fontWeight: "bold",
+                            borderRadius: "8px",
+                        }}
                         onClick={handleOpenModal}
                     >
                         Adicionar
                     </Button>
                 </Box>
 
-                {openModal &&
+                {openModal && (
                     <Endereco
                         openModal={openModal}
                         enderecoEdicao={enderecoEdicao}
                         onCloseModal={handleCloseModal}
                         onSalvarEndereco={handleSalvar}
                     />
-                }
+                )}
             </CardContent>
         </Card>
     );

@@ -4,14 +4,12 @@ import {
     Card,
     CardContent,
     Container,
-    Divider,
     List,
     ListItem,
     ListItemText,
     Tab,
     Tabs,
     Typography,
-    Chip,
     CircularProgress,
 } from "@mui/material";
 import Header from "../Header";
@@ -20,14 +18,14 @@ import { listarPedidosPorStatus } from "../../services/pedidoService";
 import Menu from "../administrador/menu/Menu";
 import { useAppContext } from "../../context/AppContext";
 
+const statusPorAba = ["PENDENTE", "EM_ANDAMENTO", "ENVIADO", "ENTREGUE"];
+
 const HomeAdmin = () => {
     const [value, setValue] = useState(0);
     const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { menuOpen, toggleMenu } = useAppContext();
-
-    const statusPorAba = ["PENDENTE", "EM_ANDAMENTO", "ENVIADO", "ENTREGUE"];
 
     const fetchPedidos = async (status) => {
         setLoading(true);
@@ -105,22 +103,19 @@ const HomeAdmin = () => {
                                             </Box>
                                         }
                                         secondary={
-                                            <>
-                                                <Box display="flex" justifyContent="space-between">
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        Solicitante: {pedido.usuarioSolicitante}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary">
-                                                        Data: {pedido.dataPedido}
-                                                    </Typography>
-                                                </Box>
-                                            </>
+                                            <Box display="flex" justifyContent="space-between">
+                                                <Typography variant="body2" color="textSecondary">
+                                                    Solicitante: {pedido.usuarioSolicitante}
+                                                </Typography>
+                                                <Typography variant="body2" color="textSecondary">
+                                                    Data: {pedido.dataPedido}
+                                                </Typography>
+                                            </Box>
                                         }
                                     />
                                 </ListItem>
                             ))}
                         </List>
-
                     )}
                 </CardContent>
             </Card>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -12,13 +12,13 @@ import {
 import StarIcon from '@mui/icons-material/Star';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../Header";
-import {obterProdutoPorId} from "../../../../services/produtoService";
-import {useAlert} from "../../../shared/alert/AlertProvider";
-import {adicionarItem} from "../../../../services/carrinhoService";
-import {useAppContext} from "../../../../context/AppContext";
-import {favoritar, obterFavorito} from "../../../../services/favoritoService";
+import { obterProdutoPorId } from "../../../../services/produtoService";
+import { useAlert } from "../../../shared/alert/AlertProvider";
+import { adicionarItem } from "../../../../services/carrinhoService";
+import { useAppContext } from "../../../../context/AppContext";
+import { favoritar, obterFavorito } from "../../../../services/favoritoService";
 
 const TamanhosCopoEnum = {
   PEQUENO: 'PEQUENO',
@@ -32,24 +32,28 @@ const DetalheProduto = () => {
   const [observacao, setObservacao] = useState('');
   const [tamanhoCopo, setTamanhoCopo] = useState(TamanhosCopoEnum.PEQUENO);
   const [adicionaisSelecionados, setAdicionaisSelecionados] = useState([]);
-  const [favoritoSelecionado, setFavoritoSelecionado] = useState(false)
+  const [favoritoSelecionado, setFavoritoSelecionado] = useState(false);
 
   const precoProduto = produto?.preco;
   const somaAdicionais = adicionaisSelecionados.reduce((soma, adicional) => soma + adicional.preco, 0);
   const total = (precoProduto + somaAdicionais) * quantidade;
 
+  const navigate = useNavigate();
+  const { produtoId } = useParams();
+  const { carrinhoId, setCarrinhoId } = useAppContext();
+  const alert = useAlert();
+
+  const showAlert = useCallback((message, type) => {
+    alert(message, type);
+  }, [alert]);
+
   const handleAdicionar = () => setQuantidade(quantidade + 1);
   const handleRemover = () => setQuantidade(quantidade > 1 ? quantidade - 1 : 1);
-
-  const showAlert = useAlert();
-  const { produtoId} = useParams();
-  const navigate = useNavigate();
-  const { carrinhoId ,setCarrinhoId } = useAppContext();
 
   useEffect(() => {
     const fetchProduto = async () => {
       try {
-        const {data} = await obterProdutoPorId(produtoId);
+        const { data } = await obterProdutoPorId(produtoId);
         setProduto(data);
 
         const result = await obterFavorito(produtoId);
@@ -62,7 +66,7 @@ const DetalheProduto = () => {
     if (produtoId) {
       fetchProduto();
     }
-  }, [produtoId]);
+  }, [produtoId, showAlert]);
 
   const handleVoltarHome = () => {
     navigate("/home");
@@ -111,7 +115,7 @@ const DetalheProduto = () => {
         navigate(`/home/carrinho/${data.id}`);
       }
     } catch (error) {
-      showAlert("Erro ao buscar o produto", "error");
+      showAlert("Erro ao adicionar o produto ao carrinho", "error");
     }
   };
 
@@ -126,20 +130,21 @@ const DetalheProduto = () => {
   };
 
   return (
-      <Card sx={{
-        maxWidth: 'md',
-        margin: '0 auto',
-        boxShadow: 'none',
-        backgroundColor: 'rgb(253, 242, 242)'
-      }}>
-        <CardContent sx={{padding: 0}}>
+      <Card
+          sx={{
+            maxWidth: 'md',
+            margin: '0 auto',
+            boxShadow: 'none',
+            backgroundColor: 'rgb(253, 242, 242)'
+          }}
+      >
+        <CardContent sx={{ padding: 0 }}>
           <Header
               titulo='Detalhe'
               onBack={handleVoltarHome}
-              onFavorite={() => handleFavoritar(produto.id)}
+              onFavorite={() => handleFavoritar(produto?.id)}
               favorito={favoritoSelecionado}
           />
-
           <Box sx={{p: 2}}>
             <Box sx={{
               display: 'flex',
@@ -243,7 +248,6 @@ const DetalheProduto = () => {
                 />
               </Box>
 
-              {/* Quantidade e Total */}
               <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="h6" sx={{ color: '#BF7373', fontWeight: 'bold' }}>
                   Total

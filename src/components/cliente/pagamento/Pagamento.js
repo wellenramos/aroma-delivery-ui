@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
     Box,
     Button,
@@ -6,7 +6,6 @@ import {
     CardContent,
     IconButton,
     Typography,
-    Radio
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../Header";
@@ -28,18 +27,18 @@ const Pagamento = () => {
 
     const showAlert = useAlert();
 
-    const fetchCartoes = async () => {
+    const fetchCartoes = useCallback(async () => {
         try {
             const { data } = await obterCartoes();
             setCartoes(data);
         } catch (error) {
             showAlert("Erro ao buscar cartões de pagamento", "error");
         }
-    };
+    }, [showAlert]);
 
     useEffect(() => {
         fetchCartoes();
-    }, []);
+    }, [fetchCartoes]);
 
     const handleVoltar = () => {
         navigate(-1);

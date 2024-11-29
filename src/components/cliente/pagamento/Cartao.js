@@ -1,15 +1,16 @@
 import {
   Box,
-  Button, Checkbox, FormControlLabel,
-  FormControlLabel as RadioLabel,
+  Button,
+  Checkbox,
+  FormControlLabel,
   Modal,
   Radio,
   RadioGroup,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import InputMask from "react-input-mask";
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 
 const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
   const [errors, setErrors] = useState({});
@@ -19,19 +20,13 @@ const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
     titular: "",
     validade: "",
     cvv: "",
-    principal: true
+    principal: true,
   });
-
-  useEffect(() => {
-    if (cartao) {
-      setCartao(cartao)
-    }
-  }, [])
 
   const handleChange = (field) => (e) => {
     setCartao((prev) => ({
       ...prev,
-      [field]: e.target.value
+      [field]: e.target.value,
     }));
   };
 
@@ -44,7 +39,7 @@ const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
       cvv: cartao.cvv,
       principal: cartao.principal,
       validadeMes: cartao.validade.split("/")[0],
-      validadeAno:cartao.validade.split("/")[1],
+      validadeAno: cartao.validade.split("/")[1],
     };
     onSalvarCartao(command);
   };
@@ -78,7 +73,7 @@ const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
       return true;
     }
     return false;
-  }
+  };
 
   return (
       <Modal open={openModal} onClose={onCloseModal}>
@@ -89,7 +84,7 @@ const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
               borderRadius: 2,
               maxWidth: 500,
               margin: "50px auto",
-              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)"
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
             }}
         >
           <Typography
@@ -102,13 +97,17 @@ const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
           <Typography variant="subtitle1" sx={{ fontWeight: "bold", mb: 1 }}>
             Tipo do cartão
           </Typography>
-          <RadioGroup
-              value={cartao.tipo}
-              onChange={handleChange("tipo")}
-              row
-          >
-            <RadioLabel value="Crédito" control={<Radio color="primary" />} label="Crédito" />
-            <RadioLabel value="Débito" control={<Radio color="primary" />} label="Débito" />
+          <RadioGroup value={cartao.tipo} onChange={handleChange("tipo")} row>
+            <FormControlLabel
+                value="Crédito"
+                control={<Radio color="primary" />}
+                label="Crédito"
+            />
+            <FormControlLabel
+                value="Débito"
+                control={<Radio color="primary" />}
+                label="Débito"
+            />
           </RadioGroup>
 
           <TextField
@@ -192,7 +191,7 @@ const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
                   backgroundColor: "primary",
                   color: "#FFF",
                   fontWeight: "bold",
-                  borderRadius: "8px"
+                  borderRadius: "8px",
                 }}
                 onClick={handleSalvarCartao}
             >

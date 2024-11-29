@@ -48,19 +48,19 @@ const Carrinho = () => {
         if (carrinhoId) {
             fetchResumoCarrinho();
         }
-    }, [carrinhoId]);
+    }, [carrinhoId, showAlert]);
 
     const handleIrParaEnderecos = () => {
         navigate('/home/enderecos');
-    }
+    };
 
     const handleIrParaPagamento = () => {
         navigate('/home/pagamento');
-    }
+    };
 
     const handleIrParaHome = () => {
         navigate('/home');
-    }
+    };
 
     const handleVoltar = () => {
         if (resumo.itens?.length >= 1) {
@@ -69,7 +69,7 @@ const Carrinho = () => {
         } else {
             handleIrParaHome();
         }
-    }
+    };
 
     const handleRealizarPedido = async () => {
         try {
@@ -95,9 +95,9 @@ const Carrinho = () => {
                 }, 2000);
             }
         } catch (error) {
-            showAlert(error?.response?.data?.message, "error");
+            showAlert(error?.response?.data?.message || "Erro ao realizar o pedido", "error");
         }
-    }
+    };
 
     const handleRemoverItemCarrinho = async (item) => {
         try {
@@ -109,7 +109,7 @@ const Carrinho = () => {
         } catch (error) {
             showAlert("Erro ao remover o item do carrinho", "error");
         }
-    }
+    };
 
     const handleDiminuirQuantidadeItem = async (item) => {
         try {
@@ -128,7 +128,7 @@ const Carrinho = () => {
         } catch (error) {
             showAlert("Erro ao atualizar a quantidade do item", "error");
         }
-    }
+    };
 
     const handleAumentarQuantidadeItem = async (item) => {
         try {
@@ -143,7 +143,7 @@ const Carrinho = () => {
         } catch (error) {
             showAlert("Erro ao atualizar a quantidade do item", "error");
         }
-    }
+    };
 
     const handleLimparCarrinho = async () => {
         try {
@@ -165,7 +165,7 @@ const Carrinho = () => {
         } catch (error) {
             showAlert("Erro ao limpar o carrinho", "error");
         }
-    }
+    };
 
     if (showSuccess) {
         return <PedidoSucesso />;
@@ -252,60 +252,48 @@ const Carrinho = () => {
                             primary="Pagamento"
                             secondary={
                                 resumo?.cartao ? (
-                                    `${resumo?.cartao?.bandeira} xxxx xxxx xxxx ${resumo?.cartao?.numero.slice(-4)}`
+                                    `${resumo?.cartao?.tipo} - ${resumo?.cartao?.final}`
                                 ) : (
-                                    "Nenhum cartão selecionado"
+                                    "Nenhum método selecionado"
                                 )
                             }
                         />
                         <ArrowForwardIosIcon fontSize="small" sx={{ color: '#BF7373' }} />
                     </ListItem>
                 </List>
-                <Divider />
 
                 <Box padding={2}>
-                    <Typography variant="body2" display="flex" justifyContent="space-between">
-                        <span>Subtotal</span>
-                        <span>R$ {resumo?.subTotal?.toFixed(2) || "0.00"}</span>
-                    </Typography>
-                    <Typography variant="body2" display="flex" justifyContent="space-between">
-                        <span>Taxa de entrega</span>
-                        <span>R$ {resumo?.valorFrete?.toFixed(2) || "0.00"}</span>
-                    </Typography>
-                    <Divider sx={{ marginY: 1 }} />
-                    <Typography
-                        variant="body1"
-                        display="flex"
-                        justifyContent="space-between"
-                        fontWeight="bold"
-                    >
-                        <span>Total</span>
-                        <span>R$ {resumo?.valorTotal?.toFixed(2) || "0.00"}</span>
-                    </Typography>
+                    <Box display="flex" justifyContent="space-between">
+                        <Typography>Subtotal</Typography>
+                        <Typography>R$ {resumo?.subTotal?.toFixed(2)}</Typography>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between">
+                        <Typography>Entrega</Typography>
+                        <Typography>R$ {resumo?.valorFrete?.toFixed(2)}</Typography>
+                    </Box>
+                    <Divider sx={{ my: 1 }} />
+                    <Box display="flex" justifyContent="space-between" fontWeight="bold">
+                        <Typography>Total</Typography>
+                        <Typography>R$ {resumo?.valorTotal?.toFixed(2)}</Typography>
+                    </Box>
                 </Box>
-                <Box padding={1} mb={5}>
-                    <Button
-                        fullWidth
-                        variant="outlined"
-                        sx={{
-                            color: '#BF7373',
-                            borderColor: '#BF7373',
-                            '&:hover': { backgroundColor: '#FFE5E5', borderColor: '#A65050' },
-                            mb: 1
-                        }}
-                        onClick={handleLimparCarrinho}
-                        disabled={resumo?.itens?.length === 0}
-                    >
-                        Limpar Carrinho
-                    </Button>
+
+                <Box padding={2}>
                     <Button
                         fullWidth
                         variant="contained"
-                        sx={{ backgroundColor: '#BF7373', '&:hover': { backgroundColor: '#A65050' } }}
+                        sx={{ backgroundColor: '#BF7373' }}
                         onClick={handleRealizarPedido}
-                        disabled={resumo?.itens?.length === 0}
                     >
-                        Comprar
+                        Confirmar Pedido
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        sx={{ mt: 1, color: '#BF7373', borderColor: '#BF7373' }}
+                        onClick={handleLimparCarrinho}
+                    >
+                        Limpar Carrinho
                     </Button>
                 </Box>
             </CardContent>
