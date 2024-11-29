@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Box,
   Button,
@@ -9,13 +9,16 @@ import {
   Typography
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../../Header";
-import { obterProdutoPorId } from "../../../../services/produtoService";
-import { useAlert } from "../../../shared/alert/AlertProvider";
-import { adicionarItem, obterItemCarrinho } from "../../../../services/carrinhoService";
-import { useAppContext } from "../../../../context/AppContext";
-import { favoritar, obterFavorito } from "../../../../services/favoritoService";
+import {obterProdutoPorId} from "../../../../services/produtoService";
+import {useAlert} from "../../../shared/alert/AlertProvider";
+import {
+  adicionarItem,
+  obterItemCarrinho
+} from "../../../../services/carrinhoService";
+import {useAppContext} from "../../../../context/AppContext";
+import {favoritar, obterFavorito} from "../../../../services/favoritoService";
 
 const TamanhosCopoEnum = {
   PEQUENO: 'PEQUENO',
@@ -31,10 +34,6 @@ const DetalheProduto = () => {
   const [adicionaisSelecionados, setAdicionaisSelecionados] = useState([]);
   const [favoritoSelecionado, setFavoritoSelecionado] = useState(false);
 
-  const precoProduto = produto?.preco;
-  const somaAdicionais = adicionaisSelecionados.reduce((soma, adicional) => soma + adicional.preco, 0);
-  const total = (precoProduto + somaAdicionais) * quantidade;
-
   const navigate = useNavigate();
   const { produtoId } = useParams();
   const { carrinhoId, setCarrinhoId } = useAppContext();
@@ -43,9 +42,6 @@ const DetalheProduto = () => {
   const showAlert = useCallback((message, type) => {
     alert(message, type);
   }, [alert]);
-
-  const handleAdicionar = () => setQuantidade(quantidade + 1);
-  const handleRemover = () => setQuantidade(quantidade > 1 ? quantidade - 1 : 1);
 
   useEffect(() => {
     const fetchProduto = async () => {
@@ -63,7 +59,7 @@ const DetalheProduto = () => {
     if (produtoId) {
       fetchProduto();
     }
-  }, [produtoId, showAlert]); // Adicionado produtoId e showAlert no array de dependências
+  }, [produtoId, showAlert]);
 
   useEffect(() => {
     const fetchItemCarrinho = async () => {
@@ -83,7 +79,7 @@ const DetalheProduto = () => {
     if (carrinhoId && produtoId) {
       fetchItemCarrinho();
     }
-  }, [carrinhoId, produtoId, showAlert]); // Adicionado produtoId e showAlert no array de dependências
+  }, [carrinhoId, produtoId, showAlert]);
 
   const handleVoltarHome = () => {
     navigate("/home");
