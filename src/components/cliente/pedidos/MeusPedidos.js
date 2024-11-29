@@ -6,7 +6,6 @@ import { useAlert } from "../../shared/alert/AlertProvider";
 import { acompanhar } from "../../../services/pedidoService";
 
 const MeusPedidos = () => {
-
     const [pedidos, setPedidos] = useState([]);
     const [historico, setHistorico] = useState([]);
 
@@ -15,10 +14,16 @@ const MeusPedidos = () => {
     const fetchPedidos = useCallback(async () => {
         try {
             const { data } = await acompanhar();
+
             if (data.pedidosEmAndamento.length >= 1) {
                 setPedidos(data.pedidosEmAndamento);
-            } else {
+                setHistorico([]);
+            } else if (data.historico.length >= 1) {
                 setHistorico(data.historico);
+                setPedidos([]);
+            } else {
+                setPedidos([]);
+                setHistorico([]);
             }
         } catch (error) {
             showAlert("Erro ao buscar o produto", "error");
@@ -31,7 +36,7 @@ const MeusPedidos = () => {
 
     const handleRecarregarPedidos = () => {
         fetchPedidos();
-    }
+    };
 
     return (
         <Card sx={{ maxWidth: 'md', margin: '0 auto', boxShadow: 'none' }}>

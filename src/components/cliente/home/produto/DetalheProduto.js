@@ -68,6 +68,26 @@ const DetalheProduto = () => {
     }
   }, [produtoId, showAlert]);
 
+  useEffect(() => {
+    const fetchItemCarrinho = async () => {
+      try {
+        const {data} =  await obterItemCarrinho(carrinhoId, produtoId);
+        if (data) {
+          setQuantidade(data.quantidade || 1);
+          setObservacao(data.observacao || '');
+          setTamanhoCopo(data.tamanhoCopo || TamanhosCopoEnum.PEQUENO);
+          setAdicionaisSelecionados(data.adicionais || []);
+        }
+      } catch (error) {
+        showAlert("Erro ao buscar o produto", "error");
+      }
+    };
+
+    if (carrinhoId && produtoId) {
+      fetchItemCarrinho();
+    }
+  }, [carrinhoId]);
+
   const handleVoltarHome = () => {
     navigate("/home");
   };

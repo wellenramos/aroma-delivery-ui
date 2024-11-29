@@ -8,14 +8,6 @@ export const adicionarItem = async (item) => {
     }
 };
 
-export const alterarItem = async (item) => {
-    try {
-        return await api.put('/carrinho', item);
-    } catch (error) {
-        throw error.response ? error.response.data : error;
-    }
-};
-
 export const obterResumoCarrinho = async (carrinhoId) => {
     try {
         return await api.get(`/carrinho/${carrinhoId}/resumo`);
@@ -35,6 +27,14 @@ export const removerItemDoCarrinho = async (carrinhoId, itemId) => {
 export const atualizarQuantidadeItens = async (carrinhoId, itemId, quantidade) => {
     try {
         return await api.put(`/carrinho/${carrinhoId}/itens/${itemId}/atualizar-quantidade?quantidade=${quantidade}`);
+    } catch (error) {
+        throw error.response ? error.response.data : error;
+    }
+};
+
+export const obterItemCarrinho = async (carrinhoId, produtoId) => {
+    try {
+        return await api.get(`/carrinho/${carrinhoId}/produto/${produtoId}`);
     } catch (error) {
         throw error.response ? error.response.data : error;
     }
