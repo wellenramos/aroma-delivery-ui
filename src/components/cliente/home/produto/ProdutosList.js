@@ -1,5 +1,13 @@
 import React from 'react';
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Typography, Box } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography
+} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import {useNavigate} from "react-router-dom";
 

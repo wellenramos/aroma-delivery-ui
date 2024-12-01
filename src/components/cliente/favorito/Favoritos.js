@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {Box, Card, CardContent, Divider, Typography} from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../shared/alert/AlertProvider";
-import { obterFavoritos } from "../../../services/favoritoService";
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "../../shared/alert/AlertProvider";
+import {obterFavoritos} from "../../../services/favoritoService";
 import Header from "../../Header";
 
 const Favoritos = () => {
@@ -12,18 +12,18 @@ const Favoritos = () => {
     const navigate = useNavigate();
     const showAlert = useAlert();
 
-    const fetchFavoritos = useCallback(async () => {
+    const fetchFavoritos = async () => {
         try {
             const { data } = await obterFavoritos();
             setFavoritos(data);
         } catch (error) {
             showAlert("Erro ao buscar favoritos", "error");
         }
-    }, [showAlert]);
+    };
 
-    useEffect(() => {
+    useEffect( () => {
         fetchFavoritos();
-    }, [fetchFavoritos]);
+    }, []);
 
     const handleVoltarHome = () => {
         navigate("/home");

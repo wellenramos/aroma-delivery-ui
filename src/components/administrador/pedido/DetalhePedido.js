@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Box,
   Button,
@@ -9,16 +9,18 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import { atualizarStatusPedido, obterDetalhesPedido } from "../../../services/pedidoService";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {
+  atualizarStatusPedido,
+  obterDetalhesPedido
+} from "../../../services/pedidoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import PedidoItens from "./PedidoItens";
-
 
 const DetalhesPedido = () => {
   const [pedido, setPedido] = useState(null);
@@ -27,20 +29,20 @@ const DetalhesPedido = () => {
   const { pedidoId } = useParams();
   const showAlert = useAlert();
 
-  const fetchPedidoDetails = useCallback(async () => {
+  const fetchPedidoDetails = async () => {
     try {
       const response = await obterDetalhesPedido(pedidoId);
       setPedido(response.data);
     } catch (error) {
-      showAlert("Erro ao buscar os detalhes do pedido.", "error");
+      showAlert("Erro ao buscar os detalhes do pedido.", 'error');
     } finally {
       setLoading(false);
     }
-  }, [pedidoId, showAlert]);
+  };
 
   useEffect(() => {
     fetchPedidoDetails();
-  }, [fetchPedidoDetails]);
+  }, [pedidoId]);
 
   const handleAtualizar = async (status) => {
     try {

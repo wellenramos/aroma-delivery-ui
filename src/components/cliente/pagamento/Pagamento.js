@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Button,
@@ -9,8 +9,8 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../Header";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import {
     excluir,
     marcarCartaoPrincipal,
@@ -27,18 +27,18 @@ const Pagamento = () => {
 
     const showAlert = useAlert();
 
-    const fetchCartoes = useCallback(async () => {
+    const fetchCartoes = async () => {
         try {
             const { data } = await obterCartoes();
             setCartoes(data);
         } catch (error) {
             showAlert("Erro ao buscar cartões de pagamento", "error");
         }
-    }, [showAlert]);
+    };
 
     useEffect(() => {
         fetchCartoes();
-    }, [fetchCartoes]);
+    }, []);
 
     const handleVoltar = () => {
         navigate(-1);

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import {Box, IconButton, Typography} from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const PedidoSucesso = () => {

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
-    Box,
-    Card,
-    CardContent,
-    Container,
-    List,
-    ListItem,
-    ListItemText,
-    Tab,
-    Tabs,
-    Typography,
-    CircularProgress,
+  Box,
+  Card,
+  CardContent,
+  CircularProgress,
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  Tab,
+  Tabs,
+  Typography,
 } from "@mui/material";
 import Header from "../Header";
-import { useNavigate } from "react-router-dom";
-import { listarPedidosPorStatus } from "../../services/pedidoService";
+import {useNavigate} from "react-router-dom";
+import {listarPedidosPorStatus} from "../../services/pedidoService";
 import Menu from "../administrador/menu/Menu";
-import { useAppContext } from "../../context/AppContext";
+import {useAppContext} from "../../context/AppContext";
 
 const statusPorAba = ["PENDENTE", "EM_ANDAMENTO", "ENVIADO", "ENTREGUE"];
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback } from "react";
-import { Box } from "@mui/material";
+import React, {useCallback, useEffect} from "react";
+import {Box} from "@mui/material";
 import ProdutoTabs from "./ProdutoTabs";
 import ProdutosList from "./ProdutosList";
-import { obterProdutosPorCategoria } from "../../../../services/produtoService";
+import {obterProdutosPorCategoria} from "../../../../services/produtoService";
 
 const Produtos = ({ produtos, onSetProdutos, onCategoriaChange }) => {
 

@@ -1,16 +1,16 @@
 import React from "react";
 import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    Divider,
-    Typography,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  Typography,
 } from "@mui/material";
-import { confirmarRecebimento } from "../../../services/pedidoService";
+import {confirmarRecebimento} from "../../../services/pedidoService";
 import LinhaDoTempo from "./LinhaDoTempo";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import Header from "../../Header";
 
 const AcompanharPedido = ({ pedidos, onRecarregarPedidos }) => {

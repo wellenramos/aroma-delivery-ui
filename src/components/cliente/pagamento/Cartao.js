@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import InputMask from "react-input-mask";
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 const Cartao = ({ openModal, onCloseModal, onSalvarCartao }) => {
   const [errors, setErrors] = useState({});

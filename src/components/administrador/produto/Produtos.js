@@ -1,28 +1,28 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState} from "react";
 import {
-    Avatar,
-    Box,
-    Card,
-    CardContent,
-    Fab,
-    IconButton,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Typography,
-    useMediaQuery,
-    useTheme,
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  Fab,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import BarraPesquisa from "../../shared/BarraPesquisa";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {
-    excluirProduto,
-    obterTodosProdutos
+  excluirProduto,
+  obterTodosProdutos
 } from "../../../services/produtoService";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {useAlert} from "../../shared/alert/AlertProvider";
 
 const Produtos = () => {
     const [produtos, setProdutos] = useState([]);
@@ -32,18 +32,18 @@ const Produtos = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-    const handleObterProdutos = useCallback(async () => {
-        try {
-            const { data } = await obterTodosProdutos();
-            setProdutos(data);
-        } catch (error) {
-            showAlert("Erro ao buscar produtos", "error");
-        }
-    }, [showAlert]);
+  useEffect(() => {
+    const fetchProdutos = async () => {
+      try {
+        const { data } = await obterTodosProdutos();
+        setProdutos(data);
+      } catch (error) {
+        showAlert("Erro ao buscar produtos", "error");
+      }
+    };
 
-    useEffect(() => {
-        handleObterProdutos();
-    }, [handleObterProdutos]);
+    fetchProdutos();
+  }, []);
 
     const handleAddProduto = () => {
         navigate("/admin/cadastrar");

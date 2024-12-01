@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Card,
@@ -7,10 +7,10 @@ import {
     Rating,
     Typography
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { avaliar } from "../../../services/pedidoService";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {avaliar} from "../../../services/pedidoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import Header from "../../Header";
 
 const HistoricoPedidos = ({ historico: initialHistorico = [] }) => {

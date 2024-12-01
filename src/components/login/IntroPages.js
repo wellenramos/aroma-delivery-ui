@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import React, {useState} from 'react';
+import {Box, Button, Typography} from '@mui/material';
+import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
-import { useNavigate } from 'react-router-dom';
+import {Pagination} from 'swiper/modules';
+import {useNavigate} from 'react-router-dom';
 
 const IntroPages = () => {
     const navigate = useNavigate();

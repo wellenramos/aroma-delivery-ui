@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Button,
@@ -12,8 +12,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../Header";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "../../shared/alert/AlertProvider";
 import {
     excluir,
     marcarEnderecoComoPrincipal,
@@ -33,18 +33,18 @@ const Enderecos = () => {
     const navigate = useNavigate();
     const showAlert = useAlert();
 
-    const fetchEnderecos = useCallback(async () => {
+    const fetchEnderecos = async () => {
         try {
             const { data } = await obterEnderecos();
             setEnderecos(data);
         } catch (error) {
             showAlert("Erro ao buscar o produto", "error");
         }
-    }, [showAlert]);
+    };
 
     useEffect(() => {
         fetchEnderecos();
-    }, [fetchEnderecos]);
+    }, []);
 
     const handleVoltarCarrinho = () => {
         navigate("/home/carrinho");

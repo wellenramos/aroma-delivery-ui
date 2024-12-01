@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Box, Link, TextField, Typography } from '@mui/material';
-import { Entrar, LoginContainer, LogoBox } from "./style";
-import { autenticar } from "../../services/authService";
-import { useNavigate } from "react-router-dom";
-import { useAlert } from "../shared/alert/AlertProvider";
-import { jwtDecode } from "jwt-decode";
-import { useAppContext } from "../../context/AppContext";
+import React, {useEffect, useState} from 'react';
+import {Box, Link, TextField, Typography} from '@mui/material';
+import {Entrar, LoginContainer, LogoBox} from "./style";
+import {autenticar} from "../../services/authService";
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "../shared/alert/AlertProvider";
+import {jwtDecode} from "jwt-decode";
+import {useAppContext} from "../../context/AppContext";
 
 export const ROLE_ADMIN = 'ROLE_ADMIN';
 export const ROLE_CLIENTE = 'ROLE_CLIENTE';
@@ -19,15 +19,11 @@ const Login = () => {
     const navigate = useNavigate();
     const { limparCarrinhoId, limparPedido, limparToken } = useAppContext();
 
-    const limparContexto = useCallback(() => {
-        limparPedido();
-        limparCarrinhoId();
-        limparToken();
-    }, [limparCarrinhoId, limparPedido, limparToken]);
-
     useEffect(() => {
-        limparContexto();
-    }, [limparContexto]); // Include limparContexto in dependencies
+      limparPedido();
+      limparCarrinhoId();
+      limparToken();
+    }, []);
 
     const handleLogin = async (e) => {
         try {

@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
+import React, {useEffect} from 'react';
+import {BottomNavigation, BottomNavigationAction, Box} from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PersonIcon from '@mui/icons-material/Person';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAppContext } from "../../context/AppContext";
-import { ROLE_ADMIN } from "../login/Login";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useAppContext} from "../../context/AppContext";
+import {ROLE_ADMIN} from "../login/Login";
 
 const HomeNavigationBar = () => {
     const navigate = useNavigate();

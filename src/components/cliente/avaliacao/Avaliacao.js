@@ -1,5 +1,15 @@
-import React, { useState } from 'react';
-import {Avatar, Box, Button, Card, CardContent, Divider, IconButton, TextField, Typography} from "@mui/material";
+import React, {useState} from 'react';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  IconButton,
+  TextField,
+  Typography
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/Star";

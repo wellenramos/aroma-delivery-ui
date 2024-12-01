@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import {Box, IconButton, Typography} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Autocomplete,
     Box,
@@ -13,10 +13,10 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Header from "../../Header";
-import { obterAdicionais, salvarProduto } from "../../../services/produtoService";
-import { useAlert } from "../../shared/alert/AlertProvider";
+import {obterAdicionais, salvarProduto} from "../../../services/produtoService";
+import {useAlert} from "../../shared/alert/AlertProvider";
 
 const Produto = () => {
     const [produto, setProduto] = useState({
@@ -42,7 +42,7 @@ const Produto = () => {
         };
 
         fetchAdicionais();
-    }, [showAlert]);
+    }, []);
 
     const handleVoltarHome = () => navigate("/admin");
 
