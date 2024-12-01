@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     Autocomplete,
     Box,
@@ -13,10 +13,10 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../../Header";
-import {obterAdicionais, salvarProduto} from "../../../services/produtoService";
-import {useAlert} from "../../shared/alert/AlertProvider";
+import { obterAdicionais, salvarProduto } from "../../../services/produtoService";
+import { useAlert } from "../../shared/alert/AlertProvider";
 
 const Produto = () => {
     const [produto, setProduto] = useState({
@@ -28,6 +28,7 @@ const Produto = () => {
     });
 
     const [adicionaisOpcoes, setAdicionaisOpcoes] = useState([]);
+    const [errors, setErrors] = useState({ nome: "", preco: "", categoriaId: "" }); // Estado para erros
     const showAlert = useAlert();
     const navigate = useNavigate();
 
@@ -53,7 +54,45 @@ const Produto = () => {
         }));
     };
 
+    const handleBlur = (field) => {
+        // Validação onBlur
+        switch (field) {
+            case "nome":
+                if (!produto.nome.trim()) {
+                    setErrors((prev) => ({ ...prev, nome: "Nome do produto é obrigatório" }));
+                } else {
+                    setErrors((prev) => ({ ...prev, nome: "" }));
+                }
+                break;
+            case "preco":
+                if (!produto.preco || produto.preco <= 0) {
+                    setErrors((prev) => ({ ...prev, preco: "Preço é obrigatório e deve ser maior que zero" }));
+                } else {
+                    setErrors((prev) => ({ ...prev, preco: "" }));
+                }
+                break;
+            case "categoriaId":
+                if (!produto.categoriaId) {
+                    setErrors((prev) => ({ ...prev, categoriaId: "Categoria é obrigatória" }));
+                } else {
+                    setErrors((prev) => ({ ...prev, categoriaId: "" }));
+                }
+                break;
+            default:
+                break;
+        }
+    };
+
+    const validateForm = () => {
+        return !errors.nome && !errors.preco && !errors.categoriaId && produto.nome && produto.preco > 0 && produto.categoriaId;
+    };
+
     const handleSalvarProduto = async () => {
+        if (!validateForm()) {
+            showAlert("Por favor, corrija os erros no formulário", "error");
+            return;
+        }
+
         const command = {
             ...produto,
             preco: parseFloat(produto.preco),
@@ -90,7 +129,11 @@ const Produto = () => {
                         placeholder="Digite o nome do produto"
                         value={produto.nome}
                         onChange={(e) => handleChange("nome", e.target.value)}
+                        onBlur={() => handleBlur("nome")}
                         sx={{ mb: 2 }}
+                        error={!!errors.nome}
+                        helperText={errors.nome}
+                        required
                     />
 
                     <TextField
@@ -114,20 +157,27 @@ const Produto = () => {
                         inputProps={{ min: 0 }}
                         value={produto.preco}
                         onChange={(e) => handleChange("preco", e.target.value)}
+                        onBlur={() => handleBlur("preco")}
                         sx={{ mb: 2 }}
+                        error={!!errors.preco}
+                        helperText={errors.preco}
+                        required
                     />
 
-                    <FormControl fullWidth sx={{ mb: 2 }}>
+                    <FormControl fullWidth sx={{ mb: 2 }} required>
                         <InputLabel>Categoria</InputLabel>
                         <Select
                             value={produto.categoriaId}
                             onChange={(e) => handleChange("categoriaId", e.target.value)}
+                            onBlur={() => handleBlur("categoriaId")}
                             label="Categoria"
+                            error={!!errors.categoriaId}
                         >
                             <MenuItem value="1">Tradicionais</MenuItem>
                             <MenuItem value="2">Especiais</MenuItem>
                             <MenuItem value="3">Gelados</MenuItem>
                         </Select>
+                        {errors.categoriaId && <Typography color="error" variant="body2">{errors.categoriaId}</Typography>}
                     </FormControl>
 
                     <Autocomplete
@@ -161,6 +211,7 @@ const Produto = () => {
                                     backgroundColor: "#A14A4A",
                                 },
                             }}
+                            disabled={!validateForm()}
                         >
                             Salvar
                         </Button>
