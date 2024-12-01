@@ -13,7 +13,7 @@ const Produtos = ({ produtos, onSetProdutos, onCategoriaChange }) => {
 
     useEffect(() => {
         handleObterProdutos(1);
-    }, [handleObterProdutos]);
+    }, []);
 
     return (
         <Box>
