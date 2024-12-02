@@ -126,7 +126,7 @@ const Produtos = () => {
                             secondary={
                               <Box display="flex" justifyContent="space-between" alignItems="center">
                                 <Typography variant="body2" color="textSecondary">
-                                  Categoria: {produto.categoria?.nome || "Sem Categoria"}
+                                  {produto.descricao}
                                 </Typography>
                                 <IconButton
                                     size="small"

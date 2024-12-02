@@ -51,7 +51,7 @@ const Registrar = () => {
   }
 
   return (
-      <Container maxWidth="sm" sx={{
+      <Container maxWidth="md" sx={{
         height: "100vh",
         backgroundColor: "#f8f7f6",
         display: "flex",
