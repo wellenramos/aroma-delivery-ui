@@ -150,6 +150,13 @@ const Produto = () => {
                 <Header titulo="Cadastrar Produto" onBack={handleVoltarHome} />
                 <Divider />
                 <Box padding={3}>
+                    <Typography
+                        variant="body1"
+                        color={produto.situacao === 'PUBLICADO' ? "success.main" : "error.main"}
+                        sx={{ mb: 3, fontWeight: "bold" }}
+                    >
+                        {produto.situacao === 'PUBLICADO' ? "Produto já publicado" : "Produto ainda não publicado"}
+                    </Typography>
                     <Typography variant="h6" sx={{ mb: 3, fontWeight: "bold" }}>
                         Informações do Produto
                     </Typography>

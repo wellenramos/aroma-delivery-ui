@@ -13,6 +13,7 @@ import {
   useMediaQuery,
   useTheme,
   Fab,
+  Chip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -91,27 +92,41 @@ const Produtos = () => {
                         </ListItemAvatar>
                         <ListItemText
                             primary={
-                              <Box display="flex" justifyContent="space-between">
-                                <Typography
-                                    variant="subtitle1"
-                                    fontWeight="bold"
-                                    sx={{ cursor: "pointer" }}
-                                >
-                                  {produto.nome}
-                                </Typography>
-                                <Typography
-                                    variant="subtitle1"
-                                    color="secondary"
-                                    sx={{ cursor: "pointer" }}
-                                >
-                                  R$ {produto.preco?.toFixed(2)}
-                                </Typography>
+                              <Box display="flex" justifyContent="space-between" alignItems="center">
+                                <Box display="flex" alignItems="center">
+                                  <Typography
+                                      variant="subtitle1"
+                                      fontWeight="bold"
+                                      sx={{ cursor: "pointer", marginRight: 1 }}
+                                  >
+                                    {produto.nome}
+                                  </Typography>
+                                  <Chip
+                                      label={produto.situacao === "PUBLICADO" ? "Publicado" : "Cadastrado"}
+                                      color={produto.situacao === "PUBLICADO" ? "success" : "warning"}
+                                      sx={{
+                                        fontWeight: "bold",
+                                        height: 24,
+                                        borderRadius: 12,
+                                        fontSize: "0.75rem",
+                                      }}
+                                  />
+                                </Box>
+                                <Box textAlign="right">
+                                  <Typography
+                                      variant="subtitle1"
+                                      color="secondary"
+                                      sx={{ cursor: "pointer" }}
+                                  >
+                                    R$ {produto.preco?.toFixed(2)}
+                                  </Typography>
+                                </Box>
                               </Box>
                             }
                             secondary={
                               <Box display="flex" justifyContent="space-between" alignItems="center">
                                 <Typography variant="body2" color="textSecondary">
-                                  {produto.descricao}
+                                  Categoria: {produto.categoria?.nome || "Sem Categoria"}
                                 </Typography>
                                 <IconButton
                                     size="small"
