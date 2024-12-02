@@ -17,7 +17,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../Header";
 import {
     obterAdicionais,
-    obterProdutoPorId,
+    obterProdutoPorId, publicarProduto,
     salvarProduto,
 } from "../../../services/produtoService";
 import { useAlert } from "../../shared/alert/AlertProvider";
@@ -69,7 +69,7 @@ const Produto = () => {
         }
     }, [produtoId]);
 
-    const handleVoltarHome = () => navigate("/admin");
+    const handleVoltarHome = () => navigate("/admin/produtos");
 
     const handleChange = (field, value) => {
         setProduto((prev) => ({
@@ -126,6 +126,21 @@ const Produto = () => {
             showAlert("Produto salvo com sucesso!", "success");
         } catch (error) {
             showAlert("Erro ao salvar o produto", "error");
+        }
+    };
+
+    const handlePublicarProduto = async () => {
+        if (!produtoId) {
+            showAlert("O produto precisa ser salvo antes de ser publicado", "error");
+            return;
+        }
+
+        try {
+            await publicarProduto(produtoId);
+            showAlert("Produto publicado com sucesso!", "success");
+            navigate("/admin/produtos");
+        } catch (error) {
+            showAlert("Erro ao publicar o produto", "error");
         }
     };
 
@@ -229,6 +244,23 @@ const Produto = () => {
                         >
                             Salvar
                         </Button>
+
+                        {produtoId && <Button
+                            variant="contained"
+                            onClick={handlePublicarProduto}
+                            sx={{
+                                backgroundColor: "#73BF73",
+                                color: "#FFF",
+                                fontWeight: "bold",
+                                textTransform: "none",
+                                borderRadius: "8px",
+                                "&:hover": {
+                                    backgroundColor: "#4AA14A",
+                                },
+                            }}
+                        >
+                            Publicar
+                        </Button>}
                     </Box>
                 </Box>
             </CardContent>

@@ -57,3 +57,7 @@ export const obterAdicionais = async () => {
 export const excluirProduto = async (idProduto) => {
     return await api.delete(`/produtos/${idProduto}`);
 };
+
+export const publicarProduto = async (idProduto) => {
+    return await api.put(`/produtos/${idProduto}/publicar`);
+};
