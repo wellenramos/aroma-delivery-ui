@@ -13,9 +13,13 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../Header";
-import { obterAdicionais, salvarProduto } from "../../../services/produtoService";
+import {
+    obterAdicionais,
+    obterProdutoPorId,
+    salvarProduto,
+} from "../../../services/produtoService";
 import { useAlert } from "../../shared/alert/AlertProvider";
 
 const Produto = () => {
@@ -28,9 +32,10 @@ const Produto = () => {
     });
 
     const [adicionaisOpcoes, setAdicionaisOpcoes] = useState([]);
-    const [errors, setErrors] = useState({ nome: "", preco: "", categoriaId: "" }); // Estado para erros
+    const [errors, setErrors] = useState({ nome: "", preco: "", categoriaId: "" });
     const showAlert = useAlert();
     const navigate = useNavigate();
+    const { produtoId } = useParams();
 
     useEffect(() => {
         const fetchAdicionais = async () => {
@@ -45,6 +50,25 @@ const Produto = () => {
         fetchAdicionais();
     }, []);
 
+    useEffect(() => {
+        if (produtoId) {
+            const fetchProduto = async () => {
+                try {
+                    const { data } = await obterProdutoPorId(produtoId);
+                    setProduto({
+                        ...data,
+                        categoriaId: data.categoria?.id || "",
+                        adicionais: data.adicionais || [],
+                    });
+                } catch (error) {
+                    showAlert("Erro ao carregar o produto", "error");
+                }
+            };
+
+            fetchProduto();
+        }
+    }, [produtoId]);
+
     const handleVoltarHome = () => navigate("/admin");
 
     const handleChange = (field, value) => {
@@ -55,36 +79,32 @@ const Produto = () => {
     };
 
     const handleBlur = (field) => {
-        // Validação onBlur
-        switch (field) {
-            case "nome":
-                if (!produto.nome.trim()) {
-                    setErrors((prev) => ({ ...prev, nome: "Nome do produto é obrigatório" }));
-                } else {
-                    setErrors((prev) => ({ ...prev, nome: "" }));
-                }
-                break;
-            case "preco":
-                if (!produto.preco || produto.preco <= 0) {
-                    setErrors((prev) => ({ ...prev, preco: "Preço é obrigatório e deve ser maior que zero" }));
-                } else {
-                    setErrors((prev) => ({ ...prev, preco: "" }));
-                }
-                break;
-            case "categoriaId":
-                if (!produto.categoriaId) {
-                    setErrors((prev) => ({ ...prev, categoriaId: "Categoria é obrigatória" }));
-                } else {
-                    setErrors((prev) => ({ ...prev, categoriaId: "" }));
-                }
-                break;
-            default:
-                break;
+        const value = produto[field];
+        let error = "";
+
+        if (field === "nome" && !value.trim()) {
+            error = "Nome do produto é obrigatório";
         }
+
+        if (field === "preco" && (!value || parseFloat(value) <= 0)) {
+            error = "Preço deve ser maior que zero";
+        }
+
+        if (field === "categoriaId" && !value) {
+            error = "Categoria é obrigatória";
+        }
+
+        setErrors((prev) => ({ ...prev, [field]: error }));
     };
 
     const validateForm = () => {
-        return !errors.nome && !errors.preco && !errors.categoriaId && produto.nome && produto.preco > 0 && produto.categoriaId;
+        return (
+            produto.nome.trim() &&
+            produto.preco &&
+            parseFloat(produto.preco) > 0 &&
+            produto.categoriaId &&
+            !Object.values(errors).some((error) => error)
+        );
     };
 
     const handleSalvarProduto = async () => {
@@ -95,17 +115,15 @@ const Produto = () => {
 
         const command = {
             ...produto,
-            preco: parseFloat(produto.preco),
+            preco: parseFloat(produto.preco).toFixed(2),
             categoriaId: parseInt(produto.categoriaId),
             adicionais: produto.adicionais.map((adicional) => adicional.id),
         };
 
         try {
-            const { data } = await salvarProduto(command);
-
-            if (data) {
-                navigate("/admin/produtos");
-            }
+            await salvarProduto(command);
+            navigate("/admin/produtos");
+            showAlert("Produto salvo com sucesso!", "success");
         } catch (error) {
             showAlert("Erro ao salvar o produto", "error");
         }
@@ -116,7 +134,6 @@ const Produto = () => {
             <CardContent sx={{ padding: 0 }}>
                 <Header titulo="Cadastrar Produto" onBack={handleVoltarHome} />
                 <Divider />
-
                 <Box padding={3}>
                     <Typography variant="h6" sx={{ mb: 3, fontWeight: "bold" }}>
                         Informações do Produto
@@ -130,10 +147,10 @@ const Produto = () => {
                         value={produto.nome}
                         onChange={(e) => handleChange("nome", e.target.value)}
                         onBlur={() => handleBlur("nome")}
-                        sx={{ mb: 2 }}
                         error={!!errors.nome}
                         helperText={errors.nome}
                         required
+                        sx={{ mb: 2 }}
                     />
 
                     <TextField
@@ -142,7 +159,6 @@ const Produto = () => {
                         multiline
                         rows={3}
                         variant="outlined"
-                        placeholder="Descreva o produto brevemente"
                         value={produto.descricao}
                         onChange={(e) => handleChange("descricao", e.target.value)}
                         sx={{ mb: 2 }}
@@ -152,32 +168,35 @@ const Produto = () => {
                         fullWidth
                         label="Preço"
                         type="number"
-                        variant="outlined"
-                        placeholder="Informe o preço"
-                        inputProps={{ min: 0 }}
+                        inputProps={{ min: 0, step: 0.01 }}
                         value={produto.preco}
                         onChange={(e) => handleChange("preco", e.target.value)}
                         onBlur={() => handleBlur("preco")}
-                        sx={{ mb: 2 }}
                         error={!!errors.preco}
                         helperText={errors.preco}
                         required
+                        sx={{ mb: 2 }}
                     />
 
                     <FormControl fullWidth sx={{ mb: 2 }} required>
-                        <InputLabel>Categoria</InputLabel>
+                        <InputLabel id="label-categoria">Categoria</InputLabel>
                         <Select
+                            labelId="label-categoria"
+                            label="Categoria"
                             value={produto.categoriaId}
                             onChange={(e) => handleChange("categoriaId", e.target.value)}
                             onBlur={() => handleBlur("categoriaId")}
-                            label="Categoria"
                             error={!!errors.categoriaId}
                         >
                             <MenuItem value="1">Tradicionais</MenuItem>
                             <MenuItem value="2">Especiais</MenuItem>
                             <MenuItem value="3">Gelados</MenuItem>
                         </Select>
-                        {errors.categoriaId && <Typography color="error" variant="body2">{errors.categoriaId}</Typography>}
+                        {errors.categoriaId && (
+                            <Typography color="error" variant="body2">
+                                {errors.categoriaId}
+                            </Typography>
+                        )}
                     </FormControl>
 
                     <Autocomplete
@@ -187,12 +206,7 @@ const Produto = () => {
                         value={produto.adicionais}
                         onChange={(event, newValue) => handleChange("adicionais", newValue)}
                         renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                label="Adicionais"
-                                placeholder="Selecione adicionais"
-                            />
+                            <TextField {...params} variant="outlined" label="Adicionais" />
                         )}
                         sx={{ mb: 2 }}
                     />
@@ -201,6 +215,7 @@ const Produto = () => {
                         <Button
                             variant="contained"
                             onClick={handleSalvarProduto}
+                            disabled={!validateForm()}
                             sx={{
                                 backgroundColor: "#BF7373",
                                 color: "#FFF",
@@ -211,7 +226,6 @@ const Produto = () => {
                                     backgroundColor: "#A14A4A",
                                 },
                             }}
-                            disabled={!validateForm()}
                         >
                             Salvar
                         </Button>

@@ -36,7 +36,8 @@ export const router = createBrowserRouter([
             { path: 'menu', element: <MenuAdmin /> },
             { path: 'pedido/:pedidoId', element: <DetalhesPedido /> },
             { path: 'produtos', element: <Produtos /> },
-            { path: 'cadastrar', element: <Produto /> },
+            { path: 'produtos/cadastrar', element: <Produto /> },
+            { path: 'produtos/:produtoId/editar', element: <Produto /> },
         ]
     },
     {
