@@ -213,6 +213,7 @@ const Produto = () => {
                             <MenuItem value="1">Tradicionais</MenuItem>
                             <MenuItem value="2">Especiais</MenuItem>
                             <MenuItem value="3">Gelados</MenuItem>
+                            <MenuItem value="4">Adicional</MenuItem>
                         </Select>
                         {errors.categoriaId && (
                             <Typography color="error" variant="body2">
