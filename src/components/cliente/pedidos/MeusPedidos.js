@@ -20,7 +20,7 @@ const MeusPedidos = () => {
                 setHistorico(data.historico);
             }
         } catch (error) {
-            showAlert("Erro ao buscar o produto", "error");
+            showAlert("Erro ao buscar o produto.", "error");
         }
     };
 
